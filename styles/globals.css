@@ -2,8 +2,11 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  overflow-x: hidden;
+}
+
+header{
+  position: relative;
 }
 
 a {
@@ -13,4 +16,43 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+::selection {
+  background: var(--theme-ui-colors-text);
+  color: var(--theme-ui-colors-background);
+  /* WebKit/Blink Browsers */
+}
+
+::-moz-selection {
+  background: var(--theme-ui-colors-text);
+  color: var(--theme-ui-colors-background);
+  /* Gecko Browsers */
+}
+
+@media screen and (min-width: 768px) {
+  .slick-slide {
+    padding-right: 96px !important;
+  }
+  /* .nft-slider  */
+  .slick-track {
+    /* width: 100% !important; */
+  }
+
+  .slick-track {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    box-sizing: border-box !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .slick-track {
+    /* width: 100% !important; */
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    box-sizing: border-box !important;
+  }
 }
