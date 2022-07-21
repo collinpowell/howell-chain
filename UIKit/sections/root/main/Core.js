@@ -15,7 +15,7 @@ const Core = () => {
                 <Box sx={styles.images}>
                     {images.map(({ img, w, h }, i) => {
                         return (
-                            <Box>
+                            <Box key={i}>
                                 <Image src={img ? img : `data:image/svg+xml;base64,${toBase64(shimmer(w, h))}`} alt='Image' width={w} height={h} placeholder="blur"
                                     key={i} blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(w, h))}`} />
                             </Box>
