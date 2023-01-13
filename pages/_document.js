@@ -10,7 +10,7 @@ class CustomDocument extends Document {
     return (
       <Html lang="en-US">
         <Head>
-          <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' />
+          <link href='https://fonts.googleapis.com/css?family=Montserrat&display=optional' rel='stylesheet' />
         </Head>
         <body>
           <Main />

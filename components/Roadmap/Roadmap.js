@@ -5,8 +5,7 @@ import { Box, jsx } from "theme-ui";
 import cn from "classnames";
 import Slider from "react-slick";
 import Markdown from "../Markdown/Markdown";
-import Container from "../Container";
-import { useThemeUI } from "theme-ui";
+import {Container, useThemeUI } from "theme-ui";
 
 const releases = [
   { version: "0.17", date: "Nov 23, 2020", content: "Nov 23, 2020" },
