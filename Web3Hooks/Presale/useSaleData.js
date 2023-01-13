@@ -1,0 +1,127 @@
+import useSWR from "swr";
+import useKeepSWRDataLiveAsBlocksArrive from "../useKeepSWRDataLiveAsBlocksArrive";
+import useContract from "../useContract";
+import ABI from "../../artifacts/contracts/Presale.sol/Presale.json";
+import { parseBalance } from "../../Util/util";
+
+function getMinBuy(contract) {
+  return async (_) => {
+    const result = await contract.minPurchase();
+    return result;
+  };
+}
+
+function getMaxBuy(contract) {
+  return async (_) => {
+    const result = await contract.maxPurchase();
+    return result;
+  };
+}
+function getRate(contract) {
+  return async (_) => {
+    const result = await contract._rate();
+    return result;
+  };
+}
+
+function getHardCap(contract) {
+  return async (_) => {
+    const result = await contract.hardCap();
+    return result;
+  };
+}
+function getSoftCap(contract) {
+  return async (_) => {
+    const result = await contract.softCap();
+    return result;
+  };
+}
+
+function getEndICO(contract) {
+  return async (_) => {
+    const result = await contract.endICO();
+    return result;
+  };
+}
+
+function getWeiRaised(contract) {
+  return async (_) => {
+    const result = await contract._weiRaised();
+    return result;
+  };
+}
+
+function getAvaTokens(contract) {
+  return async (_) => {
+    const result = await contract.availableTokensICO();
+    return result;
+  };
+}
+
+export default function useSaleData(suspense = false) {
+  const contractAddress = process.env.NEXT_PUBLIC_PREICO_CONTRACT;
+  console.log(contractAddress);
+  const contract = useContract(contractAddress, ABI.abi, false);
+
+  const resultMinBuy = useSWR(
+    [contractAddress, "minPurchase", ""],
+    getMinBuy(contract),
+    {
+      suspense,
+    }
+  );
+  const resultMaxBuy = useSWR(
+    [contractAddress, "maxPurchase", ""],
+    getMaxBuy(contract),
+    {
+      suspense,
+    }
+  );
+
+  const resultHardCap = useSWR(
+    [contractAddress, "hardCap", ""],
+    getHardCap(contract),
+    {
+      suspense,
+    }
+  );
+  const resultSoftCap = useSWR(
+    [contractAddress, "softCap", ""],
+    getSoftCap(contract),
+    {
+      suspense,
+    }
+  );
+
+  const resultFundsRaised = useSWR(
+    [contractAddress, "_weiRaised", ""],
+    getWeiRaised(contract),
+    {
+      suspense,
+    }
+  );
+
+  const resultRate = useSWR(
+    [contractAddress, "_rate", ""],
+    getRate(contract),
+    {
+      suspense,
+    }
+  );
+
+  useKeepSWRDataLiveAsBlocksArrive(resultMinBuy.mutate);
+  useKeepSWRDataLiveAsBlocksArrive(resultMaxBuy.mutate);
+  useKeepSWRDataLiveAsBlocksArrive(resultSoftCap.mutate);
+  useKeepSWRDataLiveAsBlocksArrive(resultHardCap.mutate);
+  useKeepSWRDataLiveAsBlocksArrive(resultFundsRaised.mutate);
+  useKeepSWRDataLiveAsBlocksArrive(resultRate.mutate);
+
+  return { 
+    minBuy: parseBalance(resultMinBuy.data ?? 0,18,0),
+    maxBuy: parseBalance(resultMaxBuy.data ?? 0,18,0),
+    hardCap: parseBalance(resultHardCap.data ?? 0,18,0),
+    softCap: parseBalance(resultSoftCap.data ?? 0,18,0),
+    fundsRaised: parseBalance(resultFundsRaised.data ?? 0,18,1),
+    rate: resultRate.data
+   };
+}

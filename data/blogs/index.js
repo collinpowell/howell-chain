@@ -3,12 +3,12 @@ const BLOG_DATA ={
     blogs:[
         {
             title:'Revolutionizing the blockchain industry',
-            body:'Howell blockchain set out to disrupt the blockchain industry by creating real world solutions to day to day problems using blockchain tech e.g ',
+            body:'Howrea blockchain set out to disrupt the blockchain industry by creating real world solutions to day to day problems using blockchain tech e.g ',
             image:null
         },
         {
-            title:'NFT Event Ticketing on the howell blockchain is Live',
-            body:'Howell blockchain set out to disrupt the blockchain industry by creating real world solutions to day to day problems using blockchain tech e.g ',
+            title:'NFT Event Ticketing on the Howrea blockchain is Live',
+            body:'Howrea blockchain set out to disrupt the blockchain industry by creating real world solutions to day to day problems using blockchain tech e.g ',
             image:null
         }
     ]

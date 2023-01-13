@@ -1,8 +1,4 @@
 
-import { keyframes } from '@emotion/react'
-
-//const rotation = keyframes({ from: { opacity: 0 }, to: { opacity: 1 } })
-const rotation = keyframes({ from: { transform: 'rotate(0deg)' }, to: { transform: 'rotate(180deg)' } })
 
 export default {
     breakpoints: [
@@ -185,10 +181,10 @@ export default {
     // variants for buttons
     buttons: {
         primary: {
-            fontWeight: 'buttons',
+            //fontWeight: 'buttons',
             color: 'background',
             bg: 'text',
-            p: '15px 40px',
+            p: ['13px 30px',null,null,'15px 40px'],
             borderRadius: '5px',
             fontFamily: 'body'
             // '&:hover': {
@@ -204,8 +200,8 @@ export default {
         },
         border: {
             variant: 'buttons.text',
-            p: ['15px 20px',null,null,'20px 40px'],
-            borderRadius: '31px',
+            p: ['13px 30px',null,null,'15px 40px'],
+            borderRadius: '5px',
             border: '2.65px solid',
             borderColor: 'text'
         }
@@ -213,32 +209,29 @@ export default {
     boxes: {
         headerMenuItem: {
             width: 'fit-content',
-            position: 'relative',
             height: '100%',
+            position:'relative',
             //px:'25px',
             cursor: 'pointer',
             p: {
                 fontWeight: 'bold'
             },
-            '&:hover': {
-                svg: {
-                    animation: `${rotation} .5s linear`,
-                    transform: 'rotate(180deg)',
-                },
-                '.dropDown': {
-                    opacity: '1',
-                }
-            }
+
         },
         dropDown: {
             transition: 'ease-in .5s',
-            opacity: '0',
-            p: '39px',
+            opacity: '1',
+            right:'2.5%',
+            //left:'10%',
+            top:'85px',
+            zIndex:'2000',
+            //mx:['20px',null,null,'50px'],
+            width:'95%',
+            p: '40px',
             position: 'absolute',
             background: 'dropDownBg',
-            boxShadow: '1px 5px 14px',
-            color: 'dropDownBoxShadow',
-            borderRadius: '22px'
+            boxShadow: '1px 1px 5px',
+            borderRadius: '10px'
         },
         stats: {
             textAlign: 'center',

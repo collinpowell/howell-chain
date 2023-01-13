@@ -8,7 +8,7 @@ const data = {
 const Hero = () => {
     return (
         <Container sx={styles.container}>
-            <Heading>The <span>Howell</span> Network is Here!</Heading>
+            <Heading>The <span>Howrea</span> Network is Here!</Heading>
             <Text variant='title' as='h4'>{data.subHeading}</Text>
             <Text variant='normal' as='p'>{data.body}</Text>
             <Stats/>

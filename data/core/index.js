@@ -8,7 +8,7 @@ const forNow = 'Shop you favorite goods and quick and easy with our unique curre
 
 const CORE_DATA = {
     smallHeader: 'Join the Trend',
-    heading: 'The Core of The Howell Blockchain',
+    heading: 'The Core of The Howrea Blockchain',
     cards: [
         {
             icon: <Shopping />,
@@ -53,6 +53,11 @@ const CORE_DATA = {
         {
             icon: <Charity />,
             heading: 'Charity',
+            body: forNow
+        },
+        {
+            icon: <Charity />,
+            heading: 'Education',
             body: forNow
         },
     ],

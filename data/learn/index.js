@@ -12,7 +12,7 @@ const h2 = '748px'
 
 
 const LEARN_DATA = {
-    smallHeader: 'The Howell ecosystem is thriving.',
+    smallHeader: 'The Howrea ecosystem is thriving.',
     heading: 'Join the thriving and rapidly expanding ecosystem, which features world-class projects in a variety of industries',
     cards: [
         {
@@ -31,8 +31,8 @@ const LEARN_DATA = {
                 { img: CI22.src, w: 176, h: 176 },
             ],
             h: h2,
-            heading: 'Learn more about the howell network',
-            body: 'Learn and read about the howell network',
+            heading: 'Learn more about the Howrea network',
+            body: 'Learn and read about the Howrea network',
             link: 'https://near.nodexihub.com/',
 
         },
@@ -43,7 +43,7 @@ const LEARN_DATA = {
             ],
             h: h2,
             heading: 'Join the community',
-            body: 'We have a vibrant and passionate community with deep developer talents and lots of support, Join us and be part of shaping the future of the howell network',
+            body: 'We have a vibrant and passionate community with deep developer talents and lots of support, Join us and be part of shaping the future of the Howrea network',
             link: 'https://near.nodexihub.com/',
 
         },
@@ -53,8 +53,8 @@ const LEARN_DATA = {
                 { img: CI42.src, w: 195, h: 162 },
             ],
             h: h1,
-            heading: 'Build on the howell blockchain',
-            body: 'The howell blockchain is EVM supported therefore dapps and all other applications can be built on the howell blockchain',
+            heading: 'Build on the Howrea blockchain',
+            body: 'The Howrea blockchain is EVM supported therefore dapps and all other applications can be built on the Howrea blockchain',
             link: 'https://near.nodexihub.com/',
 
         },

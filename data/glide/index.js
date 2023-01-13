@@ -6,7 +6,7 @@ const dummyLink = 'http://near.nodexihub.com';
 const GLIDE_DATA ={
     smallHeader:'Our Core Platforms',
     heading:'Glide into our fantastic platforms',
-    body:'Take advantage of our fantastic platforms, powered by the Howell blockchain: Excellent user experience, quick and simple payment methods, lots of gifts and rewards, and premium services',
+    body:'Take advantage of our fantastic platforms, powered by the Howrea blockchain: Excellent user experience, quick and simple payment methods, lots of gifts and rewards, and premium services',
     platforms:[
         {
             logo:dummyLogo,

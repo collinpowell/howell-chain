@@ -1,0 +1,131 @@
+// Mixins
+
+@mixin mediaM($value) {
+  @media all and (max-width: $value) {
+    @content;
+  }
+}
+@mixin mediaW($value) {
+  @media all and (min-width: $value) {
+    @content;
+  }
+} ;
+
+
+.click-catcher-obj{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+  }
+  
+  .draw-holder, .draw-holder-web{
+      position: absolute;
+      top: calc(100% + 20px);
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      opacity: 0;
+      transition: 0.3s ease;
+  }
+  .draw-holder-web{
+    @include mediaM(850px) {
+      margin-top: 10px;
+    }
+  }
+  .relative {
+    position: relative;
+  }
+  .white {
+    background-color: #fff;
+    color: black;
+    border-radius: 10px;
+  }
+  .shadowed {
+    padding: 20px 20px;
+    z-index: 5;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.2);
+  }
+  
+  .activator{
+    opacity: 1;
+    pointer-events: all;
+    transform: translate(-50%, 0);
+  }
+
+
+
+
+
+/* Animations */
+
+[data-aos="example-anim1"] {
+  transform: skewX(45deg);
+  opacity: 0;
+  transition-property: transform, opacity;
+  &.aos-animate {
+    transform: skewX(0);
+    opacity: 1;
+  }
+}
+
+[data-aos="example-anim2"] {
+  background: red;
+  transition-property: background;
+  &.aos-animate {
+    background: green;
+  }
+}
+
+[data-aos="example-anim3"] {
+  transform: rotate(360deg);
+  opacity: 0;
+  transition-property: transform, opacity;
+  &.aos-animate {
+    transform: rotate(0);
+    opacity: 1;
+  }
+}
+[data-aos="example-anim4"] {
+  transform: rotate(360deg);
+  opacity: 0;
+  transition-property: transform, opacity;
+  &.aos-animate {
+    animation: bounce 2s infinite;
+    opacity: 1;
+  }
+}
+
+[data-aos="example-anim5"] {
+  transform: rotate(360deg);
+  opacity: 0;
+  transition-property: transform, opacity;
+  &.aos-animate {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    opacity: 1;
+  }
+}
+
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-20%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .8;
+  }
+}

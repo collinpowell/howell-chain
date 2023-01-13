@@ -1,21 +1,27 @@
 const HEADER_DATA = {
-
-    menuData: [
+  menuData: [
+    {
+      label: "Platforms",
+    },
+    {
+      label: "Learn",
+      links: [
         {
-            label: 'Platforms',
+          icon: null,
+          text: "About Us",
+          link: "/about",
         },
-        {
-            label: 'Learn',
-        },
-        {
-            label: 'Network',
-        },
-        {
-            label: 'Community',
-        },
-        {
-            label: 'Foundation',
-        },
-    ]
+      ],
+    },
+    {
+      label: "Network",
+    },
+    {
+      label: "Community",
+    },
+    {
+      label: "Foundation",
+    },
+  ],
 };
 export default HEADER_DATA;

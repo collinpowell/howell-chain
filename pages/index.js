@@ -4,7 +4,6 @@ import Core from '../UIKit/sections/root/main/Core'
 import Glide from '../UIKit/sections/root/main/Glide'
 import Learn from '../UIKit/sections/root/main/Learn'
 import Blogs from '../UIKit/sections/root/main/Blogs'
-import NewsLetter from '../UIKit/sections/root/main/NewsLetter'
 
 export default function Home() {
   return (
@@ -15,7 +14,6 @@ export default function Home() {
       <Glide />
       <Learn />
       <Blogs />
-      <NewsLetter />
     </>
   )
 }
