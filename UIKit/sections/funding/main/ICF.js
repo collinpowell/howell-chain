@@ -1,43 +1,77 @@
 import { Container, Box, Heading, Text, Flex } from "theme-ui";
 import { Progress } from "reactstrap";
 import { useState } from "react";
-import dynamic from 'next/dynamic';
-const CountDown = dynamic(import('react-countdown'),{ ssr: false });
+import dynamic from "next/dynamic";
+const CountDown = dynamic(import("react-countdown"), { ssr: false });
 import Buy from "../sub/BuyInput";
 import { ICF$ } from "../../../assets/Logos";
 import useETHBalance from "../../../../Web3Hooks/useETHBalance";
 import { useWeb3React } from "@web3-react/core";
 import { parseBalance } from "../../../../Util/util";
 
-const Presale = ({saleData}) => {
+// ** Third Party Components
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+const MySwal = withReactContent(Swal);
+
+const Presale = ({ saleData }) => {
   const [userInput, setUserInput] = useState(saleData.minBuy);
   const [spin, setSpin] = useState(false);
 
   const { account, library } = useWeb3React();
-  const data1 = useETHBalance(account);
+  const balance = useETHBalance(account);
 
-  const bal = parseBalance(data1.data ?? 0);
+  const ethBal = parseBalance(balance.data ?? 0);
 
-  var percent = ((10000000-saleData.avaTokens) / 10000000) * 100
+  var percent = ((10000000 - saleData.avaTokens) / 10000000) * 100;
+
+  const handleSuccess = () => {
+    return MySwal.fire({
+      title: "Submission Successful! 🎉",
+      text: "Thank You For you patronage, we would be in touch",
+      icon: "success",
+      customClass: {
+        confirmButton: "SweatBtn",
+      },
+      buttonsStyling: false,
+    });
+  };
+
+  const handleFailure = (msg) => {
+    return MySwal.fire({
+      title: "Failed",
+      text: msg,
+      icon: "error",
+      customClass: {
+        confirmButton: "SweatBtn",
+      },
+      buttonsStyling: false,
+    });
+  };
 
   function handleClick() {
-    if (state < min) {
-      //toast.error("Minimum Contribution is " + min + " BNB");
+    if (userInput < saleData.minBuy) {
+      handleFailure("Minimum Contribution is " + saleData.minBuy + " BNB")
       return;
     }
-    if (state > max) {
-      //toast.error("Max Contribution is " + max + " BNB")
+    if (userInput > saleData.maxBuy) {
+      handleFailure("Max Contribution is " + saleData.maxBuy + " BNB")
+      return;
+    }
+    if(!account){
+      handleFailure("Connect Wallet")
+      return;
+    }
+    if (userInput > ethBal) {
+      handleFailure(ethBal +  "BNB - Insufficient Balance")
+      return;
+    }
+    if (userInput <= 0) {
+      handleFailure("Invalid amount")
+      return;
+    }
+    handleSuccess()
 
-      return;
-    }
-    if (state >= bal) {
-      //toast.error("Insufficent Balance")
-      return;
-    }
-    if (state <= 0) {
-      //toast.error("Select Valid Value")
-      return;
-    }
     //buyTokens(account, PRESALE, (state * 10 ** 18).toString(), library, account);
   }
   const isConnected = typeof account === "string" && !!library;
@@ -45,8 +79,8 @@ const Presale = ({saleData}) => {
   const time = {
     starting: new Date("Jan 21 2023 08:30:00 GMT+0100"),
     now: new Date(),
-    ending: new Date(Number(saleData.endTime))
-  }
+    ending: new Date(Number(saleData.endTime)),
+  };
 
   const Completionist = () => {
     return (
@@ -114,7 +148,9 @@ const Presale = ({saleData}) => {
             <Heading>
               <span>Initial Crowd funding</span>
             </Heading>
-            <Text as="p">{time.now < time.starting ? "Starting In": "Ending In"}</Text>
+            <Text as="p">
+              {time.now < time.starting ? "Starting In" : "Ending In"}
+            </Text>
           </Box>
         </Container>
 
@@ -126,25 +162,38 @@ const Presale = ({saleData}) => {
           </Flex>
         </Container>
         <Container sx={styles.container1}>
-          <CountDown date={time.now < time.starting ? time.starting : time.ending} renderer={renderer} />
+          <CountDown
+            date={time.now < time.starting ? time.starting : time.ending}
+            renderer={renderer}
+          />
         </Container>
       </Box>
       <Container sx={styles.container1}>
-      <br/>
+        <br />
         <Progress
           value={percent}
-          style={{ 
-             height: "1.6rem",
-             border:'1px solid',
-             borderRadius: '5rem' }}
+          style={{
+            height: "1.6rem",
+            border: "1px solid",
+            borderRadius: "5rem",
+          }}
         />
-        <br/>
+        <br />
         <Flex sx={{ justifyContent: "space-between", fontWeight: "bold" }}>
-          <Text as="p">{percent + " % (" + saleData.fundsRaised + " BNB)"}</Text>
+          <Text as="p">
+            {percent + " % (" + saleData.fundsRaised + " BNB)"}
+          </Text>
           <Text as="p">100%</Text>
         </Flex>
       </Container>
-      <Buy handleClick={handleClick} userInput={userInput} setUserInput={setUserInput} spin={spin} setSpin={setSpin} rate={saleData.rate} />
+      <Buy
+        handleClick={handleClick}
+        userInput={userInput}
+        setUserInput={setUserInput}
+        spin={spin}
+        setSpin={setSpin}
+        rate={saleData.rate}
+      />
     </>
   );
 };
@@ -174,7 +223,7 @@ const styles = {
     },
     p: {
       textAlign: "center",
-      mt:'5px'
+      mt: "5px",
     },
   },
   section: {

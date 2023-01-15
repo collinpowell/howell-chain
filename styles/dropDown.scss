@@ -16,6 +16,7 @@
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 4;
     width: 100vw;
     height: 100vh;
   }
@@ -36,11 +37,6 @@
   }
   .relative {
     position: relative;
-  }
-  .white {
-    background-color: #fff;
-    color: black;
-    border-radius: 10px;
   }
   .shadowed {
     padding: 20px 20px;
@@ -99,7 +95,7 @@
   }
 }
 
-[data-aos="example-anim5"] {
+[data-aos="pulse"] {
   transform: rotate(360deg);
   opacity: 0;
   transition-property: transform, opacity;

@@ -9,7 +9,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Account from "../../Web3Components/Account";
 
-//const rotation = keyframes({ from: { opacity: 0 }, to: { opacity: 1 } })
 const rotation = keyframes({
   from: { transform: "rotate(0deg)" },
   to: { transform: "rotate(180deg)" },

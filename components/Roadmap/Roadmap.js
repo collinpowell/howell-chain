@@ -111,7 +111,7 @@ export default function Roadmap() {
       <Slider {...contentSettings} ref={sliderInfo}>
         {releases.map((release, index) => (
           <Container key={index} className="mt-4 Roadmap-content-container">
-            <RoadmapDetails version={release.version} />
+            <RoadmapDetails version={release.content} />
           </Container>
         ))}
       </Slider>
@@ -179,7 +179,7 @@ function RoadmapDetails({ version }) {
       }}
     >
       <div className="card-body Roadmap-highlights scroll">
-        <Markdown file={`../../releases/${version}.md`} />
+        <Markdown file={version} />
       </div>
     </Box>
   );

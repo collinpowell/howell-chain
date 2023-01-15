@@ -139,7 +139,7 @@ export default function useSaleData(suspense = false) {
     softCap: parseBalance(resultSoftCap.data ?? 0,18,0),
     avaTokens: parseBalance(resultAvaTokens.data ?? 0,18,0),
     fundsRaised: parseBalance(resultFundsRaised.data ?? 0,18,1),
-    rate: resultRate.data,
-    endTime: resultEndICO.data
+    rate: resultRate.data ?? 0,
+    endTime: resultEndICO.data ?? 0
    };
 }
