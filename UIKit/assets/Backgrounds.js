@@ -2,6 +2,7 @@ import { useThemeUI } from 'theme-ui'
 
 export const Orbit = () => {
     const { colorMode } = useThemeUI()
+    console.log(colorMode)
     return (
         <svg width="2446" height="2211" viewBox="0 0 2446 2211" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g filter="url(#filter0_f_492_7039)">

@@ -1,4 +1,4 @@
-import { Container, Box, Flex, Button, Text } from "theme-ui";
+import { Container, Box, Flex, Button, Text, Spinner } from "theme-ui";
 import NumberInput from "./NumberInput";
 
 function numberWithCommas(n) {
@@ -8,25 +8,33 @@ function numberWithCommas(n) {
     (parts[1] ? "." + parts[1] : "")
   );
 }
-const WhyChoose = ({ handleClick, setState, state }) => {
-  var cost = Number(state * 600000);
+const WhyChoose = ({
+  handleClick,
+  userInput,
+  setUserInput,
+  spin,
+  setSpin,
+  rate,
+}) => {
+  var cost = Number(userInput * rate);
   return (
     <Box as="section" id="services" sx={styles.section}>
       <Container sx={styles.container}>
         <Box sx={styles.post}>
           <Flex variant="boxes.newsLetter" sx={styles.countdown}>
-            <NumberInput state={state} setState={setState} />
+            <NumberInput state={userInput} setState={setUserInput} />
             <Text as="h1">{"BNB"}</Text>
             <Text as="h2">=</Text>
             <Text as="h1">{numberWithCommas(cost)} SHRF</Text>
           </Flex>
+          {spin &&  <Spinner sx={{ mx: "auto", marginTop: "20px" }} />}
           <div
             style={{
               display: "flex",
               justifyContent: "center",
               paddingLeft: "20px",
               paddingRight: "20px",
-              marginTop: "35px",
+              marginTop: spin ? "15px":"35px",
             }}
           >
             <Button onClick={() => handleClick()}>Buy Now</Button>
@@ -47,7 +55,7 @@ const styles = {
     fontSize: ["20px", "25px", null, null, "30px"],
     h1: {
       px: "30px",
-      py:'5px',
+      py: "5px",
       background:
         "radial-gradient(114% 421.6% at -6.17% 23.08%, rgba(243, 240, 252, 0.26) 0%, rgba(163, 133, 255, 0.26) 100%)",
       boxSizing: "border-box",
@@ -69,6 +77,7 @@ const styles = {
     },
   },
   section: {
+    textAlign: "center",
     mt: ["20px"],
     pb: ["20px", "30px", null, "50px", "85px", null, "105px", "125px", "140px"],
   },

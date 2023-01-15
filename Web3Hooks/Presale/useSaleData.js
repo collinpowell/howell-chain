@@ -60,7 +60,6 @@ function getAvaTokens(contract) {
 
 export default function useSaleData(suspense = false) {
   const contractAddress = process.env.NEXT_PUBLIC_PREICO_CONTRACT;
-  console.log(contractAddress);
   const contract = useContract(contractAddress, ABI.abi, false);
 
   const resultMinBuy = useSWR(
@@ -109,19 +108,38 @@ export default function useSaleData(suspense = false) {
     }
   );
 
+  const resultAvaTokens = useSWR(
+    [contractAddress, "availableTokensICO", ""],
+    getAvaTokens(contract),
+    {
+      suspense,
+    }
+  );
+
+  const resultEndICO = useSWR(
+    [contractAddress, "endICO", ""],
+    getEndICO(contract),
+    {
+      suspense,
+    }
+  );
+
   useKeepSWRDataLiveAsBlocksArrive(resultMinBuy.mutate);
   useKeepSWRDataLiveAsBlocksArrive(resultMaxBuy.mutate);
   useKeepSWRDataLiveAsBlocksArrive(resultSoftCap.mutate);
   useKeepSWRDataLiveAsBlocksArrive(resultHardCap.mutate);
   useKeepSWRDataLiveAsBlocksArrive(resultFundsRaised.mutate);
   useKeepSWRDataLiveAsBlocksArrive(resultRate.mutate);
+  useKeepSWRDataLiveAsBlocksArrive(resultAvaTokens.mutate);
 
   return { 
     minBuy: parseBalance(resultMinBuy.data ?? 0,18,0),
     maxBuy: parseBalance(resultMaxBuy.data ?? 0,18,0),
     hardCap: parseBalance(resultHardCap.data ?? 0,18,0),
     softCap: parseBalance(resultSoftCap.data ?? 0,18,0),
+    avaTokens: parseBalance(resultAvaTokens.data ?? 0,18,0),
     fundsRaised: parseBalance(resultFundsRaised.data ?? 0,18,1),
-    rate: resultRate.data
+    rate: resultRate.data,
+    endTime: resultEndICO.data
    };
 }

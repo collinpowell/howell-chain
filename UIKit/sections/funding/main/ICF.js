@@ -3,34 +3,22 @@ import { Progress } from "reactstrap";
 import { useState } from "react";
 import dynamic from 'next/dynamic';
 const CountDown = dynamic(import('react-countdown'),{ ssr: false });
-//import CountDown from "react-countdown";
 import Buy from "../sub/BuyInput";
 import { ICF$ } from "../../../assets/Logos";
 import useETHBalance from "../../../../Web3Hooks/useETHBalance";
-
-//import useAvailableTokensIco from "../Web3Hooks/useAvailableTokensICO";
 import { useWeb3React } from "@web3-react/core";
 import { parseBalance } from "../../../../Util/util";
 
-//const PRESALE = "0x0fD755B7c9137Da699AEf84A063fC372F13Ba22e";
-
-const Presale = () => {
-  const [state, setState] = useState(1);
+const Presale = ({saleData}) => {
+  const [userInput, setUserInput] = useState(saleData.minBuy);
+  const [spin, setSpin] = useState(false);
 
   const { account, library } = useWeb3React();
   const data1 = useETHBalance(account);
-  //const { data } = useAvailableTokensIco(PRESALE);
-  const data = 7000;
 
-  const min = 0.1;
-  const max = 100;
   const bal = parseBalance(data1.data ?? 0);
-  const availableTokensICO = 300;
-  //const ava = parseBalance(data ?? 0)
-  const ava = 180;
-  var percent = account
-    ? (ava / availableTokensICO) * 100
-    : (ava / availableTokensICO) * 100;
+
+  var percent = ((10000000-saleData.avaTokens) / 10000000) * 100
 
   function handleClick() {
     if (state < min) {
@@ -53,9 +41,12 @@ const Presale = () => {
     //buyTokens(account, PRESALE, (state * 10 ** 18).toString(), library, account);
   }
   const isConnected = typeof account === "string" && !!library;
-  const timeLeft = new Date("Jan 9 2023 20:00:00 GMT+0800");
 
-  //const timeLeft = new Date();
+  const time = {
+    starting: new Date("Jan 21 2023 08:30:00 GMT+0100"),
+    now: new Date(),
+    ending: new Date(Number(saleData.endTime))
+  }
 
   const Completionist = () => {
     return (
@@ -123,7 +114,7 @@ const Presale = () => {
             <Heading>
               <span>Initial Crowd funding</span>
             </Heading>
-            <Text as="p">{"Starting In"}</Text>
+            <Text as="p">{time.now < time.starting ? "Starting In": "Ending In"}</Text>
           </Box>
         </Container>
 
@@ -135,7 +126,7 @@ const Presale = () => {
           </Flex>
         </Container>
         <Container sx={styles.container1}>
-          <CountDown date={timeLeft} renderer={renderer} />
+          <CountDown date={time.now < time.starting ? time.starting : time.ending} renderer={renderer} />
         </Container>
       </Box>
       <Container sx={styles.container1}>
@@ -149,11 +140,11 @@ const Presale = () => {
         />
         <br/>
         <Flex sx={{ justifyContent: "space-between", fontWeight: "bold" }}>
-          <Text as="p">{percent + " % (" + ava + " BNB)"}</Text>
+          <Text as="p">{percent + " % (" + saleData.fundsRaised + " BNB)"}</Text>
           <Text as="p">100%</Text>
         </Flex>
       </Container>
-      <Buy handleClick={handleClick} state={state} setState={setState} />
+      <Buy handleClick={handleClick} userInput={userInput} setUserInput={setUserInput} spin={spin} setSpin={setSpin} rate={saleData.rate} />
     </>
   );
 };

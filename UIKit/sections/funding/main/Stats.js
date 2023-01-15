@@ -1,8 +1,5 @@
 import { Container, Grid, Box, Heading, Text } from "theme-ui";
-import useSaleData from "../../../../Web3Hooks/Presale/useSaleData";
-const Stats = () => {
-  const saleData = useSaleData();
-  console.log(saleData);
+const Stats = ({saleData}) => {
   const features = [
     {
       title: saleData.minBuy + " BNB",

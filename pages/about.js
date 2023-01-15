@@ -4,6 +4,8 @@ import Image from "next/image";
 import { toBase64, shimmer } from "../UIKit/components/ImageLoader";
 import Team from "../UIKit/assets/Team";
 import Roadmap from "../components/Roadmap/Roadmap";
+import { Background, Parallax } from "react-parallax";
+import parallax from "../UIKit/assets/vision.jpg";
 
 const About = () => {
   return (
@@ -73,17 +75,52 @@ const About = () => {
       <br></br>
       <br></br>
       <br></br>
-      <Container sx={styles.container}>
-        <Heading>
-          <span>Our Mission</span>
-        </Heading>
-        <br></br>
-        <br></br>
-        <Text variant="normal" as="p">
-          To foster financial and economical growth using de-centralized finance
-          and the creation of progressive infrastructures / enterprises
-        </Text>
-      </Container>
+      <Parallax bgImage={parallax.src} bgImageAlt="Vision" strength={200}>
+        <Box
+          sx={{
+            width: "100%",
+            height: "80vh",
+            position: "relative",
+            background: "rgba(0,0,0,.7)",
+          }}
+        >
+          <Container
+            sx={{
+              textAlign: "center",
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              msTransform: "translate(-50%,-50%)",
+              transform: "translate(-50%,-50%)",
+            }}
+          >
+            <Heading
+              sx={{
+                color: "white !important",
+                "span:before": {
+                  backgroundColor: "white !important",
+                },
+              }}
+            >
+              <span>Our Mission</span>
+            </Heading>
+            <br></br>
+            <br></br>
+            <Text
+              variant="normal"
+              as="p"
+              sx={{
+                color: "white !important",
+              }}
+            >
+              To foster financial and economical growth using de-centralized
+              finance and the creation of progressive infrastructures /
+              enterprises
+            </Text>
+          </Container>
+        </Box>
+      </Parallax>
+
       <br></br>
       <br></br>
       <br></br>
@@ -109,7 +146,7 @@ const About = () => {
         <br></br>
         <br></br>
         <br></br>
-        <Roadmap/>
+        <Roadmap />
         <br></br>
         <br></br>
       </Box>
