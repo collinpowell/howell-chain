@@ -145,7 +145,7 @@ export default {
   styles: {
     root: {
       fontFamily: "body",
-      transition: "ease-in .5s",
+      transition: "ease-in .2s",
       fontWeight: "normal",
       WebkitFontSmoothing: "antialiased",
       color: "text",

@@ -1,7 +1,21 @@
 import { DrawerProvider } from "../../contexts/drawer/drawer.provider";
-import { Container, Box, Text, Flex, Button, useColorMode } from "theme-ui";
+import {
+  Container,
+  Box,
+  Heading,
+  Text,
+  Flex,
+  Button,
+  useColorMode,
+} from "theme-ui";
 import { HeaderLogo, FooterLogo } from "../../UIKit/assets/Logos";
-import { DropdownIcon, ArrowRight } from "../../UIKit/assets/Icons";
+import {
+  DropdownIcon,
+  ArrowRight,
+  Home,
+  Moon,
+  Bright,
+} from "../../UIKit/assets/Icons";
 import HEADER_DATA from "../../data/header";
 import { Sun } from "../../UIKit/assets/Backgrounds";
 import { keyframes } from "@emotion/react";
@@ -34,6 +48,20 @@ const Header = () => {
             <DropdownIcon />
             <Box style={styles.drop} className="drop1" variant="boxes.dropDown">
               <Box>
+                <Box>
+                  <Flex sx={{ justifyContent: "space-between" }}>
+                    <Heading>Menu</Heading>
+                    <Link href="/" passHref>
+                      <a>
+                        <Home />
+                      </a>
+                    </Link>
+                  </Flex>
+                  <br />
+                  <hr style={{ opacity: "0.3" }} />
+                  <br />
+                  <br />
+                </Box>
                 {menuData.map(({ label, links }, i) => {
                   return (
                     <Box sx={styles.dd} key={i}>
@@ -43,7 +71,7 @@ const Header = () => {
                           <DropdownIcon />
                         </Text>
                       </Box>
-                      <hr style={{ opacity: "0.1" }} />
+                      <hr style={{ opacity: "0.05" }} />
                       <Box style={styles.drop} className="drop extra">
                         {links?.map(({ text, link, icon }, i) => {
                           return (
@@ -58,6 +86,20 @@ const Header = () => {
                     </Box>
                   );
                 })}
+                <Box>
+                  <br />
+                  <hr style={{ opacity: "0.3" }} />
+                  <br />
+                  <Box
+                    onClick={(e) => {
+                      setColorMode(
+                        colorMode === "default" ? "dark" : "default"
+                      );
+                    }}
+                  >
+                    <Box>{colorMode == "default" ? <Moon /> : <Bright />}</Box>
+                  </Box>
+                </Box>
               </Box>
             </Box>
           </Box>
@@ -85,7 +127,26 @@ const Header = () => {
                     className="drop"
                     variant="boxes.dropDown"
                   >
-                    <h1>{label}</h1>
+                    <Flex
+                      sx={{
+                        justifyContent: "space-between",
+                        svg: {
+                          transform: "rotate(0deg) !important",
+                        },
+                      }}
+                    >
+                      <Heading variant="title">{label}</Heading>
+
+                      <Link href="/" passHref>
+                        <a>
+                          <Home />
+                        </a>
+                      </Link>
+                    </Flex>
+                    <br />
+                    <hr style={{ opacity: "0.3" }} />
+                    <br />
+
                     {links?.map(({ text, link, icon }, i) => {
                       return (
                         <Link key={i} href={link} passRef>
@@ -95,6 +156,22 @@ const Header = () => {
                         </Link>
                       );
                     })}
+                    <Box>
+                      <br />
+                      <hr style={{ opacity: "0.3" }} />
+                      <br />
+                      <Box
+                        onClick={(e) => {
+                          setColorMode(
+                            colorMode === "default" ? "dark" : "default"
+                          );
+                        }}
+                      >
+                        <Box>
+                          {colorMode == "default" ? <Moon /> : <Bright />}
+                        </Box>
+                      </Box>
+                    </Box>
                   </Box>
                 </Box>
               );
