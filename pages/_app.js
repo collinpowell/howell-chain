@@ -21,8 +21,8 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     AOS.init({
       duration: 1200,
-    }),
-      [];
+    });
+    document.body.click(), [];
   });
   return (
     <Web3ReactProvider getLibrary={getLibrary}>

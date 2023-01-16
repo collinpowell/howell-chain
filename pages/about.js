@@ -6,7 +6,6 @@ import Team from "../UIKit/assets/Team";
 import Roadmap from "../components/Roadmap/Roadmap";
 import { Background, Parallax } from "react-parallax";
 import parallax from "../UIKit/assets/vision.jpg";
-
 const About = () => {
   return (
     <>

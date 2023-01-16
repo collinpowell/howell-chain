@@ -5,21 +5,81 @@ import { Box, jsx } from "theme-ui";
 import cn from "classnames";
 import Slider from "react-slick";
 import Markdown from "../Markdown/Markdown";
-import {Container, useThemeUI } from "theme-ui";
+import { Container, useThemeUI } from "theme-ui";
 
 const releases = [
-  { version: "0.17", date: "Nov 23, 2020", content: "Nov 23, 2020" },
-  { version: "0.18", date: "Dec 9, 2020", content: "Dec 9, 2020" },
-  { version: "0.19", date: "Feb 17, 2021", content: "Feb 17, 2021" },
-  { version: "0.20", date: "Apr 22, 2021", content: "Apr 22, 2021" },
-  { version: "0.21", date: "May 26, 2021", content: "May 26, 2021" },
-  { version: "0.22", date: "Aug 16, 2021", content: "Aug 16, 2021" },
-  { version: "0.23", date: "Dec 14, 2021", content: "Dec 14, 2021" },
-  { version: "0.24", date: "Mar 11, 2022", content: "Mar 11, 2022" },
-  { version: "0.25", date: "Jun 8, 2022", content: "Jun 8, 2022" },
-  { version: "0.26", date: "Aug 18, 2022", content: "Aug 18, 2022" },
-  { version: "0.27", date: "Oct 05, 2022", content: "Oct 05, 2022" },
-  { version: "0.28", date: "Nov 2, 2022", content: "Nov 2, 2022" },
+  { version: "Phase 1", date: "Dec 23, 2021", content: "Idea Inception" },
+  {
+    version: "Phase 2",
+    date: "Jan 9, 2022",
+    content: "Idea Creation and Initiation",
+  },
+  { version: "Phase 3", date: "Mar 9, 2022", content: "Private Funding (10,000$)" },
+  {
+    version: "Phase 4",
+    date: "Jan 18, 2023",
+    content: "SHEER Finance Token Launch on Binance Smart Chain (SHRF)",
+  },
+  {
+    version: "Phase 5",
+    date: "Jan 21, 2023",
+    content: "Community Building and Idea Propagation",
+  },
+  { version: "Phase 6", date: "Feb 1, 2023", content: "Public ICO" },
+  {
+    version: "Phase 7",
+    date: "Feb 10, 2023",
+    content:
+      "More intensive development for open source projects with developers community / intensive marketing",
+  },
+  { version: "Phase 8", date: "Mar 1, 2023", content: "Pancakeswap Listing" },
+  {
+    version: "Phase 9",
+    date: "Mar 2, 2023",
+    content: "Open source decentralized wallet official launch",
+  },
+  { version: "Phase 10", date: "Mar 5, 2022", content: "TDH official launch" },
+  {
+    version: "Phase 11",
+    date: "March 7, 2023",
+    content:
+      "More Listing and project publicity driving (Binance, coinmarketcap,nomnics etc.)",
+  },
+  {
+    version: "Phase 12",
+    date: "Mar 10, 2023",
+    content: "More platform Improvements and solutions developments (Slancer, SCStore)",
+  },
+  {
+    version: "Phase 13",
+    date: "April 29, 2023",
+    content: "Physical meetups & Events / Charity",
+  },
+  {
+    version: "Phase 13",
+    date: "April 30, 2023",
+    content: "Token Intensive Driving and pushing by howrea team",
+  },
+  {
+    version: "Phase 14",
+    date: "Nov 2, 2023",
+    content: "Spanning our blockchain nodes (Howrea Chain)",
+  },
+  {
+    version: "Phase 15",
+    date: "Nov 16, 2023",
+    content: "Platforms Integration and Driving",
+  },
+  {
+    version: "Phase 16",
+    date: "Jan 5, 2024",
+    content: "SHEER coin grand launch",
+  },
+  {
+    version: "Phase 17",
+    date: "Jan 5, 2022 >",
+    content: "Continuos development, marketing, improvement, strategizing & marketing",
+  },
 ];
 
 export default function Roadmap() {
@@ -36,6 +96,7 @@ export default function Roadmap() {
 
   useEffect(() => {
     sliderSelect(releases.length - 1);
+    window.scrollTo(0, 0);
   }, []);
 
   const stepSettings = {
