@@ -9,14 +9,15 @@ export default function Layout({ children }) {
   const [colorMode, setColorMode] = useColorMode();
 
   useEffect(() => {
-    setColorMode(colorMode);
+    document.body.click()
+
   }, []);
 
   return (
     <Fragment>
       <NextNProgress
         height={4}
-        color={colorMode === "default" ? "black" : "white"}
+        color={colorMode === "dark" ? "white" : "black"}
       />
 
       <Header />

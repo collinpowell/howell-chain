@@ -151,7 +151,7 @@ export default function Roadmap() {
           fill: "rgba(194, 178, 241, 1)",
         },
         ".Roadmap-progress": {
-          backgroundColor: colorMode === "default" ? "black" : "white",
+          backgroundColor: colorMode === "dark" ? "white" : "black",
         },
       }}
     >
@@ -215,7 +215,7 @@ export function RoadmapItem({
           width={width}
           height={height}
           viewBox="0 0 16 16"
-          fill={colorMode === "default" ? "black" : "white"}
+          fill={colorMode === "dark" ? "white" : "black"}
           xmlns="http://www.w3.org/2000/svg"
         >
           <circle cx="8" cy="8" r="8" />

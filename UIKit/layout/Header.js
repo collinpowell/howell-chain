@@ -93,7 +93,7 @@ const Header = () => {
                   <Box
                     onClick={(e) => {
                       setColorMode(
-                        colorMode === "default" ? "dark" : "default"
+                        colorMode === "dark" ? "default" : "dark"
                       );
                     }}
                   >
@@ -163,7 +163,7 @@ const Header = () => {
                       <Box
                         onClick={(e) => {
                           setColorMode(
-                            colorMode === "default" ? "dark" : "default"
+                            colorMode === "dark" ? "default" : "dark"
                           );
                         }}
                       >

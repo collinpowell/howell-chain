@@ -35,7 +35,7 @@ const NumberInput = ({state, setState}) => {
             <input type="number" step="1" max="" value={state} name="quantity" className="quantity-field" onChange = {onHandleChange}/>
             <input type="button" value="+" className="button-plus" data-field="quantity"  onClick={(e) => {  incrementValue(e)}}/>
         </div>
-        <style jsx>{`
+        <style>{`
         input,
         textarea {
           font-size:30px;

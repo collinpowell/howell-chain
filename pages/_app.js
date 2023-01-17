@@ -22,7 +22,8 @@ function MyApp({ Component, pageProps }) {
     AOS.init({
       duration: 1200,
     });
-    document.body.click(), [];
+    console.log('here')
+    , [];
   });
   return (
     <Web3ReactProvider getLibrary={getLibrary}>

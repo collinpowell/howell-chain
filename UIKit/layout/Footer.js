@@ -37,7 +37,7 @@ const Footer = () => {
             <Box
               sx={styles.logo}
               onClick={(e) => {
-                setColorMode(colorMode === "default" ? "dark" : "default");
+                setColorMode(colorMode === "dark" ? "default" : "dark");
               }}
             >
               <FooterLogo />
