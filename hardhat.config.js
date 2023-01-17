@@ -15,8 +15,8 @@ module.exports = {
   },
   etherscan: {
     apiKey: {
-      //bsc: "9IT5HV6GWQ5TV37DYWVX1UDRN7UU4JG2WW",
-      //bscTestnet: "9IT5HV6GWQ5TV37DYWVX1UDRN7UU4JG2WW",
+      bsc:  process.env.BSC_KEY,
+      bscTestnet: process.env.BSC_KEY,
       polygonMumbai: process.env.POLYGON_KEY,
       polygon: process.env.POLYGON_KEY
     }
@@ -58,5 +58,8 @@ module.exports = {
   }
 };
 
+//npx hardhat run --network bscmainnet deploy/token.js
 //npx hardhat run --network bsctestnet deploy/token.js
+
 //npx hardhat run --network bsctestnet deploy/presale.js
+
