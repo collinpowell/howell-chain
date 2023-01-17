@@ -4,8 +4,9 @@ import Image from "next/image";
 import { toBase64, shimmer } from "../UIKit/components/ImageLoader";
 import Team from "../UIKit/assets/Team";
 import Roadmap from "../components/Roadmap/Roadmap";
-import { Background, Parallax } from "react-parallax";
+import { Parallax } from "react-parallax";
 import parallax from "../UIKit/assets/vision.jpg";
+import Link from "next/link";
 const About = () => {
   return (
     <>
@@ -26,7 +27,11 @@ const About = () => {
         </Text>
         <br></br>
         <br></br>
-        <Button>Whitepaper&nbsp;&nbsp;</Button>
+        <Link href="/whitepapper.pdf" passRef>
+          <a>
+            <Button>Whitepaper&nbsp;&nbsp;</Button>
+          </a>
+        </Link>
       </Container>
       <Container sx={styles.sheerContainer}>
         <Box sx={styles.image}>
