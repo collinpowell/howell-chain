@@ -22,8 +22,8 @@ const CORE_DATA = {
         },
         {
             icon: <Payment />,
-            heading: 'Solutions for cross-border, decentralized, quick, and simple payments at your fingertips',
-            body: forNow
+            heading: 'Payment',
+            body: 'Solutions for cross-border, decentralized, quick, and simple payments at your fingertips'
         },
         {
             icon: <Ticketing />,
@@ -43,7 +43,7 @@ const CORE_DATA = {
         {
             icon: <Trading />,
             heading: 'Trading',
-            body: forNow
+            body: 'Predict chart flows / market movements and earn cool cash'
         },
         {
             icon: <Charity />,
