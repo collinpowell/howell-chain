@@ -78,32 +78,6 @@ const NumberInput = ({ state, setState }) => {
         <input type="number" step="1" max="" value={state} name="quantity" className="quantity-field" onChange={onHandleChange} />
         <input type="button" value="+" className="button-plus" data-field="quantity" onClick={(e) => { incrementValue(e) }} />
       </Box>
-      {/* <style>{`
-        
-        input[type="button"] {
-          -webkit-appearance: button;
-          cursor: pointer;
-          border: none;
-        }
-        
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-          -webkit-appearance: none;
-        }
-        
-        
-        .button-plus {
-          left: -13px;
-        }
-        
-        input[type="number"] {
-          -moz-appearance: textfield;
-          -webkit-appearance: none;
-          border: none;
-        }
-        
-        `}
-      </style> */}
     </>
   )
 }

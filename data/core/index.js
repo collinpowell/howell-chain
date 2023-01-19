@@ -18,32 +18,27 @@ const CORE_DATA = {
         {
             icon: <Banking />,
             heading: 'Banking',
-            body: forNow
+            body: 'Explore the benefits of blockchain technology in banking.'
         },
         {
             icon: <Payment />,
-            heading: 'Payment',
+            heading: 'Solutions for cross-border, decentralized, quick, and simple payments at your fingertips',
             body: forNow
         },
         {
             icon: <Ticketing />,
             heading: 'Ticketing',
-            body: forNow
-        },
-        {
-            icon: <RealEstate />,
-            heading: 'Real Estate',
-            body: forNow
+            body: 'Event ticketing with ease and security for event planners, organizers and attendees with the use of NFTs'
         },
         {
             icon: <ArtFun />,
             heading: 'Art / Fun',
-            body: forNow
+            body: 'NFTs, rewards, the metaverse, and gaming'
         },
         {
             icon: <Investment />,
             heading: 'Investment',
-            body: forNow
+            body: 'Project-driven, use-case-driven, and secure investment'
         },
         {
             icon: <Trading />,
@@ -53,12 +48,12 @@ const CORE_DATA = {
         {
             icon: <Charity />,
             heading: 'Charity',
-            body: forNow
+            body: 'Our charitable endeavors are focused on addressing other peoples needs; we rise by helping others.'
         },
         {
-            icon: <Charity />,
+            icon: <RealEstate />,
             heading: 'Education',
-            body: forNow
+            body: 'Our educational platform is designed to spread knowledge.'
         },
     ],
     images: [
