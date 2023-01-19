@@ -6,11 +6,12 @@ import TeamCard from './TeamCard';
 import { Facebook, Twitter, Linkedin } from './Socials';
 
 import Member1 from './Card/Group.png';
+import CP from './cp.jpeg'
 
 const data = [
   {
     id: 1,
-    imgSrc: Member1.src,
+    imgSrc: CP.src,
     altText: 'Collin Powell',
     title: 'Collin Powell',
     designation: 'CEO / Founder',
@@ -18,19 +19,19 @@ const data = [
       {
         id: 1,
         name: 'facebook',
-        path: '#',
+        path: 'https://web.facebook.com/collin.powell.503/',
         icon: <Facebook />,
       },
       {
         id: 2,
         name: 'twitter',
-        path: '#',
+        path: 'https://twitter.com/SMARTCONNECTCP',
         icon: <Twitter />,
       },
       {
         id: 3,
         name: 'linkedin',
-        path: '#',
+        path: 'https://www.linkedin.com/in/collinskrubu/',
         icon: <Linkedin />,
       },
     ],
@@ -38,8 +39,8 @@ const data = [
   {
     id: 6,
     imgSrc: Member1.src,
-    altText: 'Muhamad Rigal',
-    title: 'Muhamad Rigal',
+    altText: 'Howrea',
+    title: 'Howrea',
     designation: 'Community Manager',
     socialProfile: [
       {
