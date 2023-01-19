@@ -6,7 +6,6 @@ import "../styles/dropDown.scss";
 import "../styles/globals.css";
 import { useEffect } from "react";
 import { ThemeProvider } from "theme-ui";
-import { StickyProvider } from "../contexts/app/app.provider";
 import { Web3ReactProvider } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import theme from "../theme";
@@ -26,11 +25,9 @@ function MyApp({ Component, pageProps }) {
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       <ThemeProvider theme={theme}>
-        <StickyProvider>
           <Layout>
             <Component {...pageProps} />
           </Layout>
-        </StickyProvider>
       </ThemeProvider>
     </Web3ReactProvider>
   );

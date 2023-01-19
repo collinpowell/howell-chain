@@ -138,7 +138,6 @@ const Account = () => {
               alt="Coinbase Wallet Logo"
               width={25}
               height={25}
-              borderRadius="3px"
             />
             <Text>Coinbase Wallet</Text>
           </Box>
@@ -166,7 +165,6 @@ const Account = () => {
               alt="Wallet Connect Logo"
               width={26}
               height={26}
-              borderRadius="3px"
             />
             <Text>Wallet Connect</Text>
           </Box>
@@ -192,7 +190,6 @@ const Account = () => {
               alt="Metamask Logo"
               width={25}
               height={25}
-              borderRadius="3px"
             />
             <Text>Metamask</Text>
           </Box>
@@ -224,9 +221,9 @@ const Account = () => {
         }
       >
         {ENSName || `${shortenHex(account, 4)}`}
-<br/>
-<br/>
-<br/>
+        <br />
+        <br />
+        <br />
         <Button onClick={() => onDisconnect()}>Disconnect Wallet</Button>
       </Box>
     </div>

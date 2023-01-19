@@ -1,7 +1,8 @@
 import { Fragment } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
-import NextNProgress from "nextjs-progressbar";
+import dynamic from "next/dynamic";
+const NextNProgress = dynamic(import("nextjs-progressbar"), { ssr: false });
 import { useColorMode } from "theme-ui";
 import { useEffect } from "react";
 
@@ -10,7 +11,7 @@ export default function Layout({ children }) {
 
   useEffect(() => {
     document.body.click()
-
+    console.log(colorMode)
   }, []);
 
   return (

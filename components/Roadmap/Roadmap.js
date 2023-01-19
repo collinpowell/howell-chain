@@ -189,7 +189,6 @@ export function RoadmapItem({
   isStart,
   isEnd,
 }) {
-  const { colorMode } = useThemeUI();
   if (isStart || isEnd) {
     return (
       <div className="Roadmap-step">
@@ -215,7 +214,7 @@ export function RoadmapItem({
           width={width}
           height={height}
           viewBox="0 0 16 16"
-          fill={colorMode === "dark" ? "white" : "black"}
+          className="logos"
           xmlns="http://www.w3.org/2000/svg"
         >
           <circle cx="8" cy="8" r="8" />

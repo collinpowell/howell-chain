@@ -7,9 +7,12 @@ import Roadmap from "../components/Roadmap/Roadmap";
 import { Parallax } from "react-parallax";
 import parallax from "../UIKit/assets/vision.jpg";
 import Link from "next/link";
+import SEO from '../components/SEO'
+
 const About = () => {
   return (
     <>
+      <SEO />
       <Container sx={styles.container}>
         <Heading>
           <span>About</span>

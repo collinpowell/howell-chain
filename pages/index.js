@@ -4,10 +4,12 @@ import Core from '../UIKit/sections/root/main/Core'
 import Glide from '../UIKit/sections/root/main/Glide'
 import Learn from '../UIKit/sections/root/main/Learn'
 import Blogs from '../UIKit/sections/root/main/Blogs'
+import SEO from '../components/SEO'
 
 export default function Home() {
   return (
     <>
+      <SEO />
       <Hero />
       <Fresh />
       <Core />

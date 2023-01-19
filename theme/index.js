@@ -156,6 +156,12 @@ export default {
       ul: {
         listStyle: "none",
       },
+      ".logos":{
+        fill:'text'
+      },
+      ".logoss":{
+        stroke:'text'
+      },
       ".SweatBtn": {
         color: "background",
         bg: "text",
