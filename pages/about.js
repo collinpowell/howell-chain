@@ -120,19 +120,6 @@ const About = () => {
           </Text>
         </Box>
       </Container>
-      <Container sx={{
-        canvas: {
-          width: '500px !important',
-          height: '500px !important',
-        }
-      }}>
-        <Box sx={styles.box}>
-          <canvas id="myChart" ref={canvas}></canvas>
-        </Box>
-
-        <Box sx={styles.box}>
-        </Box>
-      </Container>
       <Container sx={styles.containerVP}>
         <Heading>
           <span>Value Preposition</span>
