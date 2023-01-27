@@ -220,7 +220,7 @@ export function RoadmapItem({
           <circle cx="8" cy="8" r="8" />
         </svg>
 
-        <div className="text-steel-light">Version {version}</div>
+        <div className="text-steel-light">{version}</div>
       </div>
     </div>
   );

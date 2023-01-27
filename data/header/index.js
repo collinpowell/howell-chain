@@ -9,6 +9,7 @@ const HEADER_DATA = {
         {
           icon: null,
           text: "About Us",
+          description:"Learn more About Us ",
           link: "/about",
         },
       ],

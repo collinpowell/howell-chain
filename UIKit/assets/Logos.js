@@ -1,4 +1,3 @@
-import { useThemeUI } from "theme-ui";
 import router from "next/router";
 export const HeaderLogo = () => {
   return (

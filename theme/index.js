@@ -159,8 +159,14 @@ export default {
       ".logos":{
         fill:'text'
       },
+      ".logosX":{
+        fill:'background'
+      },
       ".logoss":{
         stroke:'text'
+      },
+      ".logossX":{
+        stroke:'background'
       },
       ".SweatBtn": {
         color: "background",

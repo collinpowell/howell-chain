@@ -1,75 +1,15 @@
-import { Container, Button, Heading, Text, Box, useThemeUI } from "theme-ui";
+import { Container, Button, Heading, Text, Box } from "theme-ui";
 import { LearnLogo } from "../UIKit/assets/Logos";
-import Image from "next/image";
-import { toBase64, shimmer } from "../UIKit/components/ImageLoader";
 import Team from "../UIKit/assets/Team";
 import Roadmap from "../components/Roadmap/Roadmap";
 import { Parallax } from "react-parallax";
 import parallax from "../UIKit/assets/vision.jpg";
 import Link from "next/link";
 import SEO from '../components/SEO'
-import Chart from "chart.js/auto";
-import React, { useRef, useEffect } from "react";
+import { ValuePreposition, Tokenomics, FundAllocation } from "../UIKit/assets/Visuals";
 
 const About = () => {
-  const { colorMode } = useThemeUI()
-  const canvas = useRef();
 
-  useEffect(() => {
-    const ctx = canvas.current;
-    Chart.defaults.font.family = "Montserrat"
-    Chart.defaults.color = colorMode == 'default' ? '#000' : '#fff';
-    let chartStatus = Chart.getChart("myChart");
-    console.log(chartStatus)
-    if (chartStatus !== undefined) {
-      chartStatus.destroy();
-    }
-
-    new Chart(ctx, {
-      type: "doughnut",
-      data: {
-        labels: ["Lions", "Monkeys", "Zebras", "Eagles", "Horses"],
-        datasets: [
-          {
-            label: "Dataset 1",
-            data: [12, 19, 3, 2, 3],
-            backgroundColor: [
-              "rgba(255, 99, 132, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(75, 192, 192, 1)",
-              "rgba(153, 102, 255, 1)",
-              "rgba(255, 159, 64, 1)"
-            ],
-            borderColor: [
-              "rgba(255, 99, 132, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(75, 192, 192, 1)",
-              "rgba(153, 102, 255, 1)",
-              "rgba(255, 159, 64, 1)"
-            ],
-            borderWidth: 1
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: "top",
-            font: {
-              size: 20
-            }
-          },
-          title: {
-            display: true,
-            text: "Number of animals in the zoo"
-          }
-        }
-      }
-    });
-  }, [colorMode]);
   return (
     <>
       <SEO />
@@ -90,7 +30,7 @@ const About = () => {
         </Text>
         <br></br>
         <br></br>
-        <Link href="/whitepapper.pdf" passRef>
+        <Link href="/whitepaper.pdf" passRef>
           <a>
             <Button>Whitepaper&nbsp;&nbsp;</Button>
           </a>
@@ -127,16 +67,25 @@ const About = () => {
         <br></br>
         <br></br>
         <br></br>
-        <Image
-          src={`data:image/svg+xml;base64,${toBase64(shimmer(550, 364))}`}
-          alt="Image"
-          width={550}
-          height={364}
-          placeholder="blur"
-          blurDataURL={`data:image/svg+xml;base64,${toBase64(
-            shimmer(550, 364)
-          )}`}
-        />
+        <ValuePreposition/>
+      </Container>
+      <Container sx={styles.containerVP}>
+        <Heading>
+          <span>Token Economics</span>
+        </Heading>
+        <br></br>
+        <br></br>
+        <br></br>
+        <Tokenomics/>
+      </Container>
+      <Container sx={styles.containerVP}>
+        <Heading>
+          <span>Fund Allocation</span>
+        </Heading>
+        <br></br>
+        <br></br>
+        <br></br>
+        <FundAllocation/>
       </Container>
       <br></br>
       <br></br>
@@ -235,8 +184,12 @@ const About = () => {
 
 const styles = {
   containerVP: {
-    mt: ["0", null, null, "150px"],
+    mt: ["50px", null, null, "150px"],
     textAlign: "center",
+    svg:{
+      width:['95%',null,null,'100%','fit-content'],
+      height:'fit-content'
+    }
   },
   container: {
     pt: "40px",

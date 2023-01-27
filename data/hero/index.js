@@ -1,15 +1,15 @@
 const STATS_DATA = [
         {
             label: 'Total Number of Addresses',
-            number: '232234234'
+            number: '1'
         },
         {
             label: 'Transaction Count',
-            number: '1632234234'
+            number: '1'
         },
         {
             label: 'Block Height',
-            number: '4567123'
+            number: '0'
         }
     ]
 export default STATS_DATA;

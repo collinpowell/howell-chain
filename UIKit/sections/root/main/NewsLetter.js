@@ -17,7 +17,7 @@ const NewsLetter = () => {
                 <NewsLetterCard data={data} />
             </Container>
             <Box sx={styles.bgImg}>
-                <Image src={colorMode === 'default' ? BackImg1.src : BackImg.src} alt='Image' width={w} height={h} placeholder="blur"
+                <Image src={colorMode === 'dark' ? BackImg.src : BackImg1.src} alt='Image' width={w} height={h} placeholder="blur"
                     blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(w, h))}`} />
             </Box>
         </Box>
