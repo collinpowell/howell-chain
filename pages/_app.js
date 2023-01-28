@@ -4,6 +4,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "../components/Roadmap/Roadmap.scss";
 import "../styles/dropDown.scss";
 import "../styles/globals.css";
+import TagManager from 'react-gtm-module';
 import { useEffect } from "react";
 import { ThemeProvider } from "theme-ui";
 import { Web3ReactProvider } from "@web3-react/core";
@@ -18,6 +19,7 @@ function getLibrary(provider) {
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
+    TagManager.initialize({ gtmId: 'G-KC2KCV810S' });
     AOS.init({
       duration: 1200,
     }), [];
