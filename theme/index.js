@@ -128,7 +128,7 @@ export default {
       fontFamily: "heading",
       color: "text",
       fontWeight: "stats",
-      fontSize: [5],
+      fontSize: [3,4,null,null,5],
     },
     normal: {
       color: "text",

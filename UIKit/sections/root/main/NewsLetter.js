@@ -11,7 +11,7 @@ const NewsLetter = () => {
     const w = 1440;
     const h = 350;
     return (
-        <Box sx={styles.major}>
+        <Box sx={styles.major} id='clickBox'>
 
             <Container sx={styles.container}>
                 <NewsLetterCard data={data} />

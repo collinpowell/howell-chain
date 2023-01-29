@@ -4,6 +4,7 @@ import {
   Box,
   Heading,
   Text,
+  Grid,
   Flex,
   Button,
   useColorMode,
@@ -72,17 +73,18 @@ const Header = () => {
                         </Text>
                       </Box>
                       <hr style={{ opacity: "0.05" }} />
-                      <Box style={styles.drop} className="drop extra">
-                        {links?.map(({ text, link, icon }, i) => {
+                      <Grid style={styles.grid} className="drop extra">
+                        {links?.map(({ text, link, icon, description }, i) => {
                           return (
                             <Link key={i} href={link} passRef>
                               <a>
-                                <Text variant="text">{text}</Text>
+                                <Text variant="text" as='p' sx={{ fontWeight: 'bold',mb:'10px' }}>{text}</Text>
+                                <Text variant="text" as='p'>{description}</Text>
                               </a>
                             </Link>
                           );
                         })}
-                      </Box>
+                      </Grid>
                     </Box>
                   );
                 })}
@@ -146,16 +148,18 @@ const Header = () => {
                     <br />
                     <hr style={{ opacity: "0.3" }} />
                     <br />
-
-                    {links?.map(({ text, link, icon }, i) => {
-                      return (
-                        <Link key={i} href={link} passRef>
-                          <a>
-                            <Text variant="text">{text}</Text>
-                          </a>
-                        </Link>
-                      );
-                    })}
+                    <Grid sx={styles.grid}>
+                      {links?.map(({ text, link, icon, description }, i) => {
+                        return (
+                          <Link key={i} href={link} passRef>
+                            <a>
+                              <Text variant="text" as='p' sx={{ fontWeight: 'bold',mb:'10px' }}>{text}</Text>
+                              <Text variant="text" as='p'>{description}</Text>
+                            </a>
+                          </Link>
+                        );
+                      })}
+                    </Grid>
                     <Box>
                       <br />
                       <hr style={{ opacity: "0.3" }} />
@@ -180,7 +184,6 @@ const Header = () => {
           {pathname == "/funding" ? (
             <Account />
           ) : (
-            // <Button>Connect Wallet</Button>
             <Link href="/funding" passRef>
               <a>
                 <Button variant="text">
@@ -199,6 +202,16 @@ const Header = () => {
 export default Header;
 
 const styles = {
+  grid: {
+    gridGap: ['35px 15px', null, null, null, null, '47px 74px'],
+    gridTemplateColumns: [
+      'repeat(2,1fr)',
+      null,
+      'repeat(2,1fr)',
+      null,
+      'repeat(3,1fr)',
+    ],
+  },
   dd: {
     ".drop": {
       transition: "ease-in .4s",
