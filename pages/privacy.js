@@ -1,7 +1,7 @@
 import { Heading, Text, Container } from 'theme-ui'
 
 import { privacy } from '../data/privacy';
-import Seo from '../components/Seo';
+import Seo from '../components/SEO';
 
 const Privacy = () => {
     return (
