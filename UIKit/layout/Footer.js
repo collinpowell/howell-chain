@@ -65,42 +65,42 @@ const Footer = () => {
             </Text>
             <Flex sx={styles.socials}>
               <a
-                href="https://www.facebook.com/nodexihub/"
+                href="/"
                 target="_blank"
                 rel="noreferrer"
               >
                 <Facebook />
               </a>
               <a
-                href="https://www.instagram.com/p/COvyae_JkAY/?utm_medium=copy_link"
+                href="/"
                 target="_blank"
                 rel="noreferrer"
               >
                 <Instagram />
               </a>
               <a
-                href="https://twitter.com/nodexihub?s=09"
+                href="/"
                 target="_blank"
                 rel="noreferrer"
               >
                 <Twitter />
               </a>
               <a
-                href="https://www.linkedin.com/company/nodex-ihub"
+                href="/"
                 target="_blank"
                 rel="noreferrer"
               >
                 <Linkedin />
               </a>
               <a
-                href="https://www.linkedin.com/company/nodex-ihub"
+                href="/"
                 target="_blank"
                 rel="noreferrer"
               >
                 <Telegram />
               </a>
               <a
-                href="https://www.linkedin.com/company/nodex-ihub"
+                href="/"
                 target="_blank"
                 rel="noreferrer"
               >
