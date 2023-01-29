@@ -2,7 +2,7 @@ import { Container, Heading, Text } from 'theme-ui'
 import Stats from '../sub/Stats'
 const data = {
     subHeading:'Revolutionizing the blockchain industry',
-    body:'let us Utilize blockchain technology for what it is meant for',
+    body:'Join the new digital gold rush with the howrians',
 }
 
 const Hero = () => {
