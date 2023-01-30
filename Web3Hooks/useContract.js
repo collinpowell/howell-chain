@@ -18,13 +18,9 @@ export default function useContract(address, ABI, signer) {
         }
       } else {
         const RPC =process.env.NEXT_PUBLIC_RPC;
-        console.log(RPC)
         const provider = new ethers.providers.JsonRpcProvider(RPC);
-        console.log(provider)
 
         try {
-        console.log('worked')
-          
           return new Contract(address, ABI, provider);
           
         } catch (error) {

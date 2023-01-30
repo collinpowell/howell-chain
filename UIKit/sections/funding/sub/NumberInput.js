@@ -23,7 +23,7 @@ const NumberInput = ({ state, setState }) => {
   function onHandleChange(e) {
     let telephone = e.target.value;
 
-    console.log(telephone)
+    //console.log(telephone)
 
     setState(telephone)
   };

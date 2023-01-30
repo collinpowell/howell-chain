@@ -95,7 +95,7 @@ const Presale = ({ saleData }) => {
       setSpin(false)
       return;
     }
-    console.log(ethers.utils.parseUnits(userInput.toString(), "ether"))
+    //console.log(ethers.utils.parseUnits(userInput.toString(), "ether"))
     contract.buyTokens(account, { value: ethers.utils.parseUnits(userInput.toString(), "ether") })
       .then(function (result) {
         handleSuccess('Buy Successful')
