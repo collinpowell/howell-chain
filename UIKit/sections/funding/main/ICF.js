@@ -1,4 +1,4 @@
-import { Container, Box, Heading, Text, Flex } from "theme-ui";
+import { Container, Box, Heading, Grid, Text, Flex } from "theme-ui";
 import { Progress } from "reactstrap";
 import { useState } from "react";
 import dynamic from "next/dynamic";
@@ -18,19 +18,31 @@ import withReactContent from "sweetalert2-react-content";
 const MySwal = withReactContent(Swal);
 
 const Presale = ({ saleData }) => {
-  const { account, library } = useWeb3React();
+  const { account } = useWeb3React();
   const contract = useContract(process.env.NEXT_PUBLIC_PREICO_CONTRACT, ABI.abi, true)
   const data = useSaleData(account);
-  console.log(data)
-  //console.log(library)
   const [userInput, setUserInput] = useState(saleData.minBuy);
   const [spin, setSpin] = useState(false);
+  const features = [
+    {
+      title: (data.tokens * 0.1).toFixed(1) + " $",
+      text: "YOUR INVESTMENT",
+    },
+    {
+      title: data.tokens + " SHRF",
+      text: "REDEEMABLE TOKENS",
+    },
+    {
+      title: (data.tokens * 0.15).toFixed(1) + " $",
+      text: "PROSPECTIVE VALUE",
+    },
+  ]
 
   const balance = useETHBalance(account);
 
   const ethBal = parseBalance(balance.data ?? 0);
 
-  var percent = ((10000000 - saleData.avaTokens) / 10000000) * 100;
+  var percent = (((10000000 - saleData.avaTokens) / 10000000) * 100).toFixed(5);
 
   const handleSuccess = () => {
     return MySwal.fire({
@@ -57,32 +69,39 @@ const Presale = ({ saleData }) => {
   };
 
   function handleClick() {
+    setSpin(true)
     if (userInput < saleData.minBuy) {
       handleFailure("Minimum Contribution is " + saleData.minBuy + " BNB")
+      setSpin(false)
       return;
     }
     if (userInput > saleData.maxBuy) {
       handleFailure("Max Contribution is " + saleData.maxBuy + " BNB")
+      setSpin(false)
       return;
     }
     if (!account) {
       handleFailure("Connect Wallet")
+      setSpin(false)
       return;
     }
     if (userInput > ethBal) {
       handleFailure(ethBal + "BNB - Insufficient Balance")
+      setSpin(false)
       return;
     }
     if (userInput <= 0) {
       handleFailure("Invalid amount")
+      setSpin(false)
       return;
     }
     console.log(ethers.utils.parseUnits(userInput.toString(), "ether"))
     contract.buyTokens(account, { value: ethers.utils.parseUnits(userInput.toString(), "ether") })
       .then(function (result) {
         handleSuccess('Buy Successful')
+        setSpin(false)
       }).catch(function (error) {
-        console.log(error.reason);
+        setSpin(false)
         if (error.data) {
           handleFailure("Error message " + error.data.message);
 
@@ -91,11 +110,8 @@ const Presale = ({ saleData }) => {
         }
 
       });
-    //handleSuccess({ value: ethers.utils.parseUnits(userInput.toString(), "ether") })
     //contract.claimTokens()
-    //buyTokens(account, PRESALE, (state * 10 ** 18).toString(), library, account);
   }
-  //const isConnected = typeof account === "string" && !!library;
 
   const time = {
     starting: new Date("Feb 25 2023 08:30:00 GMT+0100"),
@@ -207,6 +223,26 @@ const Presale = ({ saleData }) => {
           <Text as="p">100%</Text>
         </Flex>
       </Container>
+      {account && <> <br />
+        <br />
+        <Container>
+          <Grid gap={5} columns={[1, 1, 2, 2, 3, 3]}>
+            {features.map((item, i) => {
+              return (
+                <a href="#" target="_blank" rel="noreferrer" key={i}>
+                  <Box sx={styles.box} key={i}>
+                    <Text as="h3">{item.title}</Text>
+                    <Text as="p">{item.text}</Text>
+                  </Box>
+                </a>
+              );
+            })}
+          </Grid>
+        </Container>
+        <br />
+        <br /></>}
+
+
       <Buy
         handleClick={handleClick}
         userInput={userInput}
@@ -222,6 +258,42 @@ const Presale = ({ saleData }) => {
 export default Presale;
 
 const styles = {
+  box: {
+    background: "rgba(194, 178, 241, 0.2)",
+    overflow: "hidden",
+    boxSizing: "border-box",
+    padding: "40px 10px",
+    minWidth: ["200px", null, "200px", "360px"],
+    maxWidth: ["300px", null, "1000px", "1000px"],
+    mx: "auto",
+    position: "relative",
+    top: "0",
+    /* Z */
+    textAlign: "center",
+    boxShadow: "0px 0px 10px rgba(53, 52, 52, 0.2)",
+    borderRadius: "5px",
+    transition: "top ease 0.5s",
+    "&:hover": {
+      top: "-10px",
+      boxShadow: "0px 0px 40px rgba(53, 52, 52, 0.2)",
+    },
+    h3: {
+      fontSize: "40px",
+      fontStyle: "normal",
+      fontWeight: "normal",
+      lineHeight: "60px",
+      letterSpacing: "0em",
+      mb: "20px",
+      textTransform: "capitalize",
+    },
+    p: {
+      fontSize: "22px",
+      fontWeight: 400,
+      lineHeight: "32px",
+      letterSpacing: "0em",
+    },
+  },
+
   countdown: {
     justifyContent: "center",
     h1: {

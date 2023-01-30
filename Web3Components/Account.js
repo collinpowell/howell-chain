@@ -9,10 +9,14 @@ import useMetaMaskOnboarding from "../Web3Hooks/useMetaMaskOnboarding";
 import { jsx, Button, Box, Image, Grid, Text } from "theme-ui";
 import useENSName from "../Web3Hooks/useENSName";
 import { shortenHex } from "../Util/util";
-
+// ** Third Party Components
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+const MySwal = withReactContent(Swal);
 const Account = ({ triedToEagerConnect }) => {
   const [exploreDropDownSwitch, setExploreDropDownSwitch] = useState(false);
   const [exploreDropDownSwitch1, setExploreDropDownSwitch1] = useState(false);
+  const [handle, setHandle] = useState(false);
   triedToEagerConnect
   const {
     active,
@@ -33,7 +37,22 @@ const Account = ({ triedToEagerConnect }) => {
   const ENSName = useENSName(account);
 
   const { stopOnboarding } = useMetaMaskOnboarding();
-
+  const handleSwitch = () => {
+    return MySwal.fire({
+      title: "Wrong Connection",
+      text: "Kindly connect to "+ process.env.NEXT_PUBLIC_CHAINNAME,
+      icon: "error",
+      customClass: {
+        confirmButton: "SweatBtn",
+      },
+      buttonsStyling: false,
+    }).then((result) => {
+      setHandle(false)
+  });
+  };
+  if(handle){
+    handleSwitch()
+  }
   const openDropDown = (count) => {
     switch (count) {
       case 1:
@@ -93,14 +112,14 @@ const Account = ({ triedToEagerConnect }) => {
     async function changeTO() {
       console.log(library)
       const chainId = await library?.provider.request({ method: 'eth_chainId' });
-      const binanceTestChainId = '0x61'
-      if (chainId === binanceTestChainId) {
+      if (chainId === process.env.NEXT_PUBLIC_CHAINID) {
         console.log("Bravo!, you are on the correct network");
       } else {
+        setHandle(true)
         try {
           await library?.provider.request({
             method: 'wallet_switchEthereumChain',
-            params: [{ chainId: binanaceTestChainId }],
+            params: [{ chainId: process.env.NEXT_PUBLIC_CHAINID }],
           });
           console.log("You have successfully switched to Binance Test network")
         } catch (switchError) {
@@ -112,12 +131,12 @@ const Account = ({ triedToEagerConnect }) => {
                 method: 'wallet_addEthereumChain',
                 params: [
                   {
-                    chainId: '0x61',
-                    chainName: 'Smart Chain - Testnet',
-                    rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545'], blockExplorerUrls: ['https://testnet.bscscan.com'],
+                    chainId: process.env.NEXT_PUBLIC_CHAINID,
+                    chainName: process.env.NEXT_PUBLIC_CHAINNAME,
+                    rpcUrls: [process.env.NEXT_PUBLIC_RPC], blockExplorerUrls: [process.env.NEXT_PUBLIC_BLOCKEXP],
                     nativeCurrency: {
-                      symbol: 'BNB',
-                      decimals: 18
+                      symbol: process.env.NEXT_PUBLIC_SYMBOL,
+                      decimals: process.env.NEXT_PUBLIC_DECIMAL
                     }
                   }
                 ]
@@ -233,6 +252,31 @@ const Account = ({ triedToEagerConnect }) => {
               height={25}
             />
             <Text>Metamask</Text>
+          </Box>
+
+          <Box
+            onClick={() => {
+              activate(connectors.injected).catch((error) => {
+                // ignore the error if it's a user rejected request
+                if (error instanceof UserRejectedRequestError) {
+                  setConnecting(false);
+                } else {
+                  setError(error);
+                }
+              });
+              setProvider("injected");
+              closeDropDown(2);
+              closeDropDown(3);
+            }}
+            sx={styles.connectBox}
+          >
+            <Image
+              src="https://play-lh.googleusercontent.com/-3uTwEsZDk2NEgRblDEfIIY7T-xAZfJPN5JzVKz7s94Ds8KrKCrSVHvkEuneJlUBekc=w240-h480-rw"
+              alt="TW Logo"
+              width={25}
+              height={25}
+            />
+            <Text>Trust Wallet</Text>
           </Box>
         </Grid>
       </div>

@@ -29,7 +29,7 @@ export default function useSaleData(account,suspense = false) {
 
   const resultContribution = useSWR(
     shouldFetch ? ["checkContribution", account] : null,
-    getTokens(contract,account),
+    getContribution(contract,account),
     {
       suspense,
     }
@@ -37,14 +37,11 @@ export default function useSaleData(account,suspense = false) {
 
   const resultTokens = useSWR(
     shouldFetch ? ["checkTokens", account] : null,
-    getContribution(contract,account),
+    getTokens(contract,account),
     {
       suspense,
     }
   );
-
-  console.log(resultContribution)
-  console.log(resultTokens)
 
   useKeepSWRDataLiveAsBlocksArrive(resultContribution.mutate);
   useKeepSWRDataLiveAsBlocksArrive(resultTokens.mutate);

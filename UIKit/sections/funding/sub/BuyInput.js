@@ -25,7 +25,7 @@ const WhyChoose = ({
             <NumberInput state={userInput} setState={setUserInput} />
             <Text as="h1">{"BNB"}</Text>
             <Text as="h2">=</Text>
-            <Text as="h1">{numberWithCommas(cost)} SHRF</Text>
+            <Text as="h1">{numberWithCommas(cost.toFixed(2))} SHRF</Text>
           </Flex>
           {spin &&  <Spinner sx={{ mx: "auto", marginTop: "20px" }} />}
           <div

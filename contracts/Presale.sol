@@ -21,11 +21,11 @@ contract Presale is ReentrancyGuard, Context, Ownable {
 
   IERC20 public _token;
   uint256 private _tokenDecimals = 18;
-  address payable public _wallet;
+  address payable private _wallet;
   // Per $
   uint256 public _rate = 10;
   uint256 public _weiRaised;
-  uint256 public endICO;
+  uint256 public endICO =1680168660000;
   uint256 public minPurchase = 0.1 * 10**18;
   uint256 public maxPurchase = 1000 * 10**18;
   // In $
