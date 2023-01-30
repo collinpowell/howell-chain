@@ -186,7 +186,7 @@ const Presale = ({ saleData }) => {
               <span>Initial Crowd funding</span>
             </Heading>
             <Text as="p">
-              {time.now < time.starting ? "Starting In" : "Ending In"}
+              {time.now < time.starting ? "Starting Officially In" : "Ending In"}
             </Text>
           </Box>
         </Container>
