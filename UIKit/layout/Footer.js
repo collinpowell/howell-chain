@@ -17,6 +17,7 @@ import {
   Youtube,
   Instagram,
   Linkedin,
+  Github, Medium, Discord
 } from "../assets/Socials";
 import Partners from "../sections/funding/main/Partners";
 import NewsLetter from "../sections/root/main/NewsLetter";
@@ -65,46 +66,46 @@ const Footer = () => {
             </Text>
             <Flex sx={styles.socials}>
               <a
-                href="/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Facebook />
-              </a>
-              <a
-                href="/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Instagram />
-              </a>
-              <a
-                href="/"
+                href="https://twitter.com/HowreaNetwork"
                 target="_blank"
                 rel="noreferrer"
               >
                 <Twitter />
               </a>
               <a
-                href="/"
+                href="https://www.linkedin.com/company/howreanetwork/"
                 target="_blank"
                 rel="noreferrer"
               >
                 <Linkedin />
               </a>
               <a
-                href="/"
+                href="https://github.com/howrea"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Github />
+              </a>
+              <a
+                href="https://medium.com/@howreanetwork"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Medium />
+              </a>
+              <a
+                href="https://discord.gg/ecBCWHweym"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Discord />
+              </a>
+              <a
+                href="https://t.me/howreaNetwork"
                 target="_blank"
                 rel="noreferrer"
               >
                 <Telegram />
-              </a>
-              <a
-                href="/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Youtube />
               </a>
             </Flex>
           </Flex>

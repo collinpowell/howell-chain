@@ -251,6 +251,12 @@ const Presale = ({ saleData }) => {
         setSpin={setSpin}
         rate={saleData.rate}
       />
+      <br />
+      <br />
+      <Container sx={{ textAlign: 'center' }}>
+        <Heading variant="normal" sx={{ textAlign: 'center', mx: 'auto' }}><strong>Note:</strong> Feel free to send BNB to the following address if you are unable to connect to your wallet. <a style={{ textDecoration: 'underline' }} target="_blank" rel="noreferrer" href={`https://bscscan.com/address/${process.env.NEXT_PUBLIC_PREICO_CONTRACT}`}>{process.env.NEXT_PUBLIC_PREICO_CONTRACT}</a>  </Heading>
+
+      </Container>
     </>
   );
 };
