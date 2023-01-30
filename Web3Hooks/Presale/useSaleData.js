@@ -60,6 +60,7 @@ function getAvaTokens(contract) {
 
 export default function useSaleData(suspense = false) {
   const contractAddress = process.env.NEXT_PUBLIC_PREICO_CONTRACT;
+  console.log(contractAddress)
   const contract = useContract(contractAddress, ABI.abi, false);
 
   const resultMinBuy = useSWR(
@@ -132,6 +133,7 @@ export default function useSaleData(suspense = false) {
   useKeepSWRDataLiveAsBlocksArrive(resultRate.mutate);
   useKeepSWRDataLiveAsBlocksArrive(resultAvaTokens.mutate);
 
+  console.log(resultRate)
   return { 
     minBuy: parseBalance(resultMinBuy.data ?? 0,18,1),
     maxBuy: parseBalance(resultMaxBuy.data ?? 0,18,1),
