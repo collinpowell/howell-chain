@@ -23,6 +23,7 @@ import { keyframes } from "@emotion/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Account from "../../Web3Components/Account";
+import useEagerConnect from "../../Web3Hooks/useEagerConnect";
 
 const rotation = keyframes({
   from: { transform: "rotate(0deg)" },
@@ -32,7 +33,7 @@ const rotation = keyframes({
 const Header = () => {
   const [colorMode, setColorMode] = useColorMode();
   const { pathname } = useRouter();
-
+  const triedToEagerConnect = useEagerConnect();
   const { menuData } = HEADER_DATA;
 
   return (
@@ -182,7 +183,7 @@ const Header = () => {
             })}
           </Flex>
           {pathname == "/funding" ? (
-            <Account />
+            <Account triedToEagerConnect={triedToEagerConnect} />
           ) : (
             <Link href="/funding" passRef>
               <a>

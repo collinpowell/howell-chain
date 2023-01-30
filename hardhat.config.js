@@ -63,3 +63,5 @@ module.exports = {
 
 //npx hardhat run --network bsctestnet deploy/presale.js
 
+//npx hardhat run --network bsctestnet verify/presale.js
+

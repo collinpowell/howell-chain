@@ -17,7 +17,7 @@ export default function useContract(address, ABI, signer) {
           return null;
         }
       } else {
-        const RPC = "https://data-seed-prebsc-1-s3.binance.org:8545";
+        const RPC =process.env.NEXT_PUBLIC_RPC ?? "https://data-seed-prebsc-1-s3.binance.org:8545";
         const provider = new ethers.providers.JsonRpcProvider(RPC);
         try {
           return new Contract(address, ABI, provider);

@@ -19,20 +19,20 @@ function getMaxBuy(contract) {
 }
 function getRate(contract) {
   return async (_) => {
-    const result = await contract._rate();
+    const result = await contract.getRate();
     return result;
   };
 }
 
 function getHardCap(contract) {
   return async (_) => {
-    const result = await contract.hardCap();
+    const result = await contract.getHardCap();
     return result;
   };
 }
 function getSoftCap(contract) {
   return async (_) => {
-    const result = await contract.softCap();
+    const result = await contract.getSoftCap();
     return result;
   };
 }
@@ -78,14 +78,14 @@ export default function useSaleData(suspense = false) {
   );
 
   const resultHardCap = useSWR(
-    [contractAddress, "hardCap", ""],
+    [contractAddress, "getHardCap", ""],
     getHardCap(contract),
     {
       suspense,
     }
   );
   const resultSoftCap = useSWR(
-    [contractAddress, "softCap", ""],
+    [contractAddress, "getSoftCap", ""],
     getSoftCap(contract),
     {
       suspense,
@@ -101,7 +101,7 @@ export default function useSaleData(suspense = false) {
   );
 
   const resultRate = useSWR(
-    [contractAddress, "_rate", ""],
+    [contractAddress, "getRate", ""],
     getRate(contract),
     {
       suspense,
@@ -133,10 +133,10 @@ export default function useSaleData(suspense = false) {
   useKeepSWRDataLiveAsBlocksArrive(resultAvaTokens.mutate);
 
   return { 
-    minBuy: parseBalance(resultMinBuy.data ?? 0,18,0),
-    maxBuy: parseBalance(resultMaxBuy.data ?? 0,18,0),
-    hardCap: parseBalance(resultHardCap.data ?? 0,18,0),
-    softCap: parseBalance(resultSoftCap.data ?? 0,18,0),
+    minBuy: parseBalance(resultMinBuy.data ?? 0,18,1),
+    maxBuy: parseBalance(resultMaxBuy.data ?? 0,18,1),
+    hardCap: resultHardCap.data ?? 0,
+    softCap: resultSoftCap.data ?? 0,
     avaTokens: parseBalance(resultAvaTokens.data ?? 0,18,0),
     fundsRaised: parseBalance(resultFundsRaised.data ?? 0,18,1),
     rate: resultRate.data ?? 0,

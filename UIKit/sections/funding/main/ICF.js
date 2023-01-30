@@ -8,17 +8,24 @@ import { ICF$ } from "../../../assets/Logos";
 import useETHBalance from "../../../../Web3Hooks/useETHBalance";
 import { useWeb3React } from "@web3-react/core";
 import { parseBalance } from "../../../../Util/util";
-
+import useSaleData from "../../../../Web3Hooks/Presale/useBuyData";
+import useContract from "../../../../Web3Hooks/useContract";
+import ABI from "../../../../artifacts/contracts/Presale.sol/Presale.json";
+import { ethers } from "ethers";
 // ** Third Party Components
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 const MySwal = withReactContent(Swal);
 
 const Presale = ({ saleData }) => {
+  const { account, library } = useWeb3React();
+  const contract = useContract(process.env.NEXT_PUBLIC_PREICO_CONTRACT, ABI.abi, true)
+  const data = useSaleData(account);
+  console.log(data)
+  //console.log(library)
   const [userInput, setUserInput] = useState(saleData.minBuy);
   const [spin, setSpin] = useState(false);
 
-  const { account, library } = useWeb3React();
   const balance = useETHBalance(account);
 
   const ethBal = parseBalance(balance.data ?? 0);
@@ -27,8 +34,8 @@ const Presale = ({ saleData }) => {
 
   const handleSuccess = () => {
     return MySwal.fire({
-      title: "Submission Successful! 🎉",
-      text: "Thank You For you patronage, we would be in touch",
+      title: "Purchase Successful! 🎉",
+      text: "Thank You For you patronage, Claim tokens after ICO",
       icon: "success",
       customClass: {
         confirmButton: "SweatBtn",
@@ -58,26 +65,40 @@ const Presale = ({ saleData }) => {
       handleFailure("Max Contribution is " + saleData.maxBuy + " BNB")
       return;
     }
-    if(!account){
+    if (!account) {
       handleFailure("Connect Wallet")
       return;
     }
     if (userInput > ethBal) {
-      handleFailure(ethBal +  "BNB - Insufficient Balance")
+      handleFailure(ethBal + "BNB - Insufficient Balance")
       return;
     }
     if (userInput <= 0) {
       handleFailure("Invalid amount")
       return;
     }
-    handleSuccess()
+    console.log(ethers.utils.parseUnits(userInput.toString(), "ether"))
+    contract.buyTokens(account, { value: ethers.utils.parseUnits(userInput.toString(), "ether") })
+      .then(function (result) {
+        handleSuccess('Buy Successful')
+      }).catch(function (error) {
+        console.log(error.reason);
+        if (error.data) {
+          handleFailure("Error message " + error.data.message);
 
+        } else {
+          handleFailure("Error message " + error.reason);
+        }
+
+      });
+    //handleSuccess({ value: ethers.utils.parseUnits(userInput.toString(), "ether") })
+    //contract.claimTokens()
     //buyTokens(account, PRESALE, (state * 10 ** 18).toString(), library, account);
   }
-  const isConnected = typeof account === "string" && !!library;
+  //const isConnected = typeof account === "string" && !!library;
 
   const time = {
-    starting: new Date("Jan 21 2023 08:30:00 GMT+0100"),
+    starting: new Date("Feb 25 2023 08:30:00 GMT+0100"),
     now: new Date(),
     ending: new Date(Number(saleData.endTime)),
   };

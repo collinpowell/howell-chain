@@ -6,164 +6,46 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-
-interface IUniswapV2Router01 {
-  function factory() external pure returns (address);
-  function WETH() external pure returns (address);
-
-  function addLiquidity(
-    address tokenA,
-    address tokenB,
-    uint amountADesired,
-    uint amountBDesired,
-    uint amountAMin,
-    uint amountBMin,
-    address to,
-    uint deadline
-  ) external returns (uint amountA, uint amountB, uint liquidity);
-  function addLiquidityETH(
-    address token,
-    uint amountTokenDesired,
-    uint amountTokenMin,
-    uint amountETHMin,
-    address to,
-    uint deadline
-  ) external payable returns (uint amountToken, uint amountETH, uint liquidity);
-  function removeLiquidity(
-    address tokenA,
-    address tokenB,
-    uint liquidity,
-    uint amountAMin,
-    uint amountBMin,
-    address to,
-    uint deadline
-  ) external returns (uint amountA, uint amountB);
-  function removeLiquidityETH(
-    address token,
-    uint liquidity,
-    uint amountTokenMin,
-    uint amountETHMin,
-    address to,
-    uint deadline
-  ) external returns (uint amountToken, uint amountETH);
-  function removeLiquidityWithPermit(
-    address tokenA,
-    address tokenB,
-    uint liquidity,
-    uint amountAMin,
-    uint amountBMin,
-    address to,
-    uint deadline,
-    bool approveMax, uint8 v, bytes32 r, bytes32 s
-  ) external returns (uint amountA, uint amountB);
-  function removeLiquidityETHWithPermit(
-    address token,
-    uint liquidity,
-    uint amountTokenMin,
-    uint amountETHMin,
-    address to,
-    uint deadline,
-    bool approveMax, uint8 v, bytes32 r, bytes32 s
-  ) external returns (uint amountToken, uint amountETH);
-  function swapExactTokensForTokens(
-    uint amountIn,
-    uint amountOutMin,
-    address[] calldata path,
-    address to,
-    uint deadline
-  ) external returns (uint[] memory amounts);
-  function swapTokensForExactTokens(
-    uint amountOut,
-    uint amountInMax,
-    address[] calldata path,
-    address to,
-    uint deadline
-  ) external returns (uint[] memory amounts);
-  function swapExactETHForTokens(uint amountOutMin, address[] calldata path, address to, uint deadline)
-    external
-    payable
-    returns (uint[] memory amounts);
-  function swapTokensForExactETH(uint amountOut, uint amountInMax, address[] calldata path, address to, uint deadline)
-    external
-    returns (uint[] memory amounts);
-  function swapExactTokensForETH(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline)
-    external
-    returns (uint[] memory amounts);
-  function swapETHForExactTokens(uint amountOut, address[] calldata path, address to, uint deadline)
-    external
-    payable
-    returns (uint[] memory amounts);
-
-  function quote(uint amountA, uint reserveA, uint reserveB) external pure returns (uint amountB);
-  function getAmountOut(uint amountIn, uint reserveIn, uint reserveOut) external pure returns (uint amountOut);
-  function getAmountIn(uint amountOut, uint reserveIn, uint reserveOut) external pure returns (uint amountIn);
-  function getAmountsOut(uint amountIn, address[] calldata path) external view returns (uint[] memory amounts);
-  function getAmountsIn(uint amountOut, address[] calldata path) external view returns (uint[] memory amounts);
-}
-
-interface IUniswapV2Router02 is IUniswapV2Router01 {
-  function removeLiquidityETHSupportingFeeOnTransferTokens(
-    address token,
-    uint liquidity,
-    uint amountTokenMin,
-    uint amountETHMin,
-    address to,
-    uint deadline
-  ) external returns (uint amountETH);
-  function removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(
-    address token,
-    uint liquidity,
-    uint amountTokenMin,
-    uint amountETHMin,
-    address to,
-    uint deadline,
-    bool approveMax, uint8 v, bytes32 r, bytes32 s
-  ) external returns (uint amountETH);
-
-  function swapExactTokensForTokensSupportingFeeOnTransferTokens(
-    uint amountIn,
-    uint amountOutMin,
-    address[] calldata path,
-    address to,
-    uint deadline
-  ) external;
-  function swapExactETHForTokensSupportingFeeOnTransferTokens(
-    uint amountOutMin,
-    address[] calldata path,
-    address to,
-    uint deadline
-  ) external payable;
-  function swapExactTokensForETHSupportingFeeOnTransferTokens(
-    uint amountIn,
-    uint amountOutMin,
-    address[] calldata path,
-    address to,
-    uint deadline
-  ) external;
-}
-
-interface IAccessControl {
-  function isAdmin(address caller) external returns (bool);
-}
+import "./BNBUSD.sol";
+import "./IUniswapV2Router02.sol";
+import "./IAccessControl.sol";
 
 contract Presale is ReentrancyGuard, Context, Ownable {
   using SafeMath for uint256;
   
-  mapping (address => uint256) public _contributions;
+  BNBTicker ticker = new BNBTicker();
+
+  mapping (address => uint256) private _contributions;
+  mapping (address => uint256) private userTokens;
   mapping (address => bool) private isAdmin;
 
   IERC20 public _token;
   uint256 private _tokenDecimals = 18;
   address payable public _wallet;
-  uint256 public _rate = 2400;
+  // Per $
+  uint256 public _rate = 10;
   uint256 public _weiRaised;
   uint256 public endICO;
-  uint256 public minPurchase = 5**18;
-  uint256 public maxPurchase = 500 * 10**18;
-  uint256 public hardCap = 5000 * 10**18;
-  uint256 public softCap = 1500 * 10**18;
+  uint256 public minPurchase = 0.1 * 10**18;
+  uint256 public maxPurchase = 1000 * 10**18;
+  // In $
+  uint256 public hardCap = 1_000_000;
+  // In $
+  uint256 public softCap = 150_000;
+
   uint256 public availableTokensICO = 10_000_000 * 10**18;
 
+  function getRate() public view returns (uint256) {
+        return ticker.getLatestPriceEth().mul(_rate);
+  }
+
+function getHardCap() public view returns (uint256) {
+    return hardCap.div(ticker.getLatestPriceEth());
+}
+
+function getSoftCap() public view returns (uint256) {    
+    return softCap.div(ticker.getLatestPriceEth());
+}
 
   bool public startRefund = false;
 
@@ -204,20 +86,18 @@ contract Presale is ReentrancyGuard, Context, Ownable {
   
   function stopICO() external onlyAdmin icoActive(){
     endICO = 0;
-    if(_weiRaised >= softCap) {
-      _forwards();
-    }
-    else{
-      startRefund = true;
-    }
   }
   
+  function activateRefund() external onlyAdmin icoActive(){
+    startRefund = true;
+  }
   
   //Pre-Sale 
   function buyTokens(address beneficiary) public nonReentrant icoActive payable {
     uint256 weiAmount = msg.value;
     _preValidatePurchase(beneficiary, weiAmount);
     uint256 tokens = _getTokenAmount(weiAmount);
+    userTokens[beneficiary] =  userTokens[beneficiary].add(tokens);
     _weiRaised = _weiRaised.add(weiAmount);
     availableTokensICO = availableTokensICO - tokens;
     _contributions[beneficiary] = _contributions[beneficiary].add(weiAmount);
@@ -226,16 +106,16 @@ contract Presale is ReentrancyGuard, Context, Ownable {
   }
 
   function claimTokens() external nonReentrant icoNotActive {
-    uint256 tokens = _getTokenAmount(_contributions[_msgSender()]);
+    uint256 tokens = userTokens[_msgSender()];
     _processPurchase(_msgSender(), tokens);
-    _contributions[_msgSender()] = 0;
+    userTokens[_msgSender()] = 0;
   }
 
   function _preValidatePurchase(address beneficiary, uint256 weiAmount) internal view {
     require(beneficiary != address(0), "Crowdsale: beneficiary is the zero address");
     require(weiAmount >= minPurchase, 'have to send at least: minPurchase');
     require(weiAmount <= maxPurchase, 'have to send max: maxPurchase');
-    require((_weiRaised+weiAmount) < hardCap, 'Hard Cap reached');
+    require((_weiRaised+weiAmount) < getHardCap().mul(10**18), 'Hard Cap reached');
     if (weiAmount == 0) {
       revert('Crowdsale: weiAmount is 0');
     } else {
@@ -254,20 +134,10 @@ contract Presale is ReentrancyGuard, Context, Ownable {
 
 
   function _getTokenAmount(uint256 weiAmount) internal view returns (uint256) {
-    return weiAmount.mul(_rate);
+    return weiAmount.mul(getRate());
   }
 
-  function _forwards() internal {
-    uint256 ethAmount = address(this).balance.mul(50).div(100);
-    addLiquidity(getLiquidityToken(), ethAmount);
-    _wallet.transfer(address(this).balance);
-  }
-
-  function getLiquidityToken() public view returns (uint256) {
-    return _weiRaised.div(2) * _rate.add(_rate.mul(20).div(100));
-  }
-
-  function addLiquidity(uint256 tokenAmount, uint256 ethAmount) internal {
+  function addLiquidity(uint256 tokenAmount, uint256 ethAmount) public {
     // approve token transfer to cover all possible scenarios
     _token.approve(address(uniswapV2Router), tokenAmount);
 
@@ -290,6 +160,9 @@ contract Presale is ReentrancyGuard, Context, Ownable {
   
   function checkContribution(address addr) public view returns(uint256){
     return _contributions[addr];
+  }
+  function checkTokens(address addr) public view returns(uint256){
+    return userTokens[addr];
   }
   
   function setRate(uint256 newRate) external onlyAdmin icoNotActive {

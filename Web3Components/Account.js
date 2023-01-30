@@ -10,10 +10,10 @@ import { jsx, Button, Box, Image, Grid, Text } from "theme-ui";
 import useENSName from "../Web3Hooks/useENSName";
 import { shortenHex } from "../Util/util";
 
-const Account = () => {
+const Account = ({ triedToEagerConnect }) => {
   const [exploreDropDownSwitch, setExploreDropDownSwitch] = useState(false);
   const [exploreDropDownSwitch1, setExploreDropDownSwitch1] = useState(false);
-
+  triedToEagerConnect
   const {
     active,
     error,
@@ -90,7 +90,48 @@ const Account = () => {
       setConnecting(false);
       stopOnboarding();
     }
-  }, [active, error, stopOnboarding]);
+    async function changeTO() {
+      console.log(library)
+      const chainId = await library?.provider.request({ method: 'eth_chainId' });
+      const binanceTestChainId = '0x61'
+      if (chainId === binanceTestChainId) {
+        console.log("Bravo!, you are on the correct network");
+      } else {
+        try {
+          await library?.provider.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: binanaceTestChainId }],
+          });
+          console.log("You have successfully switched to Binance Test network")
+        } catch (switchError) {
+          // This error code indicates that the chain has not been added to MetaMask.
+          if (switchError.code === 4902) {
+            console.log("This network is not available in your metamask, please add it")
+            try {
+              await provider.request({
+                method: 'wallet_addEthereumChain',
+                params: [
+                  {
+                    chainId: '0x61',
+                    chainName: 'Smart Chain - Testnet',
+                    rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545'], blockExplorerUrls: ['https://testnet.bscscan.com'],
+                    nativeCurrency: {
+                      symbol: 'BNB',
+                      decimals: 18
+                    }
+                  }
+                ]
+              });
+            } catch (addError) {
+              console.log(addError);
+            }
+          }
+          console.log("Failed to switch to the network")
+        }
+      }
+    }
+    changeTO();
+  }, [active, error, library, stopOnboarding]);
 
   if (typeof account !== "string") {
     return (
