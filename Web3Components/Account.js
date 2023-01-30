@@ -110,12 +110,13 @@ const Account = ({ triedToEagerConnect }) => {
       stopOnboarding();
     }
     async function changeTO() {
-      console.log(library)
       const chainId = await library?.provider.request({ method: 'eth_chainId' });
       if (chainId === process.env.NEXT_PUBLIC_CHAINID) {
         console.log("Bravo!, you are on the correct network");
       } else {
-        setHandle(true)
+        if(library){
+          setHandle(true)
+        }
         try {
           await library?.provider.request({
             method: 'wallet_switchEthereumChain',
