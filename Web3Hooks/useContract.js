@@ -5,7 +5,7 @@ import { ethers } from "ethers";
 export default function useContract(address, ABI, signer) {
   const { library, account, chainId } = useWeb3React();
   return useMemo(() => {
-    if (signer && (!address || !ABI || !library || !chainId)) {
+    if (signer && (!address || !ABI || !library)) {
       return null;
     } else {
       if (signer) {
@@ -17,7 +17,7 @@ export default function useContract(address, ABI, signer) {
           return null;
         }
       } else {
-        const RPC =process.env.NEXT_PUBLIC_RPC ?? "https://data-seed-prebsc-1-s3.binance.org:8545";
+        const RPC =process.env.NEXT_PUBLIC_RPC;
         const provider = new ethers.providers.JsonRpcProvider(RPC);
         try {
           return new Contract(address, ABI, provider);
