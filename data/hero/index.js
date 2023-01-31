@@ -8,7 +8,7 @@ const STATS_DATA = [
             number: '---'
         },
         {
-            label: 'Value',
+            label: 'SHRF Value',
             number: '0.1$'
         }
     ]
