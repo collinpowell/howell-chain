@@ -11,7 +11,7 @@ export default function Home() {
 
   return (
     <>
-      <SEO />
+      <SEO title='Howrea | Funding' description='Public ICO coming up, $1,000,000'/>
       <Hero />
       <Partners />
       <Stats saleData={saleData} />

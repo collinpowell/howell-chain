@@ -12,7 +12,7 @@ const About = () => {
 
   return (
     <>
-      <SEO />
+      <SEO title='Howrea | About' description='Learn about our blockchain network'/>
       <Container sx={styles.container}>
         <Heading>
           <span>About</span>
@@ -67,7 +67,7 @@ const About = () => {
         <br></br>
         <br></br>
         <br></br>
-        <ValuePreposition/>
+        <ValuePreposition />
       </Container>
       <Container sx={styles.containerVP}>
         <Heading>
@@ -76,7 +76,7 @@ const About = () => {
         <br></br>
         <br></br>
         <br></br>
-        <Tokenomics/>
+        <Tokenomics />
       </Container>
       <Container sx={styles.containerVP}>
         <Heading>
@@ -85,7 +85,7 @@ const About = () => {
         <br></br>
         <br></br>
         <br></br>
-        <FundAllocation/>
+        <FundAllocation />
       </Container>
       <br></br>
       <br></br>
@@ -186,9 +186,9 @@ const styles = {
   containerVP: {
     mt: ["50px", null, null, "150px"],
     textAlign: "center",
-    svg:{
-      width:['95%',null,null,'100%','fit-content'],
-      height:'fit-content'
+    svg: {
+      width: ['95%', null, null, '100%', 'fit-content'],
+      height: 'fit-content'
     }
   },
   container: {

@@ -73,6 +73,13 @@ const Footer = () => {
                 <Twitter />
               </a>
               <a
+                href="https://www.youtube.com/@howreanetwork"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Youtube />
+              </a>
+              <a
                 href="https://www.linkedin.com/company/howreanetwork/"
                 target="_blank"
                 rel="noreferrer"

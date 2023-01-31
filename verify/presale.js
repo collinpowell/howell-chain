@@ -3,7 +3,7 @@ const hre = require("hardhat");
 async function main() {
     await hre.run("verify:verify", {
         contract: "contracts/Presale.sol:Presale",
-        address: '0xBd3297529350C69ccaFE6e54B5f0be54Db1D18f0',
+        address: '0x94eFB5B2C7130988b526922de3A19a5a0C58b5d3',
         constructorArguments: [
             process.env.FUND_ADDRESS, process.env.DEPLOYED_TOKEN
         ],

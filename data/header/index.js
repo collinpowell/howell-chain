@@ -16,6 +16,12 @@ const HEADER_DATA = {
       links: [
         {
           icon: null,
+          text: "Whitepaper",
+          description:"Whitepaper PDF",
+          link: "/whitepaper",
+        },
+        {
+          icon: null,
           text: "About us",
           description:"Learn more about us ",
           link: "/about",

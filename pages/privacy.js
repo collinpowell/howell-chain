@@ -5,7 +5,7 @@ import Seo from '../components/SEO';
 const Privacy = () => {
     return (
         <>
-            <Seo />
+        <Seo title='Howrea | Privacy Policy' description='Our Privacy Policy'/>
             <br />
             <br />
             <br />

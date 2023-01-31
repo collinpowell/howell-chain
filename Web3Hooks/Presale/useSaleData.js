@@ -46,7 +46,7 @@ function getEndICO(contract) {
 
 function getWeiRaised(contract) {
   return async (_) => {
-    const result = await contract._weiRaised();
+    const result = await contract.weiRaised();
     return result;
   };
 }
@@ -93,7 +93,7 @@ export default function useSaleData(suspense = false) {
   );
 
   const resultFundsRaised = useSWR(
-    [contractAddress, "_weiRaised", ""],
+    [contractAddress, "weiRaised", ""],
     getWeiRaised(contract),
     {
       suspense,

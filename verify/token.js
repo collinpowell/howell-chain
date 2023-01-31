@@ -3,7 +3,7 @@ const hre = require("hardhat");
 async function main() {
     await hre.run("verify:verify", {
           contract:"contracts/SheerCoin.sol:Sheer",
-          address: '0x3B1255226cF80f1e239b4f33DfaE738955c4b125',
+          address: '0x1c86738cAbcd4E37910468119ddF78817dC2125d',
      });
 }
 

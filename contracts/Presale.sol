@@ -7,8 +7,9 @@ import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./BNBUSD.sol";
-import "./IUniswapV2Router02.sol";
 import "./IAccessControl.sol";
+
+//Liquidity Would Be done Manually for security Reasons 
 
 contract Presale is ReentrancyGuard, Context, Ownable {
   using SafeMath for uint256;
@@ -19,21 +20,35 @@ contract Presale is ReentrancyGuard, Context, Ownable {
   mapping (address => uint256) private userTokens;
   mapping (address => bool) private isAdmin;
 
-  IERC20 public _token;
-  uint256 private _tokenDecimals = 18;
+  IERC20 private _token;
   address payable private _wallet;
   // Per $
-  uint256 public _rate = 10;
-  uint256 public _weiRaised;
-  uint256 public endICO =1680168660000;
-  uint256 public minPurchase = 0.1 * 10**18;
-  uint256 public maxPurchase = 1000 * 10**18;
+  uint256 private _rate = 10;
+  uint256 private _weiRaised;
+  uint256 private _endICO =1680168660000;
+  uint256 private _minPurchase = 0.1 * 10**18;
+  uint256 private _maxPurchase = 1000 * 10**18;
   // In $
-  uint256 public hardCap = 1_000_000;
+  uint256 private hardCap = 1_000_000;
   // In $
-  uint256 public softCap = 150_000;
+  uint256 private softCap = 150_000;
 
   uint256 public availableTokensICO = 10_000_000 * 10**18;
+  bool public startRefund = false;
+
+
+  function minPurchase() public view returns (uint256) {
+        return _minPurchase;
+  }
+  function maxPurchase() public view returns (uint256) {
+        return _maxPurchase;
+  }
+   function endICO() public view returns (uint256) {
+        return _endICO;
+  }
+  function token() public view returns (address) {
+        return address(_token);
+  }
 
   function getRate() public view returns (uint256) {
         return ticker.getLatestPriceEth().mul(_rate);
@@ -47,28 +62,25 @@ function getSoftCap() public view returns (uint256) {
     return softCap.div(ticker.getLatestPriceEth());
 }
 
-  bool public startRefund = false;
-
-  IUniswapV2Router02 uniswapV2Router = IUniswapV2Router02(0x10ED43C718714eb63d5aA57B78B54704E256024E);
 
   modifier onlyAdmin() {
-    require(isAdmin[_msgSender()], "Presale: only Admin can call this functionality");
+    require(isAdmin[_msgSender()], "ICO: only Admin can call this functionality");
     _;
   }
 
   event TokensPurchased(address  purchaser, address  beneficiary, uint256 value, uint256 amount);
   event Refund(address recipient, uint256 amount);
-  constructor (address payable wallet, IERC20 token) {
+  constructor (address payable wallet, IERC20 saleToken) {
     require(wallet != address(0), "Pre-Sale: wallet is the zero address");
-    require(address(token) != address(0), "Pre-Sale: token is the zero address");
+    require(address(saleToken) != address(0), "Pre-Sale: token is the zero address");
     _wallet = wallet;
-    _token = token;
+    _token = saleToken;
     isAdmin[owner()] = true;
   }
 
 
   receive () external payable {
-    if(endICO > 0 && block.timestamp < endICO){
+    if(_endICO > 0 && block.timestamp < _endICO){
       buyTokens(_msgSender());
     }
     else{
@@ -80,12 +92,12 @@ function getSoftCap() public view returns (uint256) {
   //Start Pre-Sale
   function startICO(uint256 endDate) external onlyAdmin icoNotActive() {
     require(endDate > block.timestamp, 'duration should be > 0');
-    endICO = endDate; 
+    _endICO = endDate; 
     _weiRaised = 0;
   }
   
   function stopICO() external onlyAdmin icoActive(){
-    endICO = 0;
+    _endICO = 0;
   }
   
   function activateRefund() external onlyAdmin icoActive(){
@@ -105,7 +117,7 @@ function getSoftCap() public view returns (uint256) {
     emit TokensPurchased(_msgSender(), beneficiary, weiAmount, tokens);
   }
 
-  function claimTokens() external nonReentrant icoNotActive {
+  function claimTokens() external nonReentrant {
     uint256 tokens = userTokens[_msgSender()];
     _processPurchase(_msgSender(), tokens);
     userTokens[_msgSender()] = 0;
@@ -113,8 +125,8 @@ function getSoftCap() public view returns (uint256) {
 
   function _preValidatePurchase(address beneficiary, uint256 weiAmount) internal view {
     require(beneficiary != address(0), "Crowdsale: beneficiary is the zero address");
-    require(weiAmount >= minPurchase, 'have to send at least: minPurchase');
-    require(weiAmount <= maxPurchase, 'have to send max: maxPurchase');
+    require(weiAmount >= _minPurchase, 'have to send at least: minPurchase');
+    require(weiAmount <= _maxPurchase, 'have to send max: maxPurchase');
     require((_weiRaised+weiAmount) < getHardCap().mul(10**18), 'Hard Cap reached');
     if (weiAmount == 0) {
       revert('Crowdsale: weiAmount is 0');
@@ -137,21 +149,6 @@ function getSoftCap() public view returns (uint256) {
     return weiAmount.mul(getRate());
   }
 
-  function addLiquidity(uint256 tokenAmount, uint256 ethAmount) public {
-    // approve token transfer to cover all possible scenarios
-    _token.approve(address(uniswapV2Router), tokenAmount);
-
-    // add the liquidity
-    uniswapV2Router.addLiquidityETH{value: ethAmount}(
-        address(_token),
-        tokenAmount,
-        0, // slippage is unavoidable
-        0, // slippage is unavoidable
-        _wallet,
-        block.timestamp
-    );
-  }
-  
   function forwards() external onlyAdmin {
     require(startRefund == false);
     require(address(this).balance > 0, 'Contract has no money');
@@ -191,11 +188,11 @@ function getSoftCap() public view returns (uint256) {
   }
   
   function setMaxPurchase(uint256 value) external onlyAdmin {
-    maxPurchase = value;
+    _maxPurchase = value;
   }
   
   function setMinPurchase(uint256 value) external onlyAdmin {
-    minPurchase = value;
+    _minPurchase = value;
   }
   
   function takeTokens(IERC20 tokenAddress)  public onlyAdmin icoNotActive {
@@ -224,12 +221,12 @@ function getSoftCap() public view returns (uint256) {
   }
   
   modifier icoActive() {
-    require(endICO > 0 && block.timestamp < endICO && availableTokensICO > 0, "ICO must be active");
+    require(_endICO > 0 && block.timestamp < _endICO && availableTokensICO > 0, "ICO must be active");
     _;
   }
   
   modifier icoNotActive() {
-    require(endICO < block.timestamp, 'ICO should not be active');
+    require(_endICO < block.timestamp, 'ICO should not be active');
     _;
   }
     

@@ -80,7 +80,7 @@ const Header = () => {
                             <Link key={i} href={link} passRef>
                               <a>
                                 <Text variant="text" as='p' sx={{ fontWeight: 'bold',mb:'10px' }}>{text}</Text>
-                                <Text variant="text" as='p'>{description}</Text>
+                                <Text variant="text" as='p' sx={styles.opac}>{description}</Text>
                               </a>
                             </Link>
                           );
@@ -155,7 +155,7 @@ const Header = () => {
                           <Link key={i} href={link} passRef>
                             <a>
                               <Text variant="text" as='p' sx={{ fontWeight: 'bold',mb:'10px' }}>{text}</Text>
-                              <Text variant="text" as='p'>{description}</Text>
+                              <Text variant="text" as='p' sx={styles.opac}>{description}</Text>
                             </a>
                           </Link>
                         );
@@ -188,7 +188,7 @@ const Header = () => {
             <Link href="/funding" passRef>
               <a>
                 <Button variant="text">
-                  Get SHEER&nbsp;&nbsp;
+                  Get SHEERF&nbsp;&nbsp;
                   <ArrowRight />
                 </Button>
               </a>
@@ -203,6 +203,9 @@ const Header = () => {
 export default Header;
 
 const styles = {
+  opac:{
+    opacity:0.7
+  },
   grid: {
     gridGap: ['35px 15px', null, null, null, null, '47px 74px'],
     gridTemplateColumns: [
