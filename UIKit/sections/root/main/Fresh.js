@@ -11,7 +11,7 @@ const Fresh = () => {
       <Box sx={styles.content}>
         <Heading variant='border'>{heading}</Heading>
         <Text variant='normal' as='p'>{body}</Text>
-        <Link href="/" passHref>
+        <Link href="/about" passHref>
           <a >
             <Button>Learn&nbsp;&nbsp;<ArrowRight /></Button>
           </a>
