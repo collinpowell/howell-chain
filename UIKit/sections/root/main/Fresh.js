@@ -3,7 +3,7 @@ import { Container, Button, Heading, Box, Text } from 'theme-ui'
 import { LearnLogo } from '../../../assets/Logos'
 import { ArrowRight } from '../../../assets/Icons'
 import { Orbit } from '../../../../UIKit/assets/Backgrounds'
-
+import Link from 'next/link'
 const Fresh = () => {
   const { heading, body } = FRESH_DATA
   return (
@@ -11,9 +11,14 @@ const Fresh = () => {
       <Box sx={styles.content}>
         <Heading variant='border'>{heading}</Heading>
         <Text variant='normal' as='p'>{body}</Text>
-        <Button>Learn&nbsp;&nbsp;<ArrowRight /></Button>
+        <Link href="/" passHref>
+          <a >
+            <Button>Learn&nbsp;&nbsp;<ArrowRight /></Button>
+          </a>
+        </Link>
       </Box>
       <Box sx={styles.image}>
+
         <LearnLogo />
         <Orbit />
       </Box>
@@ -46,7 +51,7 @@ const styles = {
     maxWidth: ['100%', null, null, '355px', '540px', '595px', null, '650px'],
     h2: {
       mb: '23px',
-      mx: ['20px','auto',null,'0'],
+      mx: ['20px', 'auto', null, '0'],
       padding: '5px',
     }
   },
@@ -65,11 +70,11 @@ const styles = {
     textAlign: ['center'],
     svg: {
       m: 'auto',
-      '&:nth-of-type(2)':{
+      '&:nth-of-type(2)': {
         position: 'absolute',
         top: 0,
         left: 0,
-        mt: ['-1395px',null,null,'-1465px'],
+        mt: ['-1395px', null, null, '-1465px'],
         ml: '-1155px',
         zIndex: -1
       }
