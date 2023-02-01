@@ -291,13 +291,18 @@ export default {
       },
     },
     platform: {
-      p: "31.7728271484375px 36.072021484375px",
+      p: "5px 15px",
       boxShadow: "0.882578px 4.41289px 12.3561px",
       color: "platforms",
       background: "background",
       borderRadius: "13.2387px",
-      width: "fit-content",
+      width: "150px",
+      height: "80px",
       mx: "5px",
+      svg:{
+        width:'100%',
+        height:'100%'
+      }
     },
     newsLetter: {
       flexDirection: ["column", null, null, "row"],

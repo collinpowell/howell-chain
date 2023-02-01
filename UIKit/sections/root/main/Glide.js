@@ -6,8 +6,8 @@ import BackImg from '../../../assets/Others/glide.png'
 import { keyframes } from '@emotion/react'
 
 //const rotation = keyframes({ from: { opacity: 0 }, to: { opacity: 1 } })
-const scroll = keyframes({ from: { transform: 'translate3d(35%, 0, 0)'}, to: { transform: 'translate3d(-65%, 0, 0)' } })
-const scrollDesk = keyframes({ from: { transform: 'translate3d(33%, 0, 0)'}, to: { transform: 'translate3d(-11%, 0, 0)' } })
+const scroll = keyframes({ from: { transform: 'translate3d(35%, 0, 0)' }, to: { transform: 'translate3d(-65%, 0, 0)' } })
+const scrollDesk = keyframes({ from: { transform: 'translate3d(33%, 0, 0)' }, to: { transform: 'translate3d(-11%, 0, 0)' } })
 
 const Glide = () => {
     const { smallHeader, heading, body, platforms } = GLIDE_DATA
@@ -26,12 +26,17 @@ const Glide = () => {
                         <Text variant='normal' as='p' sx={styles.smallHeader}>{body}</Text>
                     </Box>
                     <Box sx={styles.platforms}>
-                        <Box sx={{ width: 'fit-content',animation: [`${scroll} 15s linear infinite`,null,null,`${scrollDesk} 15s linear infinite`] }}>
+                        <Box sx={{ width: 'fit-content', animation: [`${scroll} 15s linear infinite`, null, null, `${scrollDesk} 15s linear infinite`] }}>
                             {platforms.map(({ logo, tooltip, link }, i) => {
                                 let tempElement = []
-                                elems.push(<Box variant='boxes.platform' key={i}>
-                                    {logo}
-                                </Box>)
+                                elems.push(
+                                    <a href={link} target="_blank" key={i}
+                                        rel="noreferrer">
+                                        <Box variant='boxes.platform'>
+                                            {logo}
+                                        </Box>
+                                    </a>
+                                )
 
                                 if (elems.length > 1) {
                                     if (three) {
@@ -99,7 +104,7 @@ const styles = {
         width: ['100%', null, null, '45%'],
         my: 'auto',
         pr: '15px',
-        pl: ['15px', null,null, '0'],
+        pl: ['15px', null, null, '0'],
         textAlign: ['center', null, null, 'left'],
         h2: {
             mb: '30px',
