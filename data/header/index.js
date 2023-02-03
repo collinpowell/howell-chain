@@ -9,6 +9,12 @@ const HEADER_DATA = {
           description:"Talent Development Hub",
           link: "https://t-d-h.tech/",
         },
+        {
+          icon: null,
+          text: "Wallet App",
+          description:"Howrea Crypto Wallet",
+          link: "https://wallet.howrea.com/",
+        },
       ],
     },
     {

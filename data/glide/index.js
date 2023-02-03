@@ -1,4 +1,4 @@
-import { HeaderLogo } from '../../UIKit/assets/Logos'
+import { HeaderLogo,FooterLogo } from '../../UIKit/assets/Logos'
 import { TDH } from '../../UIKit/assets/Platforms'
 
 
@@ -17,7 +17,7 @@ const GLIDE_DATA ={
             link:'http://t-d-h.tech'
         },
         {
-            logo:dummyLogo,
+            logo:<FooterLogo/>,
             tooltip: dummyTooltip,
             link:dummyLink
         },
