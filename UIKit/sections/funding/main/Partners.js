@@ -10,6 +10,7 @@ import {
 import { keyframes } from "@emotion/react";
 
 //const rotation = keyframes({ from: { opacity: 0 }, to: { opacity: 1 } })
+
 const scroll = keyframes({
   from: { transform: "translate3d(0%, 0, 0)" },
   to: { transform: "translate3d(-425vw, 0, 0)" },
@@ -22,7 +23,7 @@ const scrollDesk = keyframes({
 const Partners = () => {
   return (
     <Container sx={{ textAlign: "center", mt: "120px" }}>
-      <Text variant="title" sx={{fontWeight:'bold'}}>Partnerships</Text>
+      <Text variant="title" sx={{fontWeight:'bold'}}>Ecosystem Partners</Text>
       <br></br>
       <br></br>
       <br></br>

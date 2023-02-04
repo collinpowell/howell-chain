@@ -4,7 +4,7 @@ import Cash from '../../UIKit/assets/Core/cash.png'
 import Bike from '../../UIKit/assets/Core/bike.png'
 import Shapes from '../../UIKit/assets/Core/shapes.png'
 
-const forNow = 'Shop you favorite goods quick and easy with our unique currency'
+const forNow = 'Shop your favorite goods quick and easy with our unique currency'
 
 const CORE_DATA = {
     smallHeader: 'Join the Trend',
