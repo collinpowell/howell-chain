@@ -14,6 +14,10 @@ const FOOTER_DATA = [
           link: '/funding',
           label: 'Public ICO',
         },
+        {
+          link: '/airdrop',
+          label: 'Airdrop',
+        },
       ],
     },
     {

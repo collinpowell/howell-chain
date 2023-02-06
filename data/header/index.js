@@ -34,6 +34,12 @@ const HEADER_DATA = {
         },
         {
           icon: null,
+          text: "Airdrop",
+          description:"Get Free Tokens",
+          link: "/airdrop",
+        },
+        {
+          icon: null,
           text: "Privacy Policy",
           description:"Privacy Policy",
           link: "/privacy",
