@@ -45,6 +45,11 @@ const FOOTER_DATA = [
           label: 'TDH',
           external: true
         },
+        {
+          link: 'https://wallet.howrea.com/',
+          label: 'Wallet Application',
+          external: true
+        },
       ],
     },
   ];
