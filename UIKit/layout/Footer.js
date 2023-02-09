@@ -11,11 +11,9 @@ import {
 import FOOTER_DATA from "../../data/footer";
 import { FooterLogo } from "../assets/Logos";
 import {
-  Facebook,
   Twitter,
   Telegram,
   Youtube,
-  Instagram,
   Linkedin,
   Github, Medium, Discord
 } from "../assets/Socials";

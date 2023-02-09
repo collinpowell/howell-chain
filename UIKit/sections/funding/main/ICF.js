@@ -42,7 +42,7 @@ const Presale = ({ saleData }) => {
 
   const ethBal = parseBalance(balance.data ?? 0);
 
-  var percent = (((10000000 - saleData.avaTokens) / 10000000) * 100).toFixed(5);
+  var percent = ((saleData.fundsRaised/ saleData.softCap) * 100).toFixed(5);
 
   const handleSuccess = () => {
     return MySwal.fire({
