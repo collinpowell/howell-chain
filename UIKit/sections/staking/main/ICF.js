@@ -8,7 +8,7 @@ import useStakeActionData from "../../../../Web3Hooks/Staking/useStakeActionData
 import useContract from "../../../../Web3Hooks/useContract";
 import ABI from "../../../../artifacts/contracts/SHRFStaking.sol/Staking.json";
 import tokenABI from "../../../../artifacts/contracts/SheerCoin.sol/Sheer.json";
-import { ethers } from "ethers";
+import { ethers,BigNumber } from "ethers";
 // ** Third Party Components
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -156,13 +156,13 @@ const Presale = ({ saleData }) => {
       setSpin(false)
       return;
     }
-    if (data.stakeAmt > 0) {
-      handleFailure("You do not have any stakes")
+    if (data.stakeAmt <= 0) {
+      handleFailure("You do not have any SHRF stake")
       setSpin(false)
       return;
     }
 
-    contract.stake(data.rawStakeAmt)
+    contract.unstake(data.rawStakeAmt)
       .then(function (result) {
         handleSuccess('Staking Successful')
         setSpin(false)
