@@ -1,10 +1,12 @@
-import { Container, Heading,Flex ,Button} from 'theme-ui'
+import { Container, Heading, Flex, Button } from 'theme-ui'
 import Card from '../../../components/BlogCard'
 import data from '../../../../data/blogs'
 import Slider from 'react-slick';
 import { useRef } from 'react';
 import { ArrowRight, ArrowLeft } from '../../../../UIKit/assets/Icons'
-
+import { useEffect } from 'react'
+import axios from 'axios'
+import { parse } from 'rss-to-json';
 
 const sliderSettings = {
     dots: false,
@@ -49,6 +51,18 @@ const Blogs = () => {
     const blogRef = useRef();
     const { heading, blogs } = data
 
+    // useEffect(() => {
+    //     async function fetchData() {
+    //       // You can await here
+    //       const rssFeed = await axios.get('/feed')
+    //       const rssFeedJson = await parse('/feed')
+    //       console.log(rssFeed)
+    //       console.log(rssFeedJson)
+          
+    //       // ...
+    //     }
+    //     fetchData();
+    //   }, []);
     // Slide Handler for trending nft's
     const nextButtonBlog = () => {
         blogRef.current.slickNext();
@@ -81,7 +95,7 @@ const styles = {
     container: {
         overflow: 'hidden',
         mt: '185px',
-        pt:'25px',
+        pt: '25px',
         h2: {
             textAlign: 'center',
             mb: '85px',
@@ -90,12 +104,12 @@ const styles = {
     },
     flex: {
         width: '100%',
-        mt:'55px',
+        mt: '55px',
         justifyContent: 'center',
         svg: {
-            width:'46px',
-            height:'16px',
-            mx:'15px'
+            width: '46px',
+            height: '16px',
+            mx: '15px'
         }
     }
 }
