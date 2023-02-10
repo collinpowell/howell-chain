@@ -3,17 +3,17 @@ const BLOG_DATA ={
     blogs:[
         {
             title:'What you probably did not know about blockchain tech',
-            body:'Howrea blockchain set out to disrupt the blockchain industry by creating real world solutions to day to day problems using blockchain tech e.g ',
+            body:'Howrea blockchain sets out to close gaps in the blockchain industry by creating real world solutions to day to day problems using blockchain tech e.g ',
             image:'https://t-d-h.tech/blockchain/b.png'
         },
         {
             title:'NFT Event Ticketing on the Howrea blockchain is Live',
-            body:'Howrea blockchain set out to disrupt the blockchain industry by creating real world solutions to day to day problems using blockchain tech e.g ',
+            body:'Howrea blockchain set out to close gaps in the blockchain industry by creating real world solutions to day to day problems using blockchain tech e.g ',
             image:'https://t-d-h.tech/blockchain/c.png'
         },
         {
             title:'The AI Revolution On the Blocks',
-            body:'Howrea blockchain set out to disrupt the blockchain industry by creating real world solutions to day to day problems using blockchain tech e.g ',
+            body:'Howrea blockchain set out to close gaps in the blockchain industry by creating real world solutions to day to day problems using blockchain tech e.g ',
             image:'https://t-d-h.tech/ai/b.png'
         }
     ]

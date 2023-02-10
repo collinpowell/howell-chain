@@ -34,7 +34,7 @@ const styles = {
         textAlign: 'center',
     },
     grid: {
-        px: ['0',null,null,'35px'],
+        px: ['0', null, null, '35px'],
         gridGap: ['29px 29px', null, null, '32px 32px'],
         gridTemplateColumns: [
             'repeat(1,1fr)',

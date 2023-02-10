@@ -23,7 +23,7 @@ const LEARN_DATA = {
             heading: 'Create an Account',
             h: h1,
             body: 'Get Started by creating your own wallet',
-            link: 'https://near.nodexihub.com/',
+            link: 'https://wallet.howrea.com/',
         },
         {
             icon: [
@@ -33,7 +33,7 @@ const LEARN_DATA = {
             h: h2,
             heading: 'Learn more about the Howrea network',
             body: 'Learn and read about the Howrea network',
-            link: 'https://near.nodexihub.com/',
+            link: '/comingsoon',
 
         },
         {
@@ -44,7 +44,7 @@ const LEARN_DATA = {
             h: h2,
             heading: 'Join the community',
             body: 'We have a vibrant and passionate community with deep developer talents and lots of support, Join us and be part of shaping the future of the Howrea network',
-            link: 'https://near.nodexihub.com/',
+            link: '/community',
 
         },
         {
@@ -55,7 +55,7 @@ const LEARN_DATA = {
             h: h1,
             heading: 'Build on the Howrea blockchain',
             body: 'The Howrea blockchain is EVM supported therefore dapps and all other applications can be built on the Howrea blockchain',
-            link: 'https://near.nodexihub.com/',
+            link: '/comingsoon',
 
         },
     ]
