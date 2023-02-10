@@ -56,12 +56,12 @@ const NumberInput = ({ state, setState }) => {
           height: '38px',
           padding: 0,
           width: '38px',
-          border:'none',
+          border: 'none',
           position: 'relative',
         },
         '.quantity-field': {
           position: 'relative',
-          border:'none',
+          border: 'none',
           height: '38px',
           left: '-6px',
           textAlign: 'center',
@@ -74,9 +74,9 @@ const NumberInput = ({ state, setState }) => {
           left: '-13px'
         }
       }} >
-        <input type="button" value="-" className="button-minus" data-field="quantity" onClick={(e) => { decrementValue(e) }} />
-        <input type="number" step="1" max="" value={state} name="quantity" className="quantity-field" onChange={onHandleChange} />
-        <input type="button" value="+" className="button-plus" data-field="quantity" onClick={(e) => { incrementValue(e) }} />
+        <input type="number" step="1" max="" value={state} style={{
+          width: 'fit-content'
+        }} name="quantity" className="quantity-field" onChange={onHandleChange} />
       </Box>
     </>
   )

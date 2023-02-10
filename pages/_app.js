@@ -12,6 +12,7 @@ import { Web3Provider } from "@ethersproject/providers";
 import theme from "../theme";
 import Layout from "../UIKit/layout";
 import AOS from "aos";
+import ToTop from '../UIKit/components/ToTop'
 
 function getLibrary(provider) {
   return new Web3Provider(provider);
@@ -28,6 +29,7 @@ function MyApp({ Component, pageProps }) {
     <Web3ReactProvider getLibrary={getLibrary}>
       <ThemeProvider theme={theme}>
           <Layout>
+            <ToTop/>
             <Component {...pageProps} />
           </Layout>
       </ThemeProvider>

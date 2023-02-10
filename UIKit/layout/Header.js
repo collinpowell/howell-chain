@@ -39,7 +39,7 @@ const Header = () => {
   return (
     <DrawerProvider>
       <header>
-        {pathname == "/funding" ? <Sun flip={true} /> : <Sun flip={false} />}
+        {pathname == "/funding" || pathname == "/staking" ? <Sun flip={true} /> : <Sun flip={false} />}
         <Container sx={styles.container}>
           <Box sx={styles.logo}>
             <>
@@ -182,7 +182,7 @@ const Header = () => {
               );
             })}
           </Flex>
-          {pathname == "/funding" ? (
+          {pathname == "/funding"  || pathname == "/staking" ? (
             <Account triedToEagerConnect={triedToEagerConnect} />
           ) : (
             <Link href="/funding" passRef>

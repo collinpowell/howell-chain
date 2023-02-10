@@ -56,6 +56,16 @@ const FOOTER_DATA = [
         },
       ],
     },
+    {
+      title: 'Staking',
+      menuItem: [
+        {
+          link: '/staking',
+          label: 'SHRF/BNB Pool',
+          external: false
+        }
+      ],
+    },
   ];
   
   export default FOOTER_DATA;

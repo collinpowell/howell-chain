@@ -15,6 +15,12 @@ const HEADER_DATA = {
           description:"Howrea Crypto Wallet",
           link: "https://wallet.howrea.com/",
         },
+        {
+          icon: null,
+          text: "SHRF Staking",
+          description:"SHRF/BNB Pool, APR 5%+",
+          link: "/staking",
+        },
       ],
     },
     {
@@ -40,6 +46,12 @@ const HEADER_DATA = {
         },
         {
           icon: null,
+          text: "SHRF Staking",
+          description:"SHRF/BNB Pool, APR 5%+",
+          link: "/staking",
+        },
+        {
+          icon: null,
           text: "Privacy Policy",
           description:"Privacy Policy",
           link: "/privacy",
@@ -60,6 +72,12 @@ const HEADER_DATA = {
           text: "Become a Validator",
           description:"Validator",
           link: "/privacy",
+        },
+        {
+          icon: null,
+          text: "SHRF Staking",
+          description:"SHRF/BNB Pool, APR 5%+",
+          link: "/staking",
         },
       ],
     },
