@@ -28,6 +28,10 @@ const FOOTER_DATA = [
           label: 'Whitepaper',
         },
         {
+          link: '/community',
+          label: 'Community',
+        },
+        {
           link: '/privacy',
           label: 'Privacy Policy',
         },

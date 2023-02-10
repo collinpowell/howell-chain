@@ -2,6 +2,9 @@
 const nextConfig = {
     reactStrictMode: true,
     swcMinify: true,
+    images: {
+        domains: ['t-d-h.tech'],
+    },
     async redirects() {
         return [
             {
@@ -15,7 +18,7 @@ const nextConfig = {
         return [
             {
                 source: '/feed',
-                destination:'https://medium.com/feed/@howreanetwork'
+                destination: 'https://medium.com/feed/@howreanetwork'
             }
         ]
     }

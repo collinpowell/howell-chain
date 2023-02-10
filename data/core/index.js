@@ -48,7 +48,7 @@ const CORE_DATA = {
         {
             icon: <Charity />,
             heading: 'Charity',
-            body: 'Our charitable endeavors are focused on addressing other peoples needs.'
+            body: 'Our humanitarian activities are geared toward meeting the needs of others.'
         },
         {
             icon: <RealEstate />,

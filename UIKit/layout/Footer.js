@@ -60,7 +60,7 @@ const Footer = () => {
           <Flex sx={styles.bottom}>
             <Text as="p">
               COPYRIGHT ©
-              2021&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;Privacy
+              {new Date().getFullYear()}&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;Privacy
             </Text>
             <Flex sx={styles.socials}>
               <a

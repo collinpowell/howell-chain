@@ -11,8 +11,9 @@ import { parse } from 'rss-to-json';
 const sliderSettings = {
     dots: false,
     arrows: false,
-    infinite: false,
-    speed: 500,
+    infinite: true,
+    autoplay: true,
+    autoplaySpeed: 2000,
     slidesToShow: 2,
     slidesToScroll: 1,
     responsive: [
@@ -58,7 +59,7 @@ const Blogs = () => {
     //       const rssFeedJson = await parse('/feed')
     //       console.log(rssFeed)
     //       console.log(rssFeedJson)
-          
+
     //       // ...
     //     }
     //     fetchData();

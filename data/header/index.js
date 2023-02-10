@@ -68,6 +68,12 @@ const HEADER_DATA = {
       links: [
         {
           icon: null,
+          text: "Community",
+          description:"View All of our Communities",
+          link: "/community",
+        },
+        {
+          icon: null,
           text: "Discord",
           description:"Discord Community",
           link: "https://discord.gg/ecBCWHweym",
