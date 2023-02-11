@@ -50,7 +50,7 @@ export default function useStakeActionData(account,suspense = false) {
     earning: parseBalance(resultEarning.data ?? 0,18,7),
     rawEarn: resultEarning.data ?? 0,
     records: resultRecord.data ?? null,
-    rawStakeAmt: resultEarning?.data?.stakeAmt,
-    stakeAmt: parseBalance(resultEarning?.data?.stakeAmt ?? 0,18,7)
+    rawStakeAmt: resultRecord?.data?.stakeAmt,
+    stakeAmt: parseBalance(resultRecord?.data.stakeAmt ?? 0,18,1)
    };
 }

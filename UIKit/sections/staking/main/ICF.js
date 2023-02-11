@@ -8,7 +8,7 @@ import useStakeActionData from "../../../../Web3Hooks/Staking/useStakeActionData
 import useContract from "../../../../Web3Hooks/useContract";
 import ABI from "../../../../artifacts/contracts/SHRFStaking.sol/Staking.json";
 import tokenABI from "../../../../artifacts/contracts/SheerCoin.sol/Sheer.json";
-import { ethers,BigNumber } from "ethers";
+import { ethers, BigNumber } from "ethers";
 // ** Third Party Components
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -81,15 +81,42 @@ const Presale = ({ saleData }) => {
       return;
     }
 
-    tokenContract.increaseAllowance(process.env.NEXT_PUBLIC_STAKING, ethers.utils.parseUnits((userInput).toString(), "ether"))
-      .then(function (result) {
-        console.log(result)
-        result.wait().then(function () {
-          contract.stake(ethers.utils.parseUnits(userInput.toString(), "ether"))
-            .then(function () {
-              handleSuccess('Staking Successful')
-              setSpin(false)
-            }).catch(function (error) {
+    if (balance.allowance >= userInput) {
+      contract.stake(ethers.utils.parseUnits(userInput.toString(), "ether"))
+        .then(function () {
+          handleSuccess('Staking Successful')
+          setSpin(false)
+        }).catch(function (error) {
+          setSpin(false)
+          if (error.data) {
+            handleFailure("Error message " + error.data.message);
+
+          } else {
+            handleFailure("Error message " + error.reason);
+          }
+
+        });
+    } else {
+      tokenContract.increaseAllowance(process.env.NEXT_PUBLIC_STAKING, ethers.utils.parseUnits((userInput).toString(), "ether"))
+        .then(function (result) {
+          console.log(result)
+          result.wait().then(function () {
+            contract.stake(ethers.utils.parseUnits(userInput.toString(), "ether"))
+              .then(function () {
+                handleSuccess('Staking Successful')
+                setSpin(false)
+              }).catch(function (error) {
+                setSpin(false)
+                if (error.data) {
+                  handleFailure("Error message " + error.data.message);
+
+                } else {
+                  handleFailure("Error message " + error.reason);
+                }
+
+              });
+          })
+            .catch(function (error) {
               setSpin(false)
               if (error.data) {
                 handleFailure("Error message " + error.data.message);
@@ -98,29 +125,21 @@ const Presale = ({ saleData }) => {
                 handleFailure("Error message " + error.reason);
               }
 
-            });
-        })
-          .catch(function (error) {
-            setSpin(false)
-            if (error.data) {
-              handleFailure("Error message " + error.data.message);
+            })
 
-            } else {
-              handleFailure("Error message " + error.reason);
-            }
+        }).catch(function (error) {
+          setSpin(false)
+          if (error.data) {
+            handleFailure("Error message " + error.data.message);
 
-          })
+          } else {
+            handleFailure("Error message " + error.reason);
+          }
 
-      }).catch(function (error) {
-        setSpin(false)
-        if (error.data) {
-          handleFailure("Error message " + error.data.message);
+        });
+    }
 
-        } else {
-          handleFailure("Error message " + error.reason);
-        }
 
-      });
 
 
     //contract.claimTokens()
@@ -185,7 +204,7 @@ const Presale = ({ saleData }) => {
         <Box sx={styles.stakeCard}>
           <Heading>BNB Pool</Heading>
           <br />
-          <Text as='h4'>0.00000 BNB Earned</Text>
+          <Text as='h4'>{data.earning} BNB Earned</Text>
           <br />
           <Button onClick={handleClaim}>Claim BNB</Button>
           <br />
@@ -199,7 +218,7 @@ const Presale = ({ saleData }) => {
           <br />
           <Flex sx={styles.cardFlex}>
             <Text as='p'>Your Stake:</Text>
-            <Text as='p'>0.0000 SHRF</Text>
+            <Text as='p'>{data.stakeAmt} SHRF</Text>
           </Flex>
           <br />
           <hr />
