@@ -10,8 +10,8 @@ import Header from '../UIKit/layout/Header';
 export default function Home() {
   return (
     <>
-      <Header />
       <SEO />
+      <Header />
       <Hero />
       <Fresh />
       <Core />

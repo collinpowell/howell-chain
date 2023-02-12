@@ -51,7 +51,10 @@ const Account = ({ triedToEagerConnect }) => {
   });
   };
   if(handle){
+  console.log(chainId,library)
+
     handleSwitch()
+
   }
   const openDropDown = (count) => {
     switch (count) {
@@ -111,7 +114,8 @@ const Account = ({ triedToEagerConnect }) => {
     }
     async function changeTO() {
       const chainId = await library?.provider.request({ method: 'eth_chainId' });
-      if (chainId === process.env.NEXT_PUBLIC_CHAINID) {
+      console.log(chainId,parseInt(process.env.NEXT_PUBLIC_CHAINID))
+      if (chainId === process.env.NEXT_PUBLIC_CHAINID || chainId === parseInt(process.env.NEXT_PUBLIC_CHAINID)) {
         console.log("Bravo!, you are on the correct network");
       } else {
         if(library){
