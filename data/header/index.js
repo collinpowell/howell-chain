@@ -46,6 +46,12 @@ const HEADER_DATA = {
         },
         {
           icon: null,
+          text: "Public ICO",
+          description:"Invest in the blockchain project early",
+          link: "/funding",
+        },
+        {
+          icon: null,
           text: "SHRF Staking",
           description:"SHRF/BNB Pool, APR 5%+",
           link: "/staking",
@@ -61,6 +67,12 @@ const HEADER_DATA = {
     {
       label: "Network",
       links: [
+        {
+          icon: null,
+          text: "Public ICO",
+          description:"Invest in the blockchain project early",
+          link: "/funding",
+        },
         {
           icon: null,
           text: "Block Explorer",
@@ -100,7 +112,7 @@ const HEADER_DATA = {
           icon: null,
           text: "Telegram",
           description:"Telegram Vibrant Community",
-          link: "https://t.me/howreaNetwork",
+          link: "https://t.me/howrians",
         },
         {
           icon: null,
@@ -118,7 +130,13 @@ const HEADER_DATA = {
           text: "Foundation",
           description:"Our Foundation",
           link: "",
-        }
+        },
+        {
+          icon: null,
+          text: "Funding",
+          description:"Fund this great vision",
+          link: "/funding",
+        },
       ],
     },
   ],

@@ -66,7 +66,7 @@ const Community = () => {
                         <Discord />
                     </a>
                     <a
-                        href="https://t.me/howreaNetwork"
+                        href="https://t.me/howrians"
                         target="_blank"
                         rel="noreferrer"
                     >
