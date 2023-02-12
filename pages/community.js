@@ -8,11 +8,13 @@ import {
 } from "../UIKit/assets/Socials";
 import { Grid, Container, Heading } from 'theme-ui';
 import SEO from '../components/SEO'
+import Header from '../UIKit/layout/Header';
 
 const Community = () => {
     return (
         <>
             <SEO title='Howrea Community' description='Be Part Of Our Vibrant Communities, stay upto date' />
+      <Header />
             <Container sx={styles.con}>
                 <Heading><span>Be Part Of Our Vibrant Communities</span> </Heading>
                 <br />

@@ -51,6 +51,6 @@ export default function useStakeActionData(account,suspense = false) {
     rawEarn: resultEarning.data ?? 0,
     records: resultRecord.data ?? null,
     rawStakeAmt: resultRecord?.data?.stakeAmt,
-    stakeAmt: parseBalance(resultRecord?.data.stakeAmt ?? 0,18,1)
+    stakeAmt: parseBalance(resultRecord?.data?.stakeAmt ?? 0,18,1)
    };
 }

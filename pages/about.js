@@ -7,12 +7,14 @@ import parallax from "../UIKit/assets/vision.jpg";
 import Link from "next/link";
 import SEO from '../components/SEO'
 import { ValuePreposition, Tokenomics, FundAllocation } from "../UIKit/assets/Visuals";
+import Header from '../UIKit/layout/Header';
 
 const About = () => {
 
   return (
     <>
       <SEO title='Howrea | About' description='Learn about our blockchain network'/>
+      <Header />
       <Container sx={styles.container}>
         <Heading>
           <span>About</span>

@@ -10,7 +10,7 @@ require("dotenv").config();
 async function main() {
 
   const Staking = await hre.ethers.getContractFactory("Staking");
-  const staking = await Staking.deploy('0xaa294C0BB72156C976baFD78B5F3cf06487091B0')
+  const staking = await Staking.deploy(process.env.DEPLOYED_TOKEN)
 
   await staking.deployed();
 

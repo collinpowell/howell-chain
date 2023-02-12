@@ -5,10 +5,12 @@ import Glide from '../UIKit/sections/root/main/Glide'
 import Learn from '../UIKit/sections/root/main/Learn'
 import Blogs from '../UIKit/sections/root/main/Blogs'
 import SEO from '../components/SEO'
+import Header from '../UIKit/layout/Header';
 
 export default function Home() {
   return (
     <>
+      <Header />
       <SEO />
       <Hero />
       <Fresh />

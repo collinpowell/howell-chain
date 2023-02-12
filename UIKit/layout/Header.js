@@ -24,7 +24,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Account from "../../Web3Components/Account";
 import useEagerConnect from "../../Web3Hooks/useEagerConnect";
-
+import { useReducer,useEffect } from "react";
 const rotation = keyframes({
   from: { transform: "rotate(0deg)" },
   to: { transform: "rotate(180deg)" },
@@ -34,14 +34,39 @@ const Header = () => {
   const [colorMode, setColorMode] = useColorMode();
   const { pathname } = useRouter();
   const triedToEagerConnect = useEagerConnect();
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
+
   const { menuData } = HEADER_DATA;
+
+  const router = useRouter()
+
+  useEffect(() => {
+    const handleRouteChange = (url, { shallow }) => {
+      forceUpdate()
+      console.log(
+        `App is changing to ${url} ${
+          shallow ? 'with' : 'without'
+        } shallow routing`
+      )
+    }
+
+    router.events.on('routeChangeStart', handleRouteChange)
+
+    // If the component is unmounted, unsubscribe
+    // from the event with the `off` method:
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange)
+    }
+  }, [])
+
+  console.log('render')
 
   return (
     <DrawerProvider>
       <header>
         {pathname == "/funding" || pathname == "/staking" ? <Sun flip={true} /> : <Sun flip={false} />}
         <Container sx={styles.container}>
-          <Box sx={styles.logo}>
+          <Box sx={styles.logo} >
             <>
               <HeaderLogo />
               <FooterLogo />
@@ -106,7 +131,7 @@ const Header = () => {
               </Box>
             </Box>
           </Box>
-          <Flex sx={styles.nav}>
+          <Flex sx={styles.nav} id='zua'>
             {menuData.map(({ label, links }, i) => {
               return (
                 <Box sx={styles.dd} key={i}>
@@ -188,7 +213,7 @@ const Header = () => {
             <Link href="/funding" passRef>
               <a>
                 <Button variant="text">
-                  Get SHEERF&nbsp;&nbsp;
+                  Get SHRF&nbsp;&nbsp;
                   <ArrowRight />
                 </Button>
               </a>

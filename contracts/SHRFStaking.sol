@@ -28,13 +28,18 @@ contract Staking is ReentrancyGuard, Ownable {
     uint256 public stakingAddresses = uint256(0);
     uint256 public apr = uint256(5);
     uint256 public totalWithdrawals = uint256(0);
-    uint256 private divisor= uint256(3_153_000_000_000);
+    uint256 private divisor = uint256(3_153_000_000_000);
     event Staked(address indexed account);
     event Unstaked(address indexed account);
+    event Recieved(address indexed from,uint256 value);
 
     /* ========== CONSTRUCTOR ========== */
     constructor(address _stakingToken) {
         stakingToken = IERC20(_stakingToken);
+    }
+
+    receive() external payable {
+        emit Recieved(_msgSender(),msg.value);
     }
 
     /* ========== VIEWS ========== */
@@ -65,10 +70,7 @@ contract Staking is ReentrancyGuard, Ownable {
     function totalAccumulatedInterest() public view returns (uint256) {
         uint256 total = uint256(0);
         for (uint256 i = 0; i < stakingAddresses; i++) {
-            total = (total +
-                presentEarning(
-                    addressStore[i]
-                ));
+            total = (total + presentEarning(addressStore[i]));
         }
         return total;
     }
@@ -79,9 +81,7 @@ contract Staking is ReentrancyGuard, Ownable {
      * creates an internal variable thisRecord with initial value addressMap with element _address
      * returns (thisRecord with element accumulatedInterestToUpdateTime) + (((thisRecord with element stakeAmt) * ((current time) - (thisRecord with element lastUpdateTime)) * (apr) * (10)) / (864)) as output
      */
-    function presentEarning(
-        address _address
-    ) public view returns (uint256) {
+    function presentEarning(address _address) public view returns (uint256) {
         record memory thisRecord = addressMap[_address];
         return (thisRecord.accumulatedInterestToUpdateTime +
             ((thisRecord.stakeAmt *
@@ -116,8 +116,7 @@ contract Staking is ReentrancyGuard, Ownable {
                 uint256(0)
             );
             addressStore[stakingAddresses] = _msgSender();
-            stakingAddresses = (stakingAddresses +
-                uint256(1));
+            stakingAddresses = (stakingAddresses + uint256(1));
         } else {
             addressMap[_msgSender()] = record(
                 block.timestamp,
@@ -179,8 +178,7 @@ contract Staking is ReentrancyGuard, Ownable {
                     addressStore[i] = addressStore[
                         (stakingAddresses - uint256(1))
                     ];
-                    stakingAddresses = (stakingAddresses -
-                        uint256(1));
+                    stakingAddresses = (stakingAddresses - uint256(1));
                     break;
                 }
             }
@@ -206,13 +204,8 @@ contract Staking is ReentrancyGuard, Ownable {
      * transfers _withdrawalAmt of the native currency to the address that called this function
      * updates totalWithdrawals as (totalWithdrawals) + (_withdrawalAmt)
      */
-    function withdrawReward(uint256 _withdrawalAmt)
-        external
-        nonReentrant
-    {
-        uint256 totalInterestEarnedTillNow = presentEarning(
-                _msgSender()
-            );
+    function withdrawReward(uint256 _withdrawalAmt) external nonReentrant {
+        uint256 totalInterestEarnedTillNow = presentEarning(_msgSender());
         require(
             (_withdrawalAmt <= totalInterestEarnedTillNow),
             "Withdrawn amount must be less than withdrawable amount"
@@ -248,12 +241,11 @@ contract Staking is ReentrancyGuard, Ownable {
                 (thisRecord.accumulatedInterestToUpdateTime +
                     ((thisRecord.stakeAmt *
                         (block.timestamp - thisRecord.lastUpdateTime) *
-                        apr) /divisor)),
+                        apr) / divisor)),
                 thisRecord.amtWithdrawn
             );
         }
     }
-
 
     /* ========== RESTRICTED FUNCTIONS ========== */
 
@@ -265,10 +257,7 @@ contract Staking is ReentrancyGuard, Ownable {
      * calls updateRecordsWithLatestInterestRates
      * updates apr as _apr
      */
-    function modifyAPR(uint256 _apr)
-        public
-        onlyOwner
-    {
+    function modifyAPR(uint256 _apr) public onlyOwner {
         updateRecordsWithLatestInterestRates();
         apr = _apr;
     }

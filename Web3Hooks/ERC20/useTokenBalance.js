@@ -34,7 +34,7 @@ function getAllowance(contract, account, chainId) {
     }
     else if (env == "production" && chainId == 56) {
       // do something
-      const balance = await contract.balanceOf(account, process.env.NEXT_PUBLIC_STAKING);
+      const balance = await contract.allowance(account, process.env.NEXT_PUBLIC_STAKING);
       return balance;
     }
     return null
@@ -64,7 +64,7 @@ export default function useTokenBalance(
 
   const resultAllowance = useSWR(
     shouldFetch ? ["allowance", account] : null,
-    balance(contract, account, chainId),
+    getAllowance(contract, account, chainId),
     {
       suspense,
     }
@@ -75,8 +75,8 @@ export default function useTokenBalance(
 
   return {
     symbol: 'SHRF',
-    allowance: parseBalance(resultTokens.data ?? 0, 18, 1),
-    rawAllowance: resultTokens.data ?? 0,
+    allowance: parseBalance(resultAllowance.data ?? 0, 18, 1),
+    rawAllowance: resultAllowance.data ?? 0,
     tokens: parseBalance(resultTokens.data ?? 0, 18, 1)
   };
 }

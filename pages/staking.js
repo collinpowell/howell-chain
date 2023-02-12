@@ -4,12 +4,13 @@ import Partners from '../UIKit/sections/funding/main/Partners'
 import useStakeData from "../Web3Hooks/Staking/useStakeData";
 import SEO from '../components/SEO'
 import { Container, Heading } from 'theme-ui';
+import Header from '../UIKit/layout/Header';
 export default function Home() {
   const stakeData = useStakeData();
-  console.log(stakeData)
   return (
     <>
       <SEO title='Howrea | BNB Staking Pool' description='Stake SHRF and earn BNB 5% APR 🤩' />
+      <Header />
       <Hero />
       <br></br>
       <br></br>

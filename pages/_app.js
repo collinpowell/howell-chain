@@ -20,6 +20,7 @@ function getLibrary(provider) {
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
+    window.scrollTo(0,0)
     TagManager.initialize({ gtmId: 'G-KC2KCV810S' });
     AOS.init({
       duration: 1200,

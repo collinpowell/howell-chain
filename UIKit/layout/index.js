@@ -15,7 +15,6 @@ export default function Layout({ children }) {
         color={colorMode === "dark" ? "white" : "black"}
       />
 
-      <Header />
       <main>{children}</main>
       <Footer />
     </Fragment>

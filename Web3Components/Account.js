@@ -286,7 +286,7 @@ const Account = ({ triedToEagerConnect }) => {
 
   return (
     <div className="relative">
-      <Button onClick={() => openDropDown(2)} variant="border">
+      <Button onClick={() => openDropDown(2)} variant="border" id='ball'>
         {isConnected && <ETHBalance />}
       </Button>
       {exploreDropDownSwitch1 && (

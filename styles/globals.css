@@ -6,7 +6,7 @@ body {
   scroll-behavior: smooth;
 }
 
-header{
+header {
   position: relative;
 }
 
@@ -29,6 +29,11 @@ a {
   background: var(--theme-ui-colors-text);
   color: var(--theme-ui-colors-background);
   /* Gecko Browsers */
+}
+
+.close-hover {
+  opacity: 0;
+  transform: translate(-170%, 0%);
 }
 
 @media screen and (min-width: 768px) {
@@ -58,28 +63,38 @@ a {
   }
 }
 
+.partners-img-container::-webkit-scrollbar {
+  width: 0 !important;
+} /* hide scrollbar in Chrome */
+.partners-img-container {
+  scrollbar-width: none;
+} /* hide scrollbar in mozilla */
+.partners-img-container {
+  -ms-overflow-style: none;
+} /* hide scrollbar in IE */
 
-.partners-img-container::-webkit-scrollbar { width: 0 !important } /* hide scrollbar in Chrome */
-.partners-img-container { scrollbar-width: none; } /* hide scrollbar in mozilla */
-.partners-img-container { -ms-overflow-style: none; } /* hide scrollbar in IE */
-
-
-.progress{
+.progress {
   display: flex;
   height: 0.657rem;
   overflow: hidden;
   line-height: 0;
   font-size: 0.657rem;
 }
-.px-100{
+.px-100 {
   padding-left: 130px !important;
   padding-right: 130px !important;
-
 }
 
 .progress-bar {
   text-align: center;
-  background: linear-gradient(88.76deg, rgba(255, 10, 10, 0.8) 1.06%, rgba(252, 156, 12, 0.8) 17.37%, rgba(251, 181, 0, 0.8) 32.89%, rgba(252, 205, 38, 0.8) 57.65%, rgba(33, 230, 29, 0.8) 98.94%);
+  background: linear-gradient(
+    88.76deg,
+    rgba(255, 10, 10, 0.8) 1.06%,
+    rgba(252, 156, 12, 0.8) 17.37%,
+    rgba(251, 181, 0, 0.8) 32.89%,
+    rgba(252, 205, 38, 0.8) 57.65%,
+    rgba(33, 230, 29, 0.8) 98.94%
+  );
 }
 .progress-bar {
   display: flex;
@@ -91,6 +106,14 @@ a {
   transition: width 0.6s ease;
 }
 
-*::-webkit-scrollbar {width: 8px;background-color:#FFFFFF00} 
-*::-webkit-scrollbar-track {background-color:#e2e8f000} 
-*::-webkit-scrollbar-thumb {border-radius: 1rem; background-color:#C2B2F1}
+*::-webkit-scrollbar {
+  width: 8px;
+  background-color: #ffffff00;
+}
+*::-webkit-scrollbar-track {
+  background-color: #e2e8f000;
+}
+*::-webkit-scrollbar-thumb {
+  border-radius: 1rem;
+  background-color: #c2b2f1;
+}

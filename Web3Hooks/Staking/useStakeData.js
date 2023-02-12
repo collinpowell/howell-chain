@@ -102,11 +102,11 @@ export default function useStakeData(suspense = false) {
   useKeepSWRDataLiveAsBlocksArrive(resultTotalInterest.mutate);
 
   return {
-    cumWithdraws: parseBalance(resultTotalWithdraws.data ?? 0, 18, 1),
+    cumWithdraws: parseBalance(resultTotalWithdraws.data ?? 0, 18, 3),
     cumStake: parseBalance(resultTotalStaked.data ?? 0, 18, 1),
     tokenAddress: resultStakingToken.data ?? 0,
     numAddresses: parseBalance(resultAddresses.data ?? 0, 0, 0),
     apr: parseBalance(resultAPR.data ?? 0, 0, 0),
-    totalReward: parseBalance(resultTotalInterest.data ?? 0, 18, 1)
+    totalReward: parseBalance(resultTotalInterest.data ?? 0, 18, 3)
   };
 }

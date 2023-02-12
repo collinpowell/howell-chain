@@ -1,11 +1,12 @@
 import { Heading, Text, Container } from 'theme-ui'
 import { privacy } from '../data/privacy';
 import Seo from '../components/SEO';
-
+import Header from '../UIKit/layout/Header';
 const Privacy = () => {
     return (
         <>
         <Seo title='Howrea | Privacy Policy' description='Our Privacy Policy'/>
+            <Header/>
             <br />
             <br />
             <br />

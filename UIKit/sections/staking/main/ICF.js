@@ -21,7 +21,6 @@ const Presale = ({ saleData }) => {
   const data = useStakeActionData(account);
   const [userInput, setUserInput] = useState(1000);
   const [spin, setSpin] = useState(false);
-  console.log(data)
   const features = [
     {
       title: saleData.totalReward + " BNB",
@@ -81,11 +80,25 @@ const Presale = ({ saleData }) => {
       return;
     }
 
+
+
     if (balance.allowance >= userInput) {
       contract.stake(ethers.utils.parseUnits(userInput.toString(), "ether"))
-        .then(function () {
-          handleSuccess('Staking Successful')
-          setSpin(false)
+        .then(function (result) {
+          result.wait().then(function () {
+            handleSuccess('Staking Successful')
+            setSpin(false)
+          })
+            .catch(function (error) {
+              setSpin(false)
+              if (error.data) {
+                handleFailure("Error message " + error.data.message);
+
+              } else {
+                handleFailure("Error message " + error.reason);
+              }
+
+            })
         }).catch(function (error) {
           setSpin(false)
           if (error.data) {
@@ -99,12 +112,23 @@ const Presale = ({ saleData }) => {
     } else {
       tokenContract.increaseAllowance(process.env.NEXT_PUBLIC_STAKING, ethers.utils.parseUnits((userInput).toString(), "ether"))
         .then(function (result) {
-          console.log(result)
           result.wait().then(function () {
             contract.stake(ethers.utils.parseUnits(userInput.toString(), "ether"))
-              .then(function () {
-                handleSuccess('Staking Successful')
-                setSpin(false)
+              .then(function (result1) {
+                result1.wait().then(function () {
+                  handleSuccess('Staking Successful')
+                  setSpin(false)
+                })
+                  .catch(function (error) {
+                    setSpin(false)
+                    if (error.data) {
+                      handleFailure("Error message " + error.data.message);
+
+                    } else {
+                      handleFailure("Error message " + error.reason);
+                    }
+
+                  })
               }).catch(function (error) {
                 setSpin(false)
                 if (error.data) {
@@ -154,8 +178,20 @@ const Presale = ({ saleData }) => {
 
     contract.withdrawReward(data.rawEarn)
       .then(function (result) {
-        handleSuccess('Withdrawal Successful, Check You wallet')
-        setSpin(false)
+        result.wait().then(function () {
+          handleSuccess('Withdrawal Successful, Check You wallet')
+          setSpin(false)
+        })
+          .catch(function (error) {
+            setSpin(false)
+            if (error.data) {
+              handleFailure("Error message " + error.data.message);
+
+            } else {
+              handleFailure("Error message " + error.reason);
+            }
+
+          })
       }).catch(function (error) {
         setSpin(false)
         if (error.data) {
@@ -183,8 +219,20 @@ const Presale = ({ saleData }) => {
 
     contract.unstake(data.rawStakeAmt)
       .then(function (result) {
-        handleSuccess('Staking Successful')
-        setSpin(false)
+        result.wait().then(function () {
+          handleSuccess('Unstaking Successfully Executed')
+          setSpin(false)
+        })
+          .catch(function (error) {
+            setSpin(false)
+            if (error.data) {
+              handleFailure("Error message " + error.data.message);
+
+            } else {
+              handleFailure("Error message " + error.reason);
+            }
+
+          })
       }).catch(function (error) {
         setSpin(false)
         if (error.data) {

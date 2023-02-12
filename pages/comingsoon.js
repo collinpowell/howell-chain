@@ -1,7 +1,10 @@
 import { Heading, Container } from "theme-ui"
+import Header from '../UIKit/layout/Header';
 const ComingSoon = () => {
     return (
-        <Container sx={{
+        <>
+      <Header />
+      <Container sx={{
             textAlign: 'center',
         }}>
             <Heading sx={{
@@ -15,6 +18,7 @@ const ComingSoon = () => {
             <br />
             <br />
         </Container>
+        </>
     )
 }
 
