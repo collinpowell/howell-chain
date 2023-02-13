@@ -19,6 +19,10 @@ const nextConfig = {
             {
                 source: '/feed',
                 destination: 'https://medium.com/feed/@howreanetwork'
+            },
+            {
+                source: '/scrape',
+                destination: 'https://bscscan.com/token/0x1c86738cAbcd4E37910468119ddF78817dC2125d'
             }
         ]
     }

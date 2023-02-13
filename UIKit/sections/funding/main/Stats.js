@@ -41,12 +41,12 @@ const Stats = ({saleData}) => {
       <Grid gap={5} columns={[1, 1, 2, 2, 3, 3]}>
         {features.map((item, i) => {
           return (
-            <a href="#" target="_blank" rel="noreferrer" key={i}>
+            //<a href="#" target="_blank" rel="noreferrer" key={i}>
               <Box sx={styles.box} key={i}>
                 <Text as="h3">{item.title}</Text>
                 <Text as="p">{item.text}</Text>
               </Box>
-            </a>
+            //</a>
           );
         })}
       </Grid>

@@ -5,13 +5,13 @@ const data = {
     body:'Join the new digital gold rush with the howrians',
 }
 
-const Hero = () => {
+const Hero = ({state}) => {
     return (
         <Container sx={styles.container}>
             <Heading>The <span>Howrea</span> Network is Here!</Heading>
             <Text variant='title' as='h4'>{data.subHeading}</Text>
             <Text variant='normal' as='p'>{data.body}</Text>
-            <Stats/>
+            <Stats data={state}/>
         </Container>
     )
 }

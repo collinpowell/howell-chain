@@ -6,10 +6,14 @@ const StatCard = ({ data }) => {
     }
 
     return (
-        <Box variant='boxes.stats'>
-            <Heading variant='blockStats'>{numberWithCommas(data.number)}</Heading>
-            <Text variant='normal' as='p'>{data.label}</Text>
-        </Box>
+        <a href="https://bscscan.com/token/0x1c86738cAbcd4E37910468119ddF78817dC2125d" target="_blank"
+            rel="noreferrer" >
+            <Box variant='boxes.stats'>
+                <Heading variant='blockStats'>{(data.number)}</Heading>
+                <Text variant='normal' as='p'>{data.label}</Text>
+            </Box>
+        </a>
+
     )
 }
 

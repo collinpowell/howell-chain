@@ -1,7 +1,8 @@
 import STATS_DATA from '../../../../data/hero'
 import StatCard from '../../../components/StatCard'
 import { Container, Flex } from 'theme-ui'
-const Stats = () => {
+const Stats = ({data}) => {
+    STATS_DATA[0].number = data.holders
     return (
         <Container>
             <Flex sx={styles.flex}>
