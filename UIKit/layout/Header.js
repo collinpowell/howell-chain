@@ -43,11 +43,6 @@ const Header = () => {
   useEffect(() => {
     const handleRouteChange = (url, { shallow }) => {
       forceUpdate()
-      console.log(
-        `App is changing to ${url} ${
-          shallow ? 'with' : 'without'
-        } shallow routing`
-      )
     }
 
     router.events.on('routeChangeStart', handleRouteChange)
@@ -58,8 +53,6 @@ const Header = () => {
       router.events.off('routeChangeStart', handleRouteChange)
     }
   }, [])
-
-  console.log('render')
 
   return (
     <DrawerProvider>

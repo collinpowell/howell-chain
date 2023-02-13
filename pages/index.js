@@ -21,12 +21,8 @@ export default function Home() {
 
       axios.get("/scrape")
         .then((axiosResponse) => {
-          console.log(axiosResponse.request.onloadend())
-
-          
           // parsing the HTML source of the target web page with Cheerio
           const $ = cheerio.load(axiosResponse.data)
-          console.log($)
 
           // initializing the data structures
           // that will contain the scraped data
