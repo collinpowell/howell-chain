@@ -5,40 +5,17 @@ import ABI from '../../artifacts/contracts/SheerCoin.sol/Sheer.json'
 import { useWeb3React } from "@web3-react/core";
 import { parseBalance } from "../../Util/util";
 
-function balance(contract, account, chainId) {
+function balance(contract, account) {
   return async (_,) => {
-    const env = process.env.NODE_ENV
-    if (env == "development" && chainId == 97) {
-      // do something
-      // do something
-      const balance = await contract.balanceOf(account);
-      return balance;
-    }
-    else if (env == "production" && chainId == 56) {
-      // do something
-      const balance = await contract.balanceOf(account);
-      return balance;
-    }
-    return null
-
+    const balance = await contract.balanceOf(account);
+    return balance;
   };
 }
 
-function getAllowance(contract, account, chainId) {
+function getAllowance(contract, account) {
   return async (_,) => {
-    const env = process.env.NODE_ENV
-    if (env == "development" && chainId == 97) {
-      // do something
-      const balance = await contract.allowance(account, process.env.NEXT_PUBLIC_STAKING);
-      return balance;
-    }
-    else if (env == "production" && chainId == 56) {
-      // do something
-      const balance = await contract.allowance(account, process.env.NEXT_PUBLIC_STAKING);
-      return balance;
-    }
-    return null
-
+    const balance = await contract.allowance(account, process.env.NEXT_PUBLIC_STAKING);
+    return balance;
   };
 }
 
