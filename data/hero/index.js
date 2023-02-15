@@ -9,7 +9,7 @@ const STATS_DATA = [
         },
         {
             label: 'SHRF Value',
-            number: '0.1$'
+            number: '0.10$'
         }
     ]
 export default STATS_DATA;
