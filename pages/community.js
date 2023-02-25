@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-    Twitter,
+    Instagram,
     Telegram,
     Youtube,
     Linkedin,
@@ -14,7 +14,7 @@ const Community = () => {
     return (
         <>
             <SEO title='Howrea Community' description='Be Part Of Our Vibrant Communities, stay upto date' />
-      <Header />
+            <Header />
             <Container sx={styles.con}>
                 <Heading><span>Be Part Of Our Vibrant Communities</span> </Heading>
                 <br />
@@ -23,13 +23,6 @@ const Community = () => {
                 <br />
                 <br />
                 <Grid sx={styles.grid}>
-                    <a
-                        href="https://twitter.com/HowreaNetwork"
-                        target="_blank"
-                        rel="noreferrer"
-                    >
-                        <Twitter />
-                    </a>
                     <a
                         href="https://www.youtube.com/@howreanetwork"
                         target="_blank"
@@ -71,6 +64,13 @@ const Community = () => {
                         rel="noreferrer"
                     >
                         <Telegram />
+                    </a>
+                    <a
+                        href="https://www.instagram.com/howrians"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        <Instagram />
                     </a>
                 </Grid>
             </Container>

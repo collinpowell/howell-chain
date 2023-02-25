@@ -11,7 +11,7 @@ import {
 import FOOTER_DATA from "../../data/footer";
 import { FooterLogo } from "../assets/Logos";
 import {
-  Twitter,
+  Instagram,
   Telegram,
   Youtube,
   Linkedin,
@@ -64,11 +64,11 @@ const Footer = () => {
             </Text>
             <Flex sx={styles.socials}>
               <a
-                href="https://twitter.com/HowreaNetwork"
+                href="https://www.instagram.com/howrians"
                 target="_blank"
                 rel="noreferrer"
               >
-                <Twitter />
+                <Instagram />
               </a>
               <a
                 href="https://www.youtube.com/@howreanetwork"
