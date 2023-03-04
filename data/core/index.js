@@ -22,11 +22,6 @@ const CORE_DATA = {
             body: 'We help you market and expand your projects market scope.'
         },
         {
-            icon: <Ticketing />,
-            heading: 'AI powered',
-            body: 'AI powered, interactive, smart and efficient'
-        },
-        {
             icon: <ArtFun />,
             heading: 'Cost Effective',
             body: 'Cost effective, create your tokens and launch and ICO for a little as $100'
