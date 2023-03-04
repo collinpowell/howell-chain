@@ -157,6 +157,9 @@ export default {
         cursor: "pointer",
         textDecoration: "none",
       },
+      '.react-datepicker':{
+        fontFamily: "body",
+      },
       ul: {
         listStyle: "none",
       },
