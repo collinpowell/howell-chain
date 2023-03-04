@@ -35,6 +35,11 @@ const CORE_DATA = {
             icon: <ArtFun />,
             heading: 'Quick & Easy',
             body: 'Quick easy and user friendly, we have standby customer service to cater for your needs'
+        },
+        {
+            icon: <ArtFun />,
+            heading: 'EVM full support',
+            body: 'Supports all EVM chains'
         }
     ]
 }

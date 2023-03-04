@@ -1,10 +1,5 @@
 import Hero from '../UIKit/sections/root/main/Hero'
-import Fresh from '../UIKit/sections/root/main/Fresh'
 import Core from '../UIKit/sections/root/main/Core'
-import Glide from '../UIKit/sections/root/main/Glide'
-import Learn from '../UIKit/sections/root/main/Learn'
-import Blogs from '../UIKit/sections/root/main/Blogs'
-import Offers from '../UIKit/sections/root/main/Offers'
 import SEO from '../components/SEO'
 import Header from '../UIKit/layout/Header';
 import axios from 'axios'
@@ -16,8 +11,6 @@ export default function Home() {
       <SEO />
       <Header />
       <Hero/>
-      {/* <Offers/>
-      <Fresh /> */}
       <Core />
     </>
   )
