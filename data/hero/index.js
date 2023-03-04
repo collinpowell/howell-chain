@@ -1,15 +1,15 @@
 const STATS_DATA = [
         {
-            label: 'Total Number of Addresses',
-            number: '---'
+            label: 'Total Projects',
+            number: '100'
         },
         {
-            label: 'Transaction Count',
-            number: '---'
+            label: 'Total Participants',
+            number: '1000'
         },
         {
-            label: 'SHRF Value',
-            number: '0.10$'
+            label: 'Total Amount Raised',
+            number: '$10M'
         }
     ]
 export default STATS_DATA;

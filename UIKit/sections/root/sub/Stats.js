@@ -22,7 +22,7 @@ const styles = {
     flex:{
         justifyContent:'space-evenly',
         mt:'145px',
-        flexDirection:['column',null,null,'row'],
+        flexDirection:['column','column',null,null,'row'],
         alignItems: 'center',
     }
 }

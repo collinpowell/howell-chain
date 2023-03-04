@@ -1,67 +1,42 @@
 import { Shopping, Banking, Payment, Ticketing, RealEstate, ArtFun, Charity, Trading, Investment } from '../../UIKit/assets/Icons'
-import Fly from '../../UIKit/assets/Core/fly.png'
-import Cash from '../../UIKit/assets/Core/cash.png'
-import Bike from '../../UIKit/assets/Core/bike.png'
-import Shapes from '../../UIKit/assets/Core/shapes.png'
 
 const forNow = 'Shop your favorite goods quick and easy with our unique currency'
 
 const CORE_DATA = {
     smallHeader: 'Join the Trend',
-    heading: 'The Core of The Howrea Blockchain',
+    heading: 'What we offer',
     cards: [
         {
             icon: <Shopping />,
-            heading: 'Shopping',
-            body: forNow
+            heading: 'No Code',
+            body: 'No code, no need to be get technical to launch your crypto project, we got you covered.'
         },
         {
             icon: <Banking />,
-            heading: 'Banking',
-            body: 'Explore the benefits of blockchain technology in banking.'
+            heading: 'Safe & Secure',
+            body: 'Safe, Secure and Audited for investors and project owners'
         },
         {
             icon: <Payment />,
-            heading: 'Payment',
-            body: 'Solutions for cross-border, decentralized, quick, and simple payments at your fingertips'
+            heading: 'Marketing',
+            body: 'We help you market and expand your projects market scope.'
         },
         {
             icon: <Ticketing />,
-            heading: 'Ticketing',
-            body: 'Event ticketing with ease and security for event planners, organizers and attendees with the use of NFTs'
+            heading: 'AI powered',
+            body: 'AI powered, interactive, smart and efficient'
         },
         {
             icon: <ArtFun />,
-            heading: 'Art / Fun',
-            body: 'NFTs, rewards, the metaverse, and gaming'
+            heading: 'Cost Effective',
+            body: 'Cost effective, create your tokens and launch and ICO for a little as $100'
         },
         {
-            icon: <Investment />,
-            heading: 'Investment',
-            body: 'Project-driven, use-case-driven, and secure investment'
-        },
-        {
-            icon: <Trading />,
-            heading: 'Trading',
-            body: 'Predict chart flows / market movements and earn cool cash'
-        },
-        {
-            icon: <Charity />,
-            heading: 'Charity',
-            body: 'Our humanitarian activities are geared toward meeting the needs of others.'
-        },
-        {
-            icon: <RealEstate />,
-            heading: 'Education',
-            body: 'Our educational platform is designed to spread knowledge.'
-        },
-    ],
-    images: [
-        { img: Fly.src, w: 310, h: 310 },
-        { img: Cash.src, w: 212, h: 212 },
-        { img: Bike.src, w: 300, h: 300 },
-        { img: Shapes.src, w: 407, h: 186 }
-    ],
+            icon: <ArtFun />,
+            heading: 'Quick & Easy',
+            body: 'Quick easy and user friendly, we have standby customer service to cater for your needs'
+        }
+    ]
 }
 
 export default CORE_DATA;

@@ -8,6 +8,7 @@ import ETHBalance from "./ETHBalance";
 import useMetaMaskOnboarding from "../Web3Hooks/useMetaMaskOnboarding";
 import { jsx, Button, Box, Image, Grid, Text } from "theme-ui";
 import useENSName from "../Web3Hooks/useENSName";
+import { chains } from "../data/chains";
 import { shortenHex } from "../Util/util";
 // ** Third Party Components
 import Swal from "sweetalert2";
@@ -17,6 +18,8 @@ const Account = ({ triedToEagerConnect }) => {
   const [exploreDropDownSwitch, setExploreDropDownSwitch] = useState(false);
   const [exploreDropDownSwitch1, setExploreDropDownSwitch1] = useState(false);
   const [handle, setHandle] = useState(false);
+  const [symbol, setSymbol] = useState('BNB');
+  const [selectedChain, setSelectedChain] = useState({});
   triedToEagerConnect
   const {
     active,
@@ -112,19 +115,27 @@ const Account = ({ triedToEagerConnect }) => {
       setConnecting(false);
       stopOnboarding();
     }
-    async function changeTO() {
+    for (let i = 0; i < chains.length; i++) {
+      if(chains[i].chainId == chainId){
+        setSymbol(chains[i].symbol)
+      }
+      if(localStorage && localStorage.getItem('chain') == chains[i].slug){
+        setSelectedChain(chains[i])
+        console.log(chains[i])
+      }
+    }
+    async function changeTO(data) {
+      if (!library) {
+        return
+      }
       const chainId = await library?.provider.request({ method: 'eth_chainId' });
-      console.log(chainId,parseInt(process.env.NEXT_PUBLIC_CHAINID))
-      if (chainId === process.env.NEXT_PUBLIC_CHAINID || chainId === parseInt(process.env.NEXT_PUBLIC_CHAINID)) {
+      if (chainId === data.chainId) {
         console.log("Bravo!, you are on the correct network");
       } else {
-        if(library){
-          setHandle(true)
-        }
         try {
           await library?.provider.request({
             method: 'wallet_switchEthereumChain',
-            params: [{ chainId: process.env.NEXT_PUBLIC_CHAINID }],
+            params: [{ chainId: '0x' + data.chainId.toString(16) }],
           });
           console.log("You have successfully switched to Binance Test network")
         } catch (switchError) {
@@ -136,12 +147,12 @@ const Account = ({ triedToEagerConnect }) => {
                 method: 'wallet_addEthereumChain',
                 params: [
                   {
-                    chainId: process.env.NEXT_PUBLIC_CHAINID,
-                    chainName: process.env.NEXT_PUBLIC_CHAINNAME,
-                    rpcUrls: [process.env.NEXT_PUBLIC_RPC], blockExplorerUrls: [process.env.NEXT_PUBLIC_BLOCKEXP],
+                    chainId: '0x' + data.chainId.toString(16),
+                    chainName: data.chainName,
+                    rpcUrls: [data.rpc], blockExplorerUrls: [data.explorer],
                     nativeCurrency: {
-                      symbol: process.env.NEXT_PUBLIC_SYMBOL,
-                      decimals: process.env.NEXT_PUBLIC_DECIMAL
+                      symbol: data.symbol,
+                      decimals: data.decimals
                     }
                   }
                 ]
@@ -154,8 +165,13 @@ const Account = ({ triedToEagerConnect }) => {
         }
       }
     }
-    changeTO();
-  }, [active, error, library, stopOnboarding]);
+  
+    console.log(selectedChain.chainId,chainId)
+    if(selectedChain.chainId != chainId){
+      //changeTO(selectedChain)
+    }
+    //changeTO();
+  }, [chainId,selectedChain]);
 
   if (typeof account !== "string") {
     return (
@@ -166,7 +182,7 @@ const Account = ({ triedToEagerConnect }) => {
             openDropDown(5);
           }}
         >
-          {"Connect to Wallet"}
+          {"Connect Wallet"}
         </Button>
         {exploreDropDownSwitch && (
           <div
@@ -291,7 +307,7 @@ const Account = ({ triedToEagerConnect }) => {
   return (
     <div className="relative">
       <Button onClick={() => openDropDown(2)} variant="border" id='ball'>
-        {isConnected && <ETHBalance />}
+        {isConnected && <ETHBalance symbol={symbol} />}
       </Button>
       {exploreDropDownSwitch1 && (
         <div

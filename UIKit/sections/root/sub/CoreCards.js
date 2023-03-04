@@ -3,8 +3,9 @@ import Card from '../../../components/CoreCard'
 const CoreCards = ({ smallHeader, heading, cards }) => {
     return (
         <Box sx={styles.box}>
-            <Text variant='normal' as='p' sx={styles.smallHeader}>{smallHeader}</Text>
             <Heading variant='border' sx={styles.heading}>{heading}</Heading>
+            <br />
+            <br />
             <Grid sx={styles.grid}>
                 {cards.map((card, i) => {
                     return (
@@ -20,17 +21,15 @@ export default CoreCards
 
 const styles = {
     box: {
-        maxWidth: '735px',
-        textAlign: ['center', null,null,'left'],
+        textAlign: ['center', null, null, 'center'],
     },
     smallHeader: {
         mb: '25px'
 
     },
     heading: {
-        ml: '20px',
-        mr: '20px',
-        mb: '25px'
+        mx: 'auto',
+        mb: '25px',
     },
     grid: {
         gridGap: ['35px 15px', null, null, null, null, '47px 74px'],

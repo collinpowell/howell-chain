@@ -1,7 +1,7 @@
 const HEADER_DATA = {
   menuData: [
     {
-      label: "Platforms",
+      label: "Launchpads",
       links: [
         {
           icon: null,
@@ -28,7 +28,7 @@ const HEADER_DATA = {
       links: [
         {
           icon: null,
-          text: "Whitepaper",
+          text: "HLP Docs",
           description:"Whitepaper PDF",
           link: "/whitepaper",
         },
@@ -65,7 +65,7 @@ const HEADER_DATA = {
       ],
     },
     {
-      label: "Network",
+      label: "KYC & Audit",
       links: [
         {
           icon: null,
@@ -119,23 +119,6 @@ const HEADER_DATA = {
           text: "Telegram",
           description:"Telegram News Channel",
           link: "https://t.me/howreaChanel",
-        },
-      ],
-    },
-    {
-      label: "Foundation",
-      links: [
-        {
-          icon: null,
-          text: "Foundation",
-          description:"Our Foundation",
-          link: "",
-        },
-        {
-          icon: null,
-          text: "Funding",
-          description:"Fund this great vision",
-          link: "/funding",
         },
       ],
     },

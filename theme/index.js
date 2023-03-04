@@ -24,7 +24,7 @@ export default {
     dropDownBoxShadow: "rgba(0, 0, 0, 0.2)",
     platforms: "rgba(0, 0, 0, 0.1)",
     joinCard: "rgba(0, 0, 0, 0.4)",
-    glide: "#C2B2F1",
+    glide: "#C2B2F180",
     modes: {
       dark: {
         text: "#fff",
@@ -62,6 +62,10 @@ export default {
   },
   // variants for texts
   text: {
+    danger: {
+      color: 'red',
+      fontWeight: 'bold'
+    },
     heading: {
       fontFamily: "heading",
       fontWeight: "heading",
@@ -128,7 +132,7 @@ export default {
       fontFamily: "heading",
       color: "text",
       fontWeight: "stats",
-      fontSize: [3,4,null,null,5],
+      fontSize: [3, 4, null, null, 5],
     },
     normal: {
       color: "text",
@@ -156,31 +160,81 @@ export default {
       ul: {
         listStyle: "none",
       },
-      ".logos":{
-        fill:'text'
+      ".logos": {
+        fill: 'text'
       },
-      ".logosX":{
-        fill:'background'
+      ".logosX": {
+        fill: 'background'
       },
-      ".logoss":{
-        stroke:'text'
+      ".logoss": {
+        stroke: 'text'
       },
-      ".logossX":{
-        stroke:'background'
+      ".logossX": {
+        stroke: 'background'
       },
-      ".SweatBtn": {
-        color: "background",
-        bg: "text",
-        p: ["13px 30px", null, null, "15px 40px"],
-        borderRadius: "5px",
-        fontFamily: "body",
+      input: {
+        p: '17px 45px !important',
+        mr: '3px',
+        width: '100%',
+        color: 'text !important',
+        borderRadius: '5px',
+        mb: ['15px', null, null, '0'],
+        border: '2.5px solid !important',
+        borderColor: 'text !important',
+        fontFamily: 'body',
+        '&:focus': {
+          outline: 'none',
+          border: '2px solid !important',
+          borderColor: 'text !important',
+        }
+      },
+      '.SweatBtn': {
+        fontWeight: 'buttons',
+        color: 'text',
+        bg: 'background',
+        p: '15px 40px',
+        borderRadius: '15px',
+        fontFamily: 'body',
+        border: 'none'
+      },
+      select: {
+        p: '17px 45px',
+        mr: '3px',
+        borderRadius: '5px',
+        minHeight: '58px',
+        color: 'text',
+        mb: ['15px', null, null, '0'],
+        border: '2.5px solid !important',
+        borderColor: 'text !important',
+        fontFamily: 'body',
+        '&:focus': {
+          outline: 'none',
+          border: '2px solid !important',
+          borderColor: 'text !important',
+        }
+      },
+      textarea: {
+        p: '17px 45px',
+        mr: '3px',
+        borderRadius: '5px',
+        color: 'text',
+        minHeight: '100px',
+        mb: ['15px', null, null, '0'],
+        border: '2.5px solid !important',
+        borderColor: 'text !important',
+        fontFamily: 'body',
+        '&:focus': {
+          outline: 'none',
+          border: '2px solid !important',
+          borderColor: 'text !important',
+        }
       },
     },
   },
   // variants can use custom, user-defined names
   layout: {
     container: {
-      maxWidth: ["95%", null, "90%", null, "990px", "1100px", "1175px"],
+      maxWidth: ["95%", null, "90%", null, "990px", "1100px", "1255px"],
     },
   },
 
@@ -190,12 +244,12 @@ export default {
       //fontWeight: 'buttons',
       color: "background",
       bg: "text",
-      p: ["13px 30px", null, null, "15px 40px"],
-      borderRadius: "5px",
+      p: ["15px 15px", null, null, "15px 25px"],
+      borderRadius: "15px",
       fontFamily: "body",
-      transition:'0.3s ease-out',
+      transition: '0.3s ease-out',
       '&:hover': {
-           transform: 'scale(1.009)',
+        transform: 'scale(1.009)',
       },
     },
     text: {
@@ -214,9 +268,9 @@ export default {
     },
   },
   boxes: {
-    primary:{
-      background:'primary',
-      text:'text'
+    primary: {
+      background: 'primary',
+      text: 'text'
     },
     headerMenuItem: {
       width: "fit-content",
@@ -264,15 +318,14 @@ export default {
       width: "80px",
       height: "80px",
       mb: "21px",
-      mx: ["auto", null, null, "0"],
+      mx: ["auto", null, null, "auto"],
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
     },
     coreCard: {
-      maxWidth: "205px",
       minWidth: ["0", null, null, "205px"],
-      textAlign: ["center", null, null, "left"],
+      textAlign: ["center", null, null, "center"],
       h4: {
         mb: "21px",
       },
@@ -299,9 +352,9 @@ export default {
       width: "150px",
       height: "80px",
       mx: "5px",
-      svg:{
-        width:'100%',
-        height:'100%'
+      svg: {
+        width: '100%',
+        height: '100%'
       }
     },
     newsLetter: {
@@ -323,19 +376,6 @@ export default {
           height: "fit-content",
           my: "auto",
           flexDirection: ["column", null, null, "row"],
-        },
-      },
-      input: {
-        p: "17px 45px",
-        mr: "3px",
-        mb: ["15px", null, null, "0"],
-        border: "3px solid",
-        borderColor: "text",
-        fontFamily: "body",
-        "&:focus": {
-          outline: "none",
-          border: "2px solid",
-          borderColor: "text",
         },
       },
       button: {
@@ -360,7 +400,7 @@ export default {
     },
     glide: {
       background: "glide",
-      padding: ["95px 0", null, null, "95px 45px"],
+      padding: ["60px 35px", null, null, "55px 45px"],
       borderRadius: "39.7px",
     },
   },

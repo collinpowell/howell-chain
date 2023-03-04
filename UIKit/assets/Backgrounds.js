@@ -120,7 +120,7 @@ export const OrbitNoGrad = () => {
 export const Sun = ({flip}) => {
 
     return !flip ?(
-        <svg width="412" height="635" style={{ position: "absolute", top: "0", left: "0", zIndex: -1 }} viewBox="0 0 412 635" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="412" height="635" style={{ position: "absolute", top: "0", left: "0", zIndex: -1,maxWidth:'100%' }} viewBox="0 0 412 635" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g filter="url(#filter0_f_492_7037)">
                 <circle cx="-198" cy="25" r="410" fill="url(#paint0_linear_492_7037)" />
             </g>
@@ -169,7 +169,7 @@ export const Sun = ({flip}) => {
             </defs>
         </svg>
     ):(
-        <svg width="412" height="635" style={{ position: "absolute", top: "0",transform:"scaleX(-1)", right: "0", zIndex: -1 }} viewBox="0 0 412 635" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="412" height="635" style={{ position: "absolute", top: "0",transform:"scaleX(-1)", right: "0", zIndex: -1 ,maxWidth:'100%'}} viewBox="0 0 412 635" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g filter="url(#filter0_f_492_7037)">
                 <circle cx="-198" cy="25" r="410" fill="url(#paint0_linear_492_7037)" />
             </g>

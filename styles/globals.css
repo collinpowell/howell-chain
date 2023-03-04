@@ -6,6 +6,17 @@ body {
   scroll-behavior: smooth;
 }
 
+input:autofill {
+    color:inherit !important;
+    box-shadow: none !important;
+}
+
+input:-webkit-autofill {
+  color:inherit !important;
+  box-shadow: none !important;
+}
+
+
 header {
   position: relative;
 }

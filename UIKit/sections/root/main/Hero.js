@@ -1,17 +1,42 @@
-import { Container, Heading, Text } from 'theme-ui'
+import { Container, Flex, Button, Heading, Text } from 'theme-ui'
 import Stats from '../sub/Stats'
+import { useRouter } from 'next/router'
 const data = {
-    subHeading:'Revolutionizing the blockchain industry',
-    body:'Join the new digital gold rush with the howrians',
+    subHeading: 'Empowering the next generation of blockchain heros!',
+    body: 'Launch your token and ICO in a matter of seconds with no coding, risk-free, secure, and AI-powered',
 }
 
-const Hero = ({state}) => {
+const Hero = ({ state }) => {
+  const router = useRouter();
+
     return (
         <Container sx={styles.container}>
-            <Heading>The <span>Howrea</span> Network is Here!</Heading>
+            <Heading>The <span>Howrea</span> Launchpad!</Heading>
             <Text variant='title' as='h4'>{data.subHeading}</Text>
             <Text variant='normal' as='p'>{data.body}</Text>
-            <Stats data={state}/>
+            <br />
+            <br />
+            <Flex sx={{
+                justifyContent: 'center'
+            }}>
+                <Button onClick={() => {
+                    const localChain = typeof window !== 'undefined' ? localStorage.getItem('chain') : undefined
+                    router.push({
+                        pathname: '/create/ico',
+                        query: { ...router.query, chain: localChain ? localChain : 'BSC' },
+                    });
+                }}>Create ICO</Button>
+                &nbsp;
+                &nbsp;
+                <Button onClick={() => {
+                    const localChain = typeof window !== 'undefined' ? localStorage.getItem('chain') : undefined
+                    router.push({
+                        pathname: '/create/token',
+                        query: { ...router.query, chain: localChain ? localChain : 'BSC' },
+                    });
+                }}>Create Token</Button>
+            </Flex>
+            <Stats data={null} />
         </Container>
     )
 }
@@ -20,7 +45,8 @@ export default Hero
 
 const styles = {
     container: {
-        pt:'61px',
+        pt: '61px',
+        mt: '80px',
         textAlign: 'center',
         h2: {
             mb: '27px',
@@ -29,5 +55,5 @@ const styles = {
             mb: '12px',
         }
     },
-   
+
 }

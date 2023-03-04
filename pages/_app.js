@@ -13,6 +13,8 @@ import theme from "../theme";
 import Layout from "../UIKit/layout";
 import AOS from "aos";
 import ToTop from '../UIKit/components/ToTop'
+import { StickyProvider } from '../contexts/app/app.provider';
+import FormProvider from "../contexts/form";
 
 function getLibrary(provider) {
   return new Web3Provider(provider);
@@ -20,7 +22,7 @@ function getLibrary(provider) {
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
-    window.scrollTo(0,0)
+    window.scrollTo(0, 0)
     TagManager.initialize({ gtmId: 'G-KC2KCV810S' });
     AOS.init({
       duration: 1200,
@@ -29,12 +31,16 @@ function MyApp({ Component, pageProps }) {
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       <ThemeProvider theme={theme}>
+        <StickyProvider>
           <Layout>
-            <ToTop/>
-            <Component {...pageProps} />
+            <FormProvider>
+              <ToTop />
+              <Component {...pageProps} />
+            </FormProvider>
           </Layout>
+        </StickyProvider>
       </ThemeProvider>
-    </Web3ReactProvider>
+    </Web3ReactProvider >
   );
 }
 
