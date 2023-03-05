@@ -4,6 +4,7 @@ import { useWeb3React } from "@web3-react/core";
 import Party from '../../UIKit/components/Party'
 import ABI from '../../artifacts/contracts/StandardICO.sol/Presale.json'
 import { ContractFactory, ethers } from 'ethers';
+import { useState } from "react";
 import { useRouter } from 'next/router'
 
 import Swal from 'sweetalert2'
@@ -22,7 +23,7 @@ function FormCompleted({selectedChain}) {
     console.log(keys);
 
     keys.forEach((key) => {
-        console.log(`${key}: ${courses[key]}`);
+        console.log(`${key}: ${data[key]}`);
     });
 
     const onSubmit = async () => {
@@ -33,7 +34,6 @@ function FormCompleted({selectedChain}) {
             return;
         }
 
-        console.log(values)
 
         const factory = new ContractFactory(ABI.abi, ABI.bytecode, library.getSigner(account));
 
@@ -75,15 +75,17 @@ function FormCompleted({selectedChain}) {
             {isSubmitted && <Party />}
             <Heading>Yay 🎉,You are all set, confirm info and Kindly read note below before submission</Heading>
             {
-                keys.forEach((key, index) => {
+                keys.map((key, index) => {
                     return (
                         <>
                         <hr />
                         <Flex key={index} sx={{
-                            justifyContent: 'space-between'
+                            justifyContent: 'space-between',
                         }}>
                             <Text as={'p'}>{key + ': '}</Text>
-                            <Text as={'p'}>{courses[key]}</Text>
+                            <Text as={'p'} sx={{
+                                wordBreak:'break-all'
+                            }}>{data[key].toString()}</Text>
                         </Flex>
                         </>
 
