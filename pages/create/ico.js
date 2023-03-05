@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { chains } from "../../data/chains";
 import useTokenData from "../../Web3Hooks/ERC20/useTokenData";
 import { useRouter } from "next/router";
+import FormCompleted from '../../UIKit/components/ICOFormComplete'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -60,7 +61,7 @@ const ICO = () => {
                         <ProjectDetails formStep={formStep} nextFormStep={nextFormStep} selectedChain={selectedChain} prevFormStep={prevFormStep} />
                     )}
 
-                    {formStep > 2 && <FormCompleted />}
+                    {formStep > 2 && <FormCompleted selectedChain={selectedChain}/>}
                 </FormCard>
             </Container>
 
@@ -121,23 +122,6 @@ function FormCard({ children, currentStep, prevFormStep }) {
 
     );
 }
-
-function FormCompleted() {
-    const { data } = useFormData();
-
-    return (
-        <>
-            <h2>Thank you for your purchase! 🎉</h2>
-
-            <Text as={'p'} sx={{
-                wordBreak:'break-all'
-            }}>{JSON.stringify(data)}</Text>
-        </>
-    );
-}
-
-
-
 
 function VerifyToken({ formStep, nextFormStep, selectedChain, prevFormStep }) {
     const [affiliate, setAffiliate] = useState(false)
@@ -302,9 +286,8 @@ function ICODetails({ formStep, nextFormStep, selectedChain, prevFormStep }) {
                 </Box>
                 <br />
                 <Box>
-                    <Label htmlFor="rate">Rate (how many token per {selectedChain.symbol})</Label>
+                    <Label htmlFor="rate">Anticipated Rate (how many token per {selectedChain.symbol})</Label>
                     <Input type="number" name="rate" {...register("rate", {
-                        required: "Required"
                     })} id="rate" my={3} placeholder="50" />
                     <Text variant='danger'>{errors.rate && errors.rate.message}</Text>
                 </Box>

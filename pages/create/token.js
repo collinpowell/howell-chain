@@ -14,6 +14,31 @@ import withReactContent from 'sweetalert2-react-content'
 const MySwal = withReactContent(Swal)
 import Header from '../../UIKit/layout/Header'
 
+const handleSuccess = () => {
+    return MySwal.fire({
+        title: "Token Deployed successfully 🎉",
+        text: "Thank You For you patronage, Click Okay to see token info",
+        icon: "success",
+        customClass: {
+            confirmButton: "SweatBtn",
+        },
+        buttonsStyling: false,
+    });
+};
+
+const handleFailure = (msg) => {
+    return MySwal.fire({
+        title: "Failed",
+        text: msg,
+        icon: "error",
+        customClass: {
+            confirmButton: "SweatBtn",
+        },
+        buttonsStyling: false,
+    });
+};
+
+
 export default function FormData() {
     const router = useRouter()
     const { library, account, chainId } = useWeb3React();
@@ -34,31 +59,6 @@ export default function FormData() {
             }
         }
     }, [router.query])
-
-    const handleSuccess = () => {
-        return MySwal.fire({
-            title: "Token Deployed successfully 🎉",
-            text: "Thank You For you patronage, Click Okay to see token info",
-            icon: "success",
-            customClass: {
-                confirmButton: "SweatBtn",
-            },
-            buttonsStyling: false,
-        });
-    };
-
-    const handleFailure = (msg) => {
-        return MySwal.fire({
-            title: "Failed",
-            text: msg,
-            icon: "error",
-            customClass: {
-                confirmButton: "SweatBtn",
-            },
-            buttonsStyling: false,
-        });
-    };
-
     const onSubmit = async (values) => {
         setTokenInfo(values)
         setIsSubmitting(true)
@@ -189,7 +189,6 @@ export default function FormData() {
                         {isSubmitting ? <Box>
                             <Spinner />
                         </Box> : null}
-                        {/* <Account triedToEagerConnect={triedToEagerConnect} /> */}
                     </Flex>
                     {/* <br />
                     <br />
