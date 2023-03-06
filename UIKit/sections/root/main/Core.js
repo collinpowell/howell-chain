@@ -20,6 +20,6 @@ export default Core;
 const styles = {
   container: {
     mt: ["185px", null, null, "155px"],
-    px:'50px'
+    px:[0, null, null, "45px"],
   },
 };

@@ -47,7 +47,7 @@ const ICO = () => {
                 }}>
                     <Heading >Create an ICO - <span> Fair Launch</span></Heading>
                     <br />
-                    <Text>Create an ICO fair launch quick and easy</Text>
+                    <Text>Create an ICO fair launch in 3 easy steps</Text>
                 </Box>
 
                 <FormCard currentStep={formStep} prevFormStep={prevFormStep}>
@@ -60,8 +60,7 @@ const ICO = () => {
                     {formStep == 2 && (
                         <ProjectDetails formStep={formStep} nextFormStep={nextFormStep} selectedChain={selectedChain} prevFormStep={prevFormStep} />
                     )}
-
-                    {formStep > 2 && <FormCompleted selectedChain={selectedChain}/>}
+                    {formStep > 2 && <FormCompleted selectedChain={selectedChain} formStep={formStep} prevFormStep={prevFormStep}/>}
                 </FormCard>
             </Container>
 
@@ -103,7 +102,7 @@ function FormCard({ children, currentStep, prevFormStep }) {
                                 width: '30px',
                                 height: '30px',
                                 textAlign: 'center',
-                            }} className={currentStep == i ? 'active' : null}>
+                            }} className={currentStep >= i ? 'active' : null}>
                                 <Text as={'p'} sx={{
                                     position: 'absolute',
                                     left: 0, right: 0, top: '20%', bottom: 0, margin: 'auto'
@@ -147,8 +146,12 @@ function VerifyToken({ formStep, nextFormStep, selectedChain, prevFormStep }) {
 
             <Box as="form" onSubmit={handleSubmit(onSubmit)} noValidate>
                 <Box>
+                    <br />
                     <Flex sx={{
-                        justifyContent: 'space-between'
+                        justifyContent: 'space-between',
+                        button:{
+                            width:['50%',null,null,'fit-content']
+                        }
                     }}>
                         <Label htmlFor="address">Token Address</Label>
 
@@ -286,10 +289,11 @@ function ICODetails({ formStep, nextFormStep, selectedChain, prevFormStep }) {
                 </Box>
                 <br />
                 <Box>
-                    <Label htmlFor="rate">Anticipated Rate (how many token per {selectedChain.symbol})</Label>
-                    <Input type="number" name="rate" {...register("rate", {
-                    })} id="rate" my={3} placeholder="50" />
-                    <Text variant='danger'>{errors.rate && errors.rate.message}</Text>
+                    <Label htmlFor="anticipatedRate">Anticipated anticipatedRate (how many token per {selectedChain.symbol})</Label>
+                    <Input type="number" name="anticipatedRate" {...register("anticipatedRate", {
+                        required: "Required"
+                    })} id="anticipatedRate" my={3} placeholder="50" />
+                    <Text variant='danger'>{errors.anticipatedRate && errors.anticipatedRate.message}</Text>
                 </Box>
                 <br />
                 <Flex sx={{

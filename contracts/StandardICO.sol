@@ -82,7 +82,7 @@ contract Presale is ReentrancyGuard, Context, Ownable {
 
   /* ========== CONSTRUCTOR ========== */
   constructor (
-    IERC20 _token,
+    address _token,
     uint256 _decimals,
     uint256 _poolFee,
     uint256 _affiliate,
@@ -96,7 +96,7 @@ contract Presale is ReentrancyGuard, Context, Ownable {
     require(msg.value > 0, 'Insufficient Funds');
     feeAddress.transfer(msg.value);
     wallet = payable(_msgSender());
-    token = _token;
+    token = IERC20(_token);
     decimals = _decimals;
     poolFee = _poolFee;
     affiliate = _affiliate;
@@ -151,6 +151,10 @@ contract Presale is ReentrancyGuard, Context, Ownable {
 
   function getSoftCap() public view returns (uint256) {    
     return softCap;
+  }
+
+  function getHardCap() public view returns (uint256) {    
+    return presaleTokens.div(anticipatedRate);
   }
 
   function getContributors() public view returns (uint256) {    

@@ -1,8 +1,13 @@
-import { Text, Heading, Flex,Button,Spinner,Box } from "theme-ui";
+/* eslint-disable react/no-unknown-property */
+/** @jsxImportSource theme-ui */
+import { Text, Heading, Flex, Image, Button, Spinner, Box } from "theme-ui";
 import { useFormData } from "../../contexts/form";
+import React from "react";
 import { useWeb3React } from "@web3-react/core";
 import Party from '../../UIKit/components/Party'
+import useContract from '../../Web3Hooks/useContract'
 import ABI from '../../artifacts/contracts/StandardICO.sol/Presale.json'
+import tokenABI from "../../artifacts/contracts/SheerCoin.sol/Sheer.json";
 import { ContractFactory, ethers } from 'ethers';
 import { useState } from "react";
 import { useRouter } from 'next/router'
@@ -10,124 +15,383 @@ import { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 const MySwal = withReactContent(Swal)
-
-function FormCompleted({selectedChain}) {
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
     const { data } = useFormData();
+    data.tokenDecimal = data.tokenInfo.decimals
+    data.tokenName = data.tokenInfo.name
+    data.tokenSymbol = data.tokenInfo.symbol
+    data.hardCap = data.preSaleTokens / data.anticipatedRate
+
+    console.log(data)
+    const tokenContract = useContract(data.address, tokenABI.abi, true)
     const router = useRouter()
     const { library, account, chainId } = useWeb3React();
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [isSubmitted, setIsSubmitted] = useState(false)
+    const [currentStep, setCurrentStep] = useState(-1)
 
     const keys = Object.keys(data);
-
-    console.log(keys);
-
-    keys.forEach((key) => {
-        console.log(`${key}: ${data[key]}`);
-    });
-
+    const totalSteps = [1, 2, 3];
+    keys.sort()
     const onSubmit = async () => {
-        setIsSubmitting(true)
         if (!account) {
             handleFailure("Connect Wallet")
-            setIsSubmitting(false)
             return;
         }
-
-
+        if (selectedChain.chainId != chainId) {
+            handleFailure("Connect to " + selectedChain.chainName)
+            return;
+        }
+        setIsSubmitting(true)
+        setCurrentStep(0)
         const factory = new ContractFactory(ABI.abi, ABI.bytecode, library.getSigner(account));
+        console.log(data.address,
+            data.tokenInfo.decimals.toString(),
+            selectedChain.poolFee,
+            data.affiliate,
+            data.softCap,
+            data.rate,
+            data.startDate.getTime().toString(),
+            data.endDate.getTime().toString(),
+            data.preSaleTokens,
+            selectedChain.poolCreationFee,
+            ethers.utils.parseUnits(selectedChain.poolCreationFee, "ether"))
+
 
         try {
             // If your contract requires constructor args, you can specify them here
             const contract = await factory.deploy(
-                values.name,
-                values.symbol,
-                values.total,
-                values.decimal,
+                data.address,
+                data.tokenInfo.decimals,
+                Number(selectedChain.poolFee),
+                Number(data.affiliate),
+                Number(data.softCap),
+                Number(data.anticipatedRate),
+                data.startDate.getTime(),
+                data.endDate.getTime(),
+                Number(data.preSaleTokens),
                 {
-                    value: ethers.utils.parseUnits(selectedChain.poolCreationFee, "ether"),
+                    value: ethers.utils.parseUnits(selectedChain.poolCreationFee, "ether")
                 }
             )
             const deploymentReceipt = await contract.deployTransaction.wait(1)
+            setCurrentStep(1)
+            data.txHash = deploymentReceipt.transactionHash
+            data.icoAddress = contract.address
+            data.deployer = deploymentReceipt.from
+            const tokenResult = await tokenContract.transfer(
+                contract.address,
+                ethers.utils.parseUnits(data.preSaleTokens, data.tokenInfo.decimals))
+            await tokenResult.wait(1)
             console.log(`Fair launch deployed to ${contract.address}`)
-            console.log(deploymentReceipt);
-            values.txHash = deploymentReceipt.transactionHash
-            values.contractAddress = contract.address
-            values.deployer = deploymentReceipt.from
-
-            console.log(contract.deployTransaction);
             handleSuccess('Fair launch Creation Successful')
+            setCurrentStep(2)
             setIsSubmitting(false)
             setIsSubmitted(true)
         } catch (error) {
             setIsSubmitting(false)
             if (error.data) {
-                handleFailure("Error message " + error.data.message);
+                handleFailure(error.data.message);
 
             } else {
-                handleFailure("Error message " + error.reason);
+                handleFailure(error.message);
             }
+            setCurrentStep(-1)
         }
         setIsSubmitting(false)
     };
     return (
-        <>
+        <Box sx={{
+            textAlign: 'center',
+            hr: {
+                opacity: '0.2',
+                my: '15px'
+            }
+        }}>
             {isSubmitted && <Party />}
-            <Heading>Yay 🎉,You are all set, confirm info and Kindly read note below before submission</Heading>
+            <Heading>Yay 🎉,You are all set</Heading>
+            <br />
+            <Text as={'p'} variant="title">Confirm info and Kindly read note below before submission</Text>
+            <br />
+            <br />
             {
                 keys.map((key, index) => {
-                    return (
-                        <>
-                        <hr />
-                        <Flex key={index} sx={{
-                            justifyContent: 'space-between',
-                        }}>
-                            <Text as={'p'}>{key + ': '}</Text>
-                            <Text as={'p'} sx={{
-                                wordBreak:'break-all'
-                            }}>{data[key].toString()}</Text>
-                        </Flex>
-                        </>
+                    if (!data[key]) {
+                        return null
+                    }
+                    switch (key) {
+                        case 'tokenInfo':
+                            return null
+                        case 'preSaleTokens':
+                            return  (
+                                <>
+                                    <Flex key={index} sx={{
+                                        justifyContent: ['center', null, null, 'space-between'],
+                                        flexDirection: ['column', null, null, 'row'],
+                                    }}>
+                                        <Text as={'p'} sx={{
+                                            fontWeight: 'bold',
+                                            mb: ['8px', null, null, '0']
+                                        }}>{key + ': '}</Text>
+                                        <Text as={'p'} sx={{
+                                            wordBreak: 'break-all'
+                                        }}>{numberWithCommas(data[key]) +' '+ data.tokenSymbol}</Text>
+                                    </Flex>
+                                    <hr />
+                                </>
 
-                    )
+                            )
+                        case 'anticipatedRate':
+                            return  (
+                                <>
+                                    <Flex key={index} sx={{
+                                        justifyContent: ['center', null, null, 'space-between'],
+                                        flexDirection: ['column', null, null, 'row'],
+                                    }}>
+                                        <Text as={'p'} sx={{
+                                            fontWeight: 'bold',
+                                            mb: ['8px', null, null, '0']
+                                        }}>{key + ': '}</Text>
+                                        <Text as={'p'} sx={{
+                                            wordBreak: 'break-all'
+                                        }}>{numberWithCommas(data[key]) +' '+data.tokenSymbol+' Per ' + selectedChain.symbol}</Text>
+                                    </Flex>
+                                    <hr />
+                                </>
+
+                            )
+                        case 'affiliate':
+                            return (
+                                <>
+                                    <Flex key={index} sx={{
+                                        justifyContent: ['center', null, null, 'space-between'],
+                                        flexDirection: ['column', null, null, 'row'],
+                                    }}>
+                                        <Text as={'p'} sx={{
+                                            fontWeight: 'bold',
+                                            mb: ['8px', null, null, '0']
+                                        }}>{key + ': '}</Text>
+                                        <Text as={'p'} sx={{
+                                            wordBreak: 'break-all'
+                                        }}>{data[key] +'% of Raised Funds'}</Text>
+                                    </Flex>
+                                    <hr />
+                                </>
+
+                            )
+                        case 'softCap':
+                        case 'hardCap':
+                            return (
+                                <>
+                                    <Flex key={index} sx={{
+                                        justifyContent: ['center', null, null, 'space-between'],
+                                        flexDirection: ['column', null, null, 'row'],
+                                    }}>
+                                        <Text as={'p'} sx={{
+                                            fontWeight: 'bold',
+                                            mb: ['8px', null, null, '0']
+                                        }}>{key + ': '}</Text>
+                                        <Text as={'p'} sx={{
+                                            wordBreak: 'break-all'
+                                        }}>{Math.round(data[key]) + ' ' + selectedChain.symbol}</Text>
+                                    </Flex>
+                                    <hr />
+                                </>
+
+                            )
+                        case 'address':
+                            return <>
+                                <Flex key={index} sx={{
+                                    justifyContent: ['center', null, null, 'space-between'],
+                                    flexDirection: ['column', null, null, 'row'],
+                                }}>
+                                    <Text as={'p'} sx={{
+                                        fontWeight: 'bold',
+                                        mb: ['8px', null, null, '0']
+                                    }}>{'Token Address: '}</Text>
+                                    <Text as={'p'} sx={{
+                                        wordBreak: 'break-all'
+                                    }}>
+                                        <a href={selectedChain.explorer + '/token/' + data[key]} target="_blank" rel="noopener noreferrer">
+                                            {data[key]}</a> </Text>
+                                </Flex>
+                                <hr />
+                            </>
+                        case 'logo':
+                            return <>
+                                <Flex key={index} sx={{
+                                    justifyContent: ['center', null, null, 'space-between'],
+                                    flexDirection: ['column', null, null, 'row'],
+                                    img: {
+                                        mx: ['auto', null, null, '0']
+                                    }
+                                }}>
+                                    <Text as={'p'} sx={{
+                                        fontWeight: 'bold',
+                                        mb: ['8px', null, null, '0']
+                                    }}>{key + ': '}</Text>
+                                    <Image src={data[key]} width={40} height={40} alt='Logo' />
+                                </Flex>
+                                <hr />
+                            </>
+                        default:
+                            return (
+                                <>
+                                    <Flex key={index} sx={{
+                                        justifyContent: ['center', null, null, 'space-between'],
+                                        flexDirection: ['column', null, null, 'row'],
+                                    }}>
+                                        <Text as={'p'} sx={{
+                                            fontWeight: 'bold',
+                                            mb: ['8px', null, null, '0']
+                                        }}>{key + ': '}</Text>
+                                        <Text as={'p'} sx={{
+                                            wordBreak: 'break-all'
+                                        }}>{data[key]?.toString()}</Text>
+                                    </Flex>
+                                    <hr />
+                                </>
+
+                            )
+                    }
+
                 })
             }
             <br />
-                    <Flex sx={{
-                        flexDirection: ['column', null, null, 'row'],
-                        justifyContent: 'space-between',
-                    }}>
-                        {!isSubmitting && !isSubmitted ? <Button onClick={onSubmit}>Deploy</Button> : null}
-                        {isSubmitting ? <Box>
-                            <Spinner />
-                        </Box> : null}
+            <Flex sx={{
+                justifyContent: 'space-between',
+                position: 'relative',
+                mx: '25px',
+                my: '25px',
+                '.active': {
+                    color: 'background',
+                    background: 'text',
+                    transform: 'scale(1.5)'
+                }
+            }}>
+                <hr sx={{
+                    opacity: '0.2',
+                    position: 'absolute',
+                    width: '100%',
+                    top: '10%'
+                }} />
+                {
+                    totalSteps.map((value, i) => {
+                        return (
+
+                            <Box key={i} sx={{
+                                position: 'relative'
+                            }}>
+                                <Box sx={{
+                                    borderRadius: '50%',
+                                    position: 'relative',
+                                    transition: '1s ease-out',
+                                    background: 'glide',
+                                    width: '30px',
+                                    height: '30px',
+                                    textAlign: 'center',
+                                }} className={i <= currentStep ? 'active' : null}>
+                                    <Text as={'p'} sx={{
+                                        position: 'absolute',
+                                        left: 0, right: 0, top: '20%', bottom: 0, margin: 'auto'
+                                    }}>{value}</Text>
+                                </Box>
+                                <Box sx={{
+                                    position: 'absolute',
+                                    mt: '20px',
+                                    left: '-75%'
+                                    //bottom:'0'
+                                }}>
+                                    {value == 1 && <Text as={'p'}>Deploying Contract</Text>}
+                                    {value == 2 && <Text as={'p'}>Transferring Tokens to Contract</Text>}
+                                    {value == 3 && <Text as={'p'}>Finalizing</Text>}
+                                </Box>
+                            </Box>
+                        )
+                    })
+                }
+            </Flex>
+            <br />
+            <br />
+            <br />
+            <br />
+            <Flex sx={{
+                flexDirection: ['column', null, null, 'row'],
+                justifyContent: 'space-between',
+                button: {
+                    width: ['100%', null, null, 'fit-content']
+                }
+            }}>
+                {!isSubmitting && !isSubmitted ?
+                    <Flex>
+                        {formStep > 0 && (
+                            <Button
+                                onClick={prevFormStep}
+                            >
+                                Back
+                            </Button>
+                        )}
+                        &nbsp;
+                        &nbsp;
+                        <Button onClick={onSubmit}>Deploy</Button>
                     </Flex>
-        </>
+                    : null}
+                {isSubmitting ? <Box>
+                    <Spinner />
+                </Box> : null}
+            </Flex>
+            {isSubmitted && <Flex sx={{
+                justifyContent: 'center',
+                flexDirection: ['column', null, null, 'row'],
+                a: {
+                    width: '100%'
+                },
+                button: {
+                    width: '100%'
+                }
+            }}>
+                <a href={selectedChain.explorer + '/tx/' + data.txHash} target="_blank" rel="noopener noreferrer">
+                    <Button>View transaction</Button>
+                </a>
+                &nbsp;
+                &nbsp;
+                <Button onClick={() => {
+                    const localChain = typeof window !== 'undefined' ? localStorage.getItem('chain') : undefined
+                    router.push({
+                        pathname: '/funding/' + data.icoAddress,
+                        query: { ...router.query, chain: localChain ? localChain : 'BSC' },
+                    });
+                }}>View Sale</Button>
+            </Flex>}
+        </Box>
     );
 }
 
 export default FormCompleted
 
- const handleSuccess = () => {
-        return MySwal.fire({
-            title: "Token Deployed successfully 🎉",
-            text: "Thank You For you patronage, Click Okay to see token info",
-            icon: "success",
-            customClass: {
-                confirmButton: "SweatBtn",
-            },
-            buttonsStyling: false,
-        });
-    };
+const handleSuccess = () => {
+    return MySwal.fire({
+        title: "Fair Launch ICO Created successfully 🎉",
+        text: "Thank You For you patronage, Click Okay to see info",
+        icon: "success",
+        customClass: {
+            confirmButton: "SweatBtn",
+        },
+        buttonsStyling: false,
+    });
+};
 
-    const handleFailure = (msg) => {
-        return MySwal.fire({
-            title: "Failed",
-            text: msg,
-            icon: "error",
-            customClass: {
-                confirmButton: "SweatBtn",
-            },
-            buttonsStyling: false,
-        });
-    };
+const handleFailure = (msg) => {
+    return MySwal.fire({
+        title: "Failed",
+        text: msg,
+        icon: "error",
+        customClass: {
+            confirmButton: "SweatBtn",
+        },
+        buttonsStyling: false,
+    });
+};

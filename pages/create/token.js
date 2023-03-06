@@ -98,10 +98,10 @@ export default function FormData() {
         } catch (error) {
             setIsSubmitting(false)
             if (error.data) {
-                handleFailure("Error message " + error.data.message);
+                handleFailure(error.data.message);
 
             } else {
-                handleFailure("Error message " + error.reason);
+                handleFailure(error.message);
             }
         }
         setIsSubmitting(false)

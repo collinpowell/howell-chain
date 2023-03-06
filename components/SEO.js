@@ -1,10 +1,10 @@
 import Head from 'next/head';
 
 export default function Seo({
-  description = 'Howrea Blockchain Network',
+  description = 'Howrea Launchpad, Deploy your token on BSC,ETH,LOOP and all othe evm supported chain, take your project to the top with our platform, Host and ICO on our platform safe and secure for investors and project owners',
   author = 'Howrea Developer',
   meta,
-  title = 'Howrea | Home',
+  title = 'Launchpad | Home',
 }) {
   const metaData = [
     {
