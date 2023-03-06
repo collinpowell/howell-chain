@@ -1,25 +1,12 @@
 import useSWR from "swr";
 import useKeepSWRDataLiveAsBlocksArrive from "../useKeepSWRDataLiveAsBlocksArrive";
 import useContract from "../useContract";
-import ABI from "../../artifacts/contracts/Presale.sol/Presale.json";
+import ABI from "../../artifacts/contracts/StandardICO.sol/Presale.json";
 import { parseBalance } from "../../Util/util";
 
-function getMinBuy(contract) {
-  return async (_) => {
-    const result = await contract.minPurchase();
-    return result;
-  };
-}
-
-function getMaxBuy(contract) {
-  return async (_) => {
-    const result = await contract.maxPurchase();
-    return result;
-  };
-}
 function getRate(contract) {
   return async (_) => {
-    const result = await contract.getRate();
+    const result = await contract.getCurrentRate();
     return result;
   };
 }
@@ -39,39 +26,32 @@ function getSoftCap(contract) {
 
 function getEndICO(contract) {
   return async (_) => {
-    const result = await contract.endICO();
+    const result = await contract.getEndTime();
+    return result;
+  };
+}
+
+function getStartICO(contract) {
+  return async (_) => {
+    const result = await contract.getStartTime();
     return result;
   };
 }
 
 function getWeiRaised(contract) {
   return async (_) => {
-    const result = await contract.weiRaised();
+    const result = await contract.getRaised();
     return result;
   };
 }
 
-function getAvaTokens(contract) {
-  return async (_) => {
-    const result = await contract.availableTokensICO();
-    return result;
-  };
-}
-
-export default function useSaleData(suspense = false) {
-  const contractAddress = process.env.NEXT_PUBLIC_PREICO_CONTRACT;
+export default function useSaleData(contractAddress, suspense = false) {
+  //console.log(address)
   const contract = useContract(contractAddress, ABI.abi, false);
-
-  const resultMinBuy = useSWR(
-    [contractAddress, "minPurchase", ""],
-    getMinBuy(contract),
-    {
-      suspense,
-    }
-  );
-  const resultMaxBuy = useSWR(
-    [contractAddress, "maxPurchase", ""],
-    getMaxBuy(contract),
+  
+  const resultRate = useSWR(
+    [contractAddress, "getCurrentRate", ""],
+    getRate(contract),
     {
       suspense,
     }
@@ -84,6 +64,7 @@ export default function useSaleData(suspense = false) {
       suspense,
     }
   );
+
   const resultSoftCap = useSWR(
     [contractAddress, "getSoftCap", ""],
     getSoftCap(contract),
@@ -93,53 +74,42 @@ export default function useSaleData(suspense = false) {
   );
 
   const resultFundsRaised = useSWR(
-    [contractAddress, "weiRaised", ""],
+    [contractAddress, "getRaised", ""],
     getWeiRaised(contract),
     {
       suspense,
     }
   );
 
-  const resultRate = useSWR(
-    [contractAddress, "getRate", ""],
-    getRate(contract),
-    {
-      suspense,
-    }
-  );
-
-  const resultAvaTokens = useSWR(
-    [contractAddress, "availableTokensICO", ""],
-    getAvaTokens(contract),
-    {
-      suspense,
-    }
-  );
-
   const resultEndICO = useSWR(
-    [contractAddress, "endICO", ""],
+    [contractAddress, "getEndTime", ""],
     getEndICO(contract),
     {
       suspense,
     }
   );
 
-  useKeepSWRDataLiveAsBlocksArrive(resultMinBuy.mutate);
-  useKeepSWRDataLiveAsBlocksArrive(resultMaxBuy.mutate);
+  const resultStartICO = useSWR(
+    [contractAddress, "getStartTime", ""],
+    getStartICO(contract),
+    {
+      suspense,
+    }
+  );
+
+  useKeepSWRDataLiveAsBlocksArrive(resultStartICO.mutate);
+  useKeepSWRDataLiveAsBlocksArrive(resultEndICO.mutate);
   useKeepSWRDataLiveAsBlocksArrive(resultSoftCap.mutate);
   useKeepSWRDataLiveAsBlocksArrive(resultHardCap.mutate);
   useKeepSWRDataLiveAsBlocksArrive(resultFundsRaised.mutate);
   useKeepSWRDataLiveAsBlocksArrive(resultRate.mutate);
-  useKeepSWRDataLiveAsBlocksArrive(resultAvaTokens.mutate);
 
-  return { 
-    minBuy: parseBalance(resultMinBuy.data ?? 0,18,1),
-    maxBuy: parseBalance(resultMaxBuy.data ?? 0,18,1),
+  return {
     hardCap: resultHardCap.data ?? 0,
     softCap: resultSoftCap.data ?? 0,
-    avaTokens: parseBalance(resultAvaTokens.data ?? 0,18,0),
-    fundsRaised: parseBalance(resultFundsRaised.data ?? 0,18,1),
+    fundsRaised: parseBalance(resultFundsRaised.data ?? 0, 18, 1),
     rate: resultRate.data ?? 0,
-    endTime: resultEndICO.data ?? 0
-   };
+    endTime: resultEndICO.data ?? 0,
+    startTime: resultEndICO.data ?? 0
+  };
 }

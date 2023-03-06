@@ -137,7 +137,7 @@ const Header = () => {
   }
 
   const ChainDrop = ({ data, i }) => {
-    console.log(data)
+    //console.log(data)
     return (
       <Box className="relative">
         <Button key={i} variant='text' onClick={() => {
@@ -373,7 +373,7 @@ const Header = () => {
             <Flex>
               {(typeof window !== 'undefined' ? localStorage?.getItem('chain') : undefined) && chains.map((data, i) => {
                 const localChain = typeof window !== 'undefined' ? localStorage?.getItem('chain') : undefined
-                console.log(localChain, data.slug, localChain && localChain == data.slug)
+                //console.log(localChain, data.slug, localChain && localChain == data.slug)
                 return localChain && localChain == data.slug ? (
                   <ChainDrop data={data} i={i} />
                 ) : null

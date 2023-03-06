@@ -18,6 +18,12 @@ export default function Home() {
     <>
       <SEO title='Howrea | Funding' description='Public ICO coming up, $1,000,000' />
       <Header />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <Hero />
       <Partners />
       <Stats saleData={saleData} />

@@ -3,7 +3,7 @@ import { ArrowRight } from "../assets/Icons"
 const ScrollTopView = (props) => {
     const { onScroll, onVisbile, visible } = props
 
-    console.log(visible)
+    //console.log(visible)
     if (typeof window === 'object') window.addEventListener('scroll', onVisbile)
 
     return (

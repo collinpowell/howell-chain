@@ -121,7 +121,7 @@ const Account = ({ triedToEagerConnect }) => {
       }
       if(localStorage && localStorage.getItem('chain') == chains[i].slug){
         setSelectedChain(chains[i])
-        console.log(chains[i])
+        //console.log(chains[i])
       }
     }
     async function changeTO(data) {
@@ -166,7 +166,7 @@ const Account = ({ triedToEagerConnect }) => {
       }
     }
   
-    console.log(selectedChain.chainId,chainId)
+    //console.log(selectedChain.chainId,chainId)
     if(selectedChain.chainId != chainId){
       //changeTO(selectedChain)
     }

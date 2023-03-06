@@ -111,7 +111,14 @@ contract Presale is ReentrancyGuard, Context, Ownable {
   /* ========== VIEWS FUNCTIONS ========== */
   // Public View
 
-  
+  function getStartTime() public view returns (uint256){
+    return startTime;
+  }
+
+   function getEndTime()public view returns (uint256){
+    return endTime;
+  }
+
   function getRaised() public view returns (uint256) {    
     return amountRaised;
   }
