@@ -4,6 +4,7 @@ import useSaleData from "../../Web3Hooks/Presale/useSaleData";
 import SEO from '../../components/SEO'
 import Header from '../../UIKit/layout/Header';
 import {useRouter} from 'next/router'
+import { useState,useEffect } from 'react';
 
 export default function Home() {
   const router = useRouter();

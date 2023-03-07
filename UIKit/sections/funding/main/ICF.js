@@ -44,6 +44,24 @@ const Presale = ({ saleData, icoAddress, chain }) => {
     },
   ]
 
+  const affiliate = [
+    {
+      value: data.reward + ' ' + chain.symbol ,
+      title: "Your Reward",
+    },
+    {
+      value: saleData.totalReferrers,
+      title: "Pool Referrer Count",
+    },
+    {
+      value: saleData.affiliatePercent,
+      title: "Reward Percentage",
+    },
+    {
+      value: saleData.currentRewards + " " + chain.symbol,
+      title: "Total Current Rewards",
+    },
+  ]
   const balance = useETHBalance(account);
 
   const ethBal = parseBalance(balance.data ?? 0);
@@ -214,9 +232,9 @@ const Presale = ({ saleData, icoAddress, chain }) => {
           <Progress
             value={percent}
             style={{
-              height: "1.6rem",
+              height: ["1rem",null,null,"1.6rem"],
               border: "1px solid",
-              borderRadius: "5rem",
+              borderRadius: "4rem",
             }}
           />
           <br />
@@ -265,6 +283,37 @@ const Presale = ({ saleData, icoAddress, chain }) => {
           })}
 
         </Box>
+        {saleData.affiliatePercent > 0 && <Box id='affiliate' as="section" variant="boxes.glide" sx={{
+          textAlign: 'center',
+          mt: '50px',
+          hr: {
+            opacity: '0.2',
+            my: '15px'
+          }
+        }}>
+          <Text variant="title">Affiliate Program</Text>
+          <hr />
+          {affiliate.map(({ title, value }, i) => {
+            return (
+              <>
+                <Flex key={i} sx={{
+                  justifyContent: ['center', null, null, 'space-between'],
+                  flexDirection: ['column', null, null, 'row'],
+                }}>
+                  <Text as={'p'} sx={{
+                    fontWeight: 'bold',
+                    mb: ['8px', null, null, '0']
+                  }}>{title + ': '}</Text>
+                  <Text as={'p'} sx={{
+                    wordBreak: 'break-all'
+                  }}>{value}</Text>
+                </Flex>
+                <hr />
+              </>
+            )
+          })}
+
+        </Box>}
       </Container>
 
       {/* {account && <> <br />
