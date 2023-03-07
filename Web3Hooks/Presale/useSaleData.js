@@ -11,6 +11,14 @@ function getCurrentRate(contract) {
   };
 }
 
+function getOwner(contract) {
+  return async (_) => {
+    const result = await contract.owner();
+    return result;
+  };
+}
+
+
 function getRefund(contract) {
   return async (_) => {
     const result = await contract.getRefund();
@@ -247,6 +255,14 @@ export default function useSaleData(contractAddress, suspense = false) {
     }
   );
 
+  const resultOwner = useSWR(
+    [contractAddress, "owner", ""],
+    getOwner(contract),
+    {
+      suspense,
+    }
+  );
+
 
   useKeepSWRDataLiveAsBlocksArrive(resultRate.mutate);
   useKeepSWRDataLiveAsBlocksArrive(resultRefund.mutate);
@@ -266,21 +282,22 @@ export default function useSaleData(contractAddress, suspense = false) {
   useKeepSWRDataLiveAsBlocksArrive(resultFundsRaised.mutate);
 
   return {
-    currentRate: parseBalance(resultRate.data ?? 0,0,0),
+    currentRate: parseBalance(resultRate.data ?? 0, 0, 0),
     refund: resultRefund.data ?? false,
-    totalRefunds: parseBalance(resultTotalRefund.data ?? 0,0,0),
-    status: parseBalance(resultStatus.data ?? 0,0,0),
+    totalRefunds: parseBalance(resultTotalRefund.data ?? 0, 0, 0),
+    status: parseBalance(resultStatus.data ?? 0, 0, 0),
     tokenAddress: resultToken.data ?? 0,
-    icoSaleTokens: parseBalance(resultPresaleTokens.data ?? 0,0,0),
-    totalContributors: parseBalance(resultContributors.data ?? 0,0,0),
-    affiliatePercent: parseBalance(resultAffiliatePercentage.data ?? 0,0,0),
-    anticipatedRate: parseBalance(resultAnticipatedRate.data ?? 0,0,0),
-    totalReferrers: parseBalance(resultReferrerCount.data ?? 0,0,0),
-    currentRewards: parseBalance(resultCurrentRewards.data ?? 0,18,5),
-    hardCap: parseBalance(resultHardCap.data ?? 0,0,0),
-    softCap: parseBalance(resultSoftCap.data ?? 0,0,0),
-    startTime: parseBalance(resultStartICO.data ?? 0,0,0),
-    endTime: parseBalance(resultEndICO.data ?? 0,0,0),
+    owner: resultOwner.data ?? 0,
+    icoSaleTokens: parseBalance(resultPresaleTokens.data ?? 0, 0, 0),
+    totalContributors: parseBalance(resultContributors.data ?? 0, 0, 0),
+    affiliatePercent: parseBalance(resultAffiliatePercentage.data ?? 0, 0, 0),
+    anticipatedRate: parseBalance(resultAnticipatedRate.data ?? 0, 0, 0),
+    totalReferrers: parseBalance(resultReferrerCount.data ?? 0, 0, 0),
+    currentRewards: parseBalance(resultCurrentRewards.data ?? 0, 18, 5),
+    hardCap: parseBalance(resultHardCap.data ?? 0, 0, 0),
+    softCap: parseBalance(resultSoftCap.data ?? 0, 0, 0),
+    startTime: parseBalance(resultStartICO.data ?? 0, 0, 0),
+    endTime: parseBalance(resultEndICO.data ?? 0, 0, 0),
     fundsRaised: parseBalance(resultFundsRaised.data ?? 0, 18, 1),
   };
 }
