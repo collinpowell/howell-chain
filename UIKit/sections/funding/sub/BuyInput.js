@@ -19,13 +19,10 @@ const WhyChoose = ({
   var cost = Number(userInput * rate);
   return (
     <Box as="section" id="services" sx={styles.section}>
-      <Container sx={styles.container}>
         <Box sx={styles.post}>
           <Flex variant="boxes.newsLetter" sx={styles.countdown}>
             <NumberInput state={userInput} setState={setUserInput} />
-            <Text as="h1">{"BNB"}</Text>
-            <Text as="h2">=</Text>
-            <Text as="h1">{numberWithCommas(cost.toFixed(2))} SHRF</Text>
+            <Text as="h1">{"MAX"}</Text>
           </Flex>
           {spin &&  <Spinner sx={{ mx: "auto", marginTop: "20px" }} />}
           <div
@@ -40,7 +37,6 @@ const WhyChoose = ({
             <Button onClick={() => handleClick()}>Buy Now</Button>
           </div>
         </Box>
-      </Container>
     </Box>
   );
 };
@@ -79,7 +75,7 @@ const styles = {
   section: {
     textAlign: "center",
     mt: ["20px"],
-    pb: ["20px", "30px", null, "50px", "85px", null, "105px", "125px", "140px"],
+    //pb: ["20px", "30px", null, "50px", "85px", null, "105px", "125px", "140px"],
   },
   container: {
     position: "relative",

@@ -29,7 +29,6 @@ contract Presale is ReentrancyGuard, Context, Ownable {
   mapping (address => RA[]) private buyerRewardees;
   uint256 private referrerCount;
   uint256 private currentRewards;
-  uint256 private minReward;
 
 
   IERC20 private token;
@@ -71,12 +70,13 @@ contract Presale is ReentrancyGuard, Context, Ownable {
     _;
   }
   modifier Cancelled() {
-    require(startRefund, "Refund not started");
+    require(startRefund || (getStatus() == 3 && amountRaised < softCap.mul(10**18)), "Refund not started");
     _;
   }
   
   modifier Ended() {
-    require(getStatus() == 3, 'ICO should not be active');
+    require(getStatus() == 3, 'Invalid Operation');
+    require(amountRaised >= softCap.mul(10**18), 'Softcap not reached');
     _;
   }
 
@@ -135,13 +135,17 @@ contract Presale is ReentrancyGuard, Context, Ownable {
   function getStatus() public view returns (uint) {
     if(startRefund){
       return 4;
-    }else if(block.timestamp < startTime){
+    }else if(block.timestamp < startTime.div(1000)){
       return 1;
-    }else if(block.timestamp < endTime){
+    }else if(block.timestamp < endTime.div(1000)){
       return 2;
     }else{
       return 3;
     }
+  }
+
+  function getTimeStamp() public view returns(uint) {
+    return block.timestamp;
   }
 
   function getToken() public view returns (address) {    
@@ -182,10 +186,6 @@ contract Presale is ReentrancyGuard, Context, Ownable {
 
   function getCurrentRewards() public view returns (uint256) {    
     return currentRewards;
-  }
-
-  function getMinReward() public view returns (uint256) {    
-    return minReward;
   }
 
   // Address Specific
@@ -271,7 +271,6 @@ contract Presale is ReentrancyGuard, Context, Ownable {
     uint256 tokens = getCurrentRate() ** contributions[_msgSender()];
     _deliverTokens(_msgSender(), tokens);
     contributions[_msgSender()] = 0;
-
   }
 
   // Cancel Pool - implication: refund
@@ -279,6 +278,7 @@ contract Presale is ReentrancyGuard, Context, Ownable {
     totalRefunds = amountRaised;
     startRefund = true;
     endTime = 0;
+    token.transfer(msg.sender,token.balanceOf(address(this)));
     emit Failed(address(this), owner(), totalRefunds,"Cancelled");
 
   }
@@ -293,19 +293,22 @@ contract Presale is ReentrancyGuard, Context, Ownable {
       totalRefunds = totalRefunds.sub(amount);
     }
   }
-
+  // Widthdraw Tokens
+  // Cancel Pool - implication: refund
+  function withdrawTokens() external Cancelled onlyOwner{
+    token.transfer(msg.sender,token.balanceOf(address(this)));
+    emit Failed(address(this), owner(), totalRefunds,"Ended");
+  }
   // finalize
   function finalize() external Ended onlyOwner{
-    uint amount = amountRaised;
-    if(amount >= softCap.mul(10**18)){
-      uint256 fee = poolFee.mul(amount).div(100);
+      uint256 fee = poolFee.mul(amountRaised).div(100);
       feeAddress.transfer(fee);
-      payable(msg.sender).transfer(amount.sub(fee));
-      emit Success(address(this), owner(), amount);
-    }else{
-      startRefund == true;
-      emit Failed(address(this), owner(), amount,"Softcap");
-    }
+      payable(msg.sender).transfer(amountRaised.sub(fee));
+      emit Success(address(this), owner(), amountRaised);
+    // }else{
+    //   startRefund == true;
+    //   emit Failed(address(this), owner(), amountRaised,"Softcap");
+    // }
 
       //emit Success(address(this), owner(), amount);
   }
@@ -330,7 +333,7 @@ contract Presale is ReentrancyGuard, Context, Ownable {
 
   function _preValidatePurchase(address beneficiary, uint256 weiAmount) pure internal {
     require(beneficiary != address(0), "Crowdsale: beneficiary is the zero address");
-    require(weiAmount <=  0, 'Invalid contribution amount');
+    require(weiAmount >  0, "Invalid contribution amount");
   }
 
   function _contribute(address beneficiary, address rewardAddress,uint256 value) internal {

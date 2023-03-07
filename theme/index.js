@@ -406,7 +406,7 @@ export default {
     },
     glide: {
       background: "glide",
-      padding: ["60px 35px", null, null, "55px 45px"],
+      padding: ["30px 25px", null, null, "55px 45px"],
       borderRadius: "39.7px",
     },
   },

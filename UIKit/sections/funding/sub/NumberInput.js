@@ -1,4 +1,4 @@
-import { Box } from "theme-ui";
+import { Box,Input } from "theme-ui";
 
 const NumberInput = ({ state, setState }) => {
 
@@ -55,28 +55,26 @@ const NumberInput = ({ state, setState }) => {
           fontWeight: 'bold',
           height: '38px',
           padding: 0,
+          p:'0 !important',
           width: '38px',
-          border:'none',
+          border:'none !important',
           position: 'relative',
         },
         '.quantity-field': {
           position: 'relative',
-          border:'none',
+          border:'none !important',
           height: '38px',
-          left: '-6px',
+          px:'0 !important',
           textAlign: 'center',
           width: '250px',
           display: 'inline-block',
           margin: '0 0 5px',
           resize: 'vertical'
         },
-        '.button-plus': {
-          left: '-13px'
-        }
       }} >
-        <input type="button" value="-" className="button-minus" data-field="quantity" onClick={(e) => { decrementValue(e) }} />
-        <input type="number" step="1" max="" value={state} name="quantity" className="quantity-field" onChange={onHandleChange} />
-        <input type="button" value="+" className="button-plus" data-field="quantity" onClick={(e) => { incrementValue(e) }} />
+        <Input type="button" value="-" className="button-minus" data-field="quantity" onClick={(e) => { decrementValue(e) }} />
+        <Input type="number" step="1" max="" value={state} name="quantity" className="quantity-field" onChange={onHandleChange} />
+        <Input type="button" value="+" className="button-plus" data-field="quantity" onClick={(e) => { incrementValue(e) }} />
       </Box>
     </>
   )

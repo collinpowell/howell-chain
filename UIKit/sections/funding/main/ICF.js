@@ -4,37 +4,43 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 const CountDown = dynamic(import("react-countdown"), { ssr: false });
 import Buy from "../sub/BuyInput";
-import { ICF$ } from "../../../assets/Logos";
 import useETHBalance from "../../../../Web3Hooks/useETHBalance";
 import { useWeb3React } from "@web3-react/core";
 import { parseBalance } from "../../../../Util/util";
 import useSaleData from "../../../../Web3Hooks/Presale/useBuyData";
 import useContract from "../../../../Web3Hooks/useContract";
-import ABI from "../../../../artifacts/contracts/Presale.sol/Presale.json";
+import useTokenData from "../../../../Web3Hooks/ERC20/useTokenData";
+import ABI from "../../../../artifacts/contracts/StandardICO.sol/Presale.json";
 import { ethers } from "ethers";
 // ** Third Party Components
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 const MySwal = withReactContent(Swal);
 
-const Presale = ({ saleData }) => {
+const Presale = ({ saleData, icoAddress, chain }) => {
   const { account } = useWeb3React();
-  const contract = useContract(process.env.NEXT_PUBLIC_PREICO_CONTRACT, ABI.abi, true)
-  const data = useSaleData(account);
-  const [userInput, setUserInput] = useState(saleData.minBuy);
+  const contract = useContract(icoAddress, ABI.abi, true)
+  const data = useSaleData(account, icoAddress);
+  const tokenInfo = useTokenData(saleData.tokenAddress)
+  console.log(saleData.status)
+  const [userInput, setUserInput] = useState(1);
   const [spin, setSpin] = useState(false);
-  const features = [
+  const info = [
     {
-      title: (data.tokens * 0.1).toFixed(1) + " $",
-      text: "YOUR INVESTMENT",
+      value: saleData.status,
+      title: "Status",
     },
     {
-      title: data.tokens + " SHRF",
-      text: "REDEEMABLE TOKENS",
+      value: '1 ' + chain.symbol + ' = ' + saleData.currentRate + " " + tokenInfo.symbol,
+      title: "Current Rate",
     },
     {
-      title: (data.tokens * 0.15).toFixed(1) + " $",
-      text: "PROSPECTIVE VALUE",
+      value: saleData.totalContributors,
+      title: "Total Contributors",
+    },
+    {
+      value: data.contribution + " " + chain.symbol,
+      title: "Your Purchase",
     },
   ]
 
@@ -42,12 +48,12 @@ const Presale = ({ saleData }) => {
 
   const ethBal = parseBalance(balance.data ?? 0);
 
-  var percent = ((saleData.fundsRaised/ saleData.softCap) * 100).toFixed(5);
+  var percent = ((saleData.fundsRaised / saleData.softCap) * 100).toFixed(5);
 
   const handleSuccess = () => {
     return MySwal.fire({
       title: "Purchase Successful! 🎉",
-      text: "Thank You For you patronage, Claim tokens after ICO",
+      text: "Thank You For your patronage, Claim tokens after ICO",
       icon: "success",
       customClass: {
         confirmButton: "SweatBtn",
@@ -68,18 +74,8 @@ const Presale = ({ saleData }) => {
     });
   };
 
-  function handleClick() {
+  async function handleClick() {
     setSpin(true)
-    if (userInput < saleData.minBuy) {
-      handleFailure("Minimum Contribution is " + saleData.minBuy + " BNB")
-      setSpin(false)
-      return;
-    }
-    if (userInput > saleData.maxBuy) {
-      handleFailure("Max Contribution is " + saleData.maxBuy + " BNB")
-      setSpin(false)
-      return;
-    }
     if (!account) {
       handleFailure("Connect Wallet")
       setSpin(false)
@@ -95,26 +91,25 @@ const Presale = ({ saleData }) => {
       setSpin(false)
       return;
     }
-    //console.log(ethers.utils.parseUnits(userInput.toString(), "ether"))
-    contract.buyTokens(account, { value: ethers.utils.parseUnits(userInput.toString(), "ether") })
-      .then(function (result) {
-        handleSuccess('Buy Successful')
-        setSpin(false)
-      }).catch(function (error) {
-        setSpin(false)
-        if (error.data) {
-          handleFailure("Error message " + error.data.message);
 
-        } else {
-          handleFailure("Error message " + error.reason);
-        }
+    try {
+      await contract["contribute()"]({ value: ethers.utils.parseUnits(userInput.toString(), "ether") })
+      handleSuccess('Buy Successful')
+      setSpin(false)
+    } catch (error) {
+      setSpin(false)
+      if (error.data) {
+        handleFailure("Error message " + error.data.message);
 
-      });
+      } else {
+        handleFailure("Error message " + error.message);
+      }
+    }
     //contract.claimTokens()
   }
 
   const time = {
-    starting: new Date("Feb 25 2023 08:30:00 GMT+0100"),
+    starting: new Date(Number(saleData.startTime)),
     now: new Date(),
     ending: new Date(Number(saleData.endTime)),
   };
@@ -179,51 +174,100 @@ const Presale = ({ saleData }) => {
   };
   return (
     <>
-      <Box as="section" id="banner" sx={styles.section}>
-        <Container sx={styles.container1}>
+      <Container>
+        <Box as="section" id="banner" variant="boxes.glide" sx={{
+          position: 'relative',
+          textAlign: 'center',
+          mt: '50px',
+          border: saleData.affiliatePercent > 0 ? '3.5px solid' : 'none',
+          borderColor: 'text',
+          '&:before': {
+            content: saleData.affiliatePercent > 0 ? `'${'Affiliate ' + saleData.affiliatePercent + '%'}'` : null,
+            position: 'absolute',
+            width: 'fit-content',
+            background: 'text',
+            textAlign: 'center',
+            mx: 'auto',
+            right: 0,
+            left: 0,
+            color: 'background',
+            p: '5px 10px',
+            borderRadius: '15px',
+            mt: '-15px',
+            top: '0',
+            alignItems: 'center',
+          }
+        }}>
           <Box sx={styles.content1}>
-            <Heading>
-              <span>Initial Crowd funding</span>
-            </Heading>
             <Text as="p">
-              {time.now < time.starting ? "Starting Officially In" : "Ending In"}
+              {time.now < time.starting ? "Starting In" : time.now > time.ending ? "Ended" : "Ending In"}
             </Text>
           </Box>
-        </Container>
+          {time.ending > time.now &&
+            <CountDown
+              date={time.now < time.starting ? time.starting : time.ending}
+              renderer={renderer}
+            />
+          }
 
-        <Container sx={styles.container1}>
-          <Flex sx={styles.row}>
-            <Box sx={styles.content}>
-              <ICF$ />
-            </Box>
-          </Flex>
-        </Container>
-        <Container sx={styles.container1}>
-          <CountDown
-            date={time.now < time.starting ? time.starting : time.ending}
-            renderer={renderer}
+          <br />
+          <Progress
+            value={percent}
+            style={{
+              height: "1.6rem",
+              border: "1px solid",
+              borderRadius: "5rem",
+            }}
           />
-        </Container>
-      </Box>
-      <Container sx={styles.container1}>
-        <br />
-        <Progress
-          value={percent}
-          style={{
-            height: "1.6rem",
-            border: "1px solid",
-            borderRadius: "5rem",
-          }}
-        />
-        <br />
-        <Flex sx={{ justifyContent: "space-between", fontWeight: "bold" }}>
-          <Text as="p">
-            {percent + " % (" + saleData.fundsRaised + " BNB)"}
-          </Text>
-          <Text as="p">100%</Text>
-        </Flex>
+          <br />
+          <Flex sx={{ justifyContent: "space-between", fontWeight: "bold" }}>
+            <Text as="p">
+              {saleData.fundsRaised + " BNB"}
+            </Text>
+            <Text as="p">{saleData.softCap}</Text>
+          </Flex>
+          <Buy
+            handleClick={handleClick}
+            userInput={userInput}
+            setUserInput={setUserInput}
+            spin={spin}
+            setSpin={setSpin}
+            rate={saleData.rate}
+          />
+        </Box>
+
+        <Box as="section" id="info" variant="boxes.glide" sx={{
+          textAlign: 'center',
+          mt: '50px',
+          hr: {
+            opacity: '0.2',
+            my: '15px'
+          }
+        }}>
+          {info.map(({ title, value }, i) => {
+            return (
+              <>
+                <Flex key={i} sx={{
+                  justifyContent: ['center', null, null, 'space-between'],
+                  flexDirection: ['column', null, null, 'row'],
+                }}>
+                  <Text as={'p'} sx={{
+                    fontWeight: 'bold',
+                    mb: ['8px', null, null, '0']
+                  }}>{title + ': '}</Text>
+                  <Text as={'p'} sx={{
+                    wordBreak: 'break-all'
+                  }}>{value}</Text>
+                </Flex>
+                <hr />
+              </>
+            )
+          })}
+
+        </Box>
       </Container>
-      {account && <> <br />
+
+      {/* {account && <> <br />
         <br />
         <Container>
           <Grid gap={5} columns={[1, 1, 2, 2, 3, 3]}>
@@ -240,17 +284,10 @@ const Presale = ({ saleData }) => {
           </Grid>
         </Container>
         <br />
-        <br /></>}
+        <br /></>} */}
 
 
-      <Buy
-        handleClick={handleClick}
-        userInput={userInput}
-        setUserInput={setUserInput}
-        spin={spin}
-        setSpin={setSpin}
-        rate={saleData.rate}
-      />
+
       <br />
       <br />
       <Container sx={{ textAlign: 'center' }}>
@@ -269,8 +306,7 @@ const styles = {
     overflow: "hidden",
     boxSizing: "border-box",
     padding: "40px 10px",
-    minWidth: ["200px", null, "200px", "360px"],
-    maxWidth: ["300px", null, "1000px", "1000px"],
+    minWidth: ["90%", null, "200px", "360px"],
     mx: "auto",
     position: "relative",
     top: "0",

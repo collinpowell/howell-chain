@@ -17,7 +17,7 @@ import Header from '../../UIKit/layout/Header'
 const handleSuccess = () => {
     return MySwal.fire({
         title: "Token Deployed successfully 🎉",
-        text: "Thank You For you patronage, Click Okay to see token info",
+        text: "Thank You For your patronage, Click Okay to see token info",
         icon: "success",
         customClass: {
             confirmButton: "SweatBtn",

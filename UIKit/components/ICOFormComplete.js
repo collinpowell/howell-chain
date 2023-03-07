@@ -48,17 +48,7 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
         setIsSubmitting(true)
         setCurrentStep(0)
         const factory = new ContractFactory(ABI.abi, ABI.bytecode, library.getSigner(account));
-        console.log(data.address,
-            data.tokenInfo.decimals.toString(),
-            selectedChain.poolFee,
-            data.affiliate,
-            data.softCap,
-            data.rate,
-            data.startDate.getTime().toString(),
-            data.endDate.getTime().toString(),
-            data.preSaleTokens,
-            selectedChain.poolCreationFee,
-            ethers.utils.parseUnits(selectedChain.poolCreationFee, "ether"))
+
 
 
         try {
@@ -67,7 +57,7 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
                 data.address,
                 data.tokenInfo.decimals,
                 Number(selectedChain.poolFee),
-                Number(data.affiliate),
+                Number(data.affiliate ? data.affiliate : 0),
                 Number(data.softCap),
                 Number(data.anticipatedRate),
                 data.startDate.getTime(),
@@ -362,7 +352,7 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
                     const localChain = typeof window !== 'undefined' ? localStorage.getItem('chain') : undefined
                     router.push({
                         pathname: '/funding/' + data.icoAddress,
-                        query: { ...router.query, chain: localChain ? localChain : 'BSC' },
+                        query: { chain: localChain ? localChain : 'BSC' },
                     });
                 }}>View Sale</Button>
             </Flex>}
@@ -375,7 +365,7 @@ export default FormCompleted
 const handleSuccess = () => {
     return MySwal.fire({
         title: "Fair Launch ICO Created successfully 🎉",
-        text: "Thank You For you patronage, Click Okay to see info",
+        text: "Thank You For your patronage, Click Okay to see info",
         icon: "success",
         customClass: {
             confirmButton: "SweatBtn",

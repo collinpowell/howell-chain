@@ -41,7 +41,7 @@ const Presale = ({ saleData }) => {
   const handleSuccess = () => {
     return MySwal.fire({
       title: "Purchase Successful! 🎉",
-      text: "Thank You For you patronage, Claim tokens after ICO",
+      text: "Thank You For your patronage, Claim tokens after ICO",
       icon: "success",
       customClass: {
         confirmButton: "SweatBtn",
