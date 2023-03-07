@@ -1,4 +1,4 @@
-import { Container, Box, Heading, Grid, Text, Flex } from "theme-ui";
+import { Container, Box, Heading, Label, Input, Text, Flex } from "theme-ui";
 import { Progress } from "reactstrap";
 import { useState } from "react";
 import dynamic from "next/dynamic";
@@ -12,27 +12,55 @@ import useContract from "../../../../Web3Hooks/useContract";
 import useTokenData from "../../../../Web3Hooks/ERC20/useTokenData";
 import ABI from "../../../../artifacts/contracts/StandardICO.sol/Presale.json";
 import { ethers } from "ethers";
+import { Copy } from 'react-feather'
 // ** Third Party Components
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { useRouter } from "next/router";
 const MySwal = withReactContent(Swal);
+function numberWithCommas(n) {
+  var parts = n.toString().split(".");
+  return (
+    parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+    (parts[1] ? "." + parts[1] : "")
+  );
+}
+function getStatus(status) {
+  switch (status) {
+    case 1:
+      return 'Upcoming';
+    case 2:
+      return 'Sale Live';
+    case 3:
+      return 'Ended';
+    case 4:
+      return 'Cancelled';
+    default:
+      return 'Pending';
+
+  }
+}
 
 const Presale = ({ saleData, icoAddress, chain }) => {
   const { account } = useWeb3React();
+  const router = useRouter()
   const contract = useContract(icoAddress, ABI.abi, true)
   const data = useSaleData(account, icoAddress);
   const tokenInfo = useTokenData(saleData.tokenAddress)
-  console.log(saleData.status)
   const [userInput, setUserInput] = useState(1);
   const [spin, setSpin] = useState(false);
   const info = [
     {
-      value: saleData.status,
+      value: getStatus(saleData.status),
       title: "Status",
     },
     {
-      value: '1 ' + chain.symbol + ' = ' + saleData.currentRate + " " + tokenInfo.symbol,
-      title: "Current Rate",
+      value: '1 ' + chain.symbol + ' = ' + numberWithCommas(saleData.currentRate) + " " + tokenInfo.symbol,
+      title: "Present Rate",
+    },
+    {
+      value: '1 ' + chain.symbol + ' = ' + numberWithCommas(saleData.anticipatedRate) + " " + tokenInfo.symbol,
+      title: "Anticipated Rate",
     },
     {
       value: saleData.totalContributors,
@@ -46,7 +74,7 @@ const Presale = ({ saleData, icoAddress, chain }) => {
 
   const affiliate = [
     {
-      value: data.reward + ' ' + chain.symbol ,
+      value: data.reward + ' ' + chain.symbol,
       title: "Your Reward",
     },
     {
@@ -54,7 +82,7 @@ const Presale = ({ saleData, icoAddress, chain }) => {
       title: "Pool Referrer Count",
     },
     {
-      value: saleData.affiliatePercent,
+      value: saleData.affiliatePercent + ' %',
       title: "Reward Percentage",
     },
     {
@@ -79,7 +107,15 @@ const Presale = ({ saleData, icoAddress, chain }) => {
       buttonsStyling: false,
     });
   };
-
+  const handleCopied = () => {
+    return MySwal.fire({
+      title: "Affiliate Link Copied! 🎉",
+      text: "Share get people to invest and earn cool cash",
+      icon: "success",
+      timer: 3000,
+      timerProgressBar: true,
+    });
+  };
   const handleFailure = (msg) => {
     return MySwal.fire({
       title: "Failed",
@@ -131,6 +167,19 @@ const Presale = ({ saleData, icoAddress, chain }) => {
     now: new Date(),
     ending: new Date(Number(saleData.endTime)),
   };
+
+  function copy() {
+    // Get the text field
+    var copyText = document.getElementById("affiliateCopy");
+
+    // Select the text field
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); // For mobile devices
+
+    // Copy the text inside the text field
+    navigator.clipboard.writeText(copyText.value);
+    handleCopied()
+  }
 
   const Completionist = () => {
     return (
@@ -218,7 +267,7 @@ const Presale = ({ saleData, icoAddress, chain }) => {
         }}>
           <Box sx={styles.content1}>
             <Text as="p">
-              {time.now < time.starting ? "Starting In" : time.now > time.ending ? "Ended" : "Ending In"}
+              {time.now < time.starting ? "Starting In" : time.now > time.ending ? "This pool has ended" : "Ending In"}
             </Text>
           </Box>
           {time.ending > time.now &&
@@ -232,7 +281,7 @@ const Presale = ({ saleData, icoAddress, chain }) => {
           <Progress
             value={percent}
             style={{
-              height: ["1rem",null,null,"1.6rem"],
+              height: ["1rem", null, null, "1.6rem"],
               border: "1px solid",
               borderRadius: "4rem",
             }}
@@ -293,6 +342,31 @@ const Presale = ({ saleData, icoAddress, chain }) => {
         }}>
           <Text variant="title">Affiliate Program</Text>
           <hr />
+
+          {account && <Box sx={{
+            textAlign: 'center',
+            label: {
+              textAlign: 'center !important',
+              mx: 'auto !important'
+            },
+            input: {
+              p: '10px 10px !important'
+            }
+          }}>
+            <Text>Your Affiliate Link</Text>
+            <br />
+            <br />
+            <Flex>
+              <Input type='url' id='affiliateCopy' value={process.env.NEXT_PUBLIC_DOMAIN + '/funding/' + router.query.slug + '?chain=' + router.query.chain + '&refId=' + account} disabled />
+              &nbsp;
+              <Box onClick={copy}>
+                <Copy size={45} />
+              </Box>
+            </Flex>
+          </Box>}
+          <br />
+          <br />
+
           {affiliate.map(({ title, value }, i) => {
             return (
               <>

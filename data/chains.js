@@ -26,7 +26,7 @@ export const chains = [
         poolFee:'2', // percent of raised funds
         chainLogo: BSC.src,
         symbol:'tBNB',
-        rpc: 'https://data-seed-prebsc-1-s3.binance.org:8545',
+        rpc: 'https://data-seed-prebsc-1-s1.binance.org:8545',
         explorer: 'https://testnet.bscscan.com',
         decimals: 18
     },

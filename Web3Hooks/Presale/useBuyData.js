@@ -46,7 +46,7 @@ export default function useSaleData(account,contractAddress, suspense = false) {
   useKeepSWRDataLiveAsBlocksArrive(resultReward.mutate);
 
   return {
-    contribution: parseBalance(resultContribution.data ?? 0, 18, 1),
-    reward: parseBalance(resultReward.data ?? 0, 18, 1),
+    contribution: parseBalance(resultContribution.data ?? 0, 18, 5),
+    reward: parseBalance(resultReward.data ?? 0, 18, 5),
   };
 }
