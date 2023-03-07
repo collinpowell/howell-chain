@@ -32,9 +32,6 @@ export default function Home() {
       <br />
       <br />
       <br />
-      <br />
-      <br />
-      <Stats saleData={saleData} chain={selectedChain} />
       <ICF saleData={saleData} icoAddress={slug} chain={selectedChain}/>
       <br />
       <br />

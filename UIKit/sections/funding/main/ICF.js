@@ -1,9 +1,16 @@
-import { Container, Box, Heading, Label, Input, Text, Flex } from "theme-ui";
+import { Container, Image, Box, Heading, Button, Input, Text, Flex } from "theme-ui";
 import { Progress } from "reactstrap";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 const CountDown = dynamic(import("react-countdown"), { ssr: false });
 import Buy from "../sub/BuyInput";
+import {
+  Instagram,
+  Telegram,
+  Youtube,
+  Linkedin,
+  Github, Medium, Discord
+} from "../../../assets/Socials";
 import useETHBalance from "../../../../Web3Hooks/useETHBalance";
 import { useWeb3React } from "@web3-react/core";
 import { parseBalance } from "../../../../Util/util";
@@ -26,18 +33,21 @@ function numberWithCommas(n) {
   );
 }
 function getStatus(status) {
-  switch (status) {
-    case 1:
-      return 'Upcoming';
-    case 2:
-      return 'Sale Live';
-    case 3:
-      return 'Ended';
-    case 4:
-      return 'Cancelled';
-    default:
-      return 'Pending';
-
+  if (status) {
+    switch (Number(status)) {
+      case 1:
+        return 'Upcoming';
+      case 2:
+        return 'Ongoing';
+      case 3:
+        return 'Ended';
+      case 4:
+        return 'Cancelled';
+      default:
+        return 'Pending';
+    }
+  } else {
+    return 'Pending';
   }
 }
 
@@ -47,6 +57,7 @@ const Presale = ({ saleData, icoAddress, chain }) => {
   const contract = useContract(icoAddress, ABI.abi, true)
   const data = useSaleData(account, icoAddress);
   const tokenInfo = useTokenData(saleData.tokenAddress)
+  console.log(saleData)
   const [userInput, setUserInput] = useState(1);
   const [spin, setSpin] = useState(false);
   const info = [
@@ -88,6 +99,53 @@ const Presale = ({ saleData, icoAddress, chain }) => {
     {
       value: saleData.currentRewards + " " + chain.symbol,
       title: "Total Current Rewards",
+    },
+  ]
+
+  const saleInfo = [
+    {
+      value: icoAddress,
+      title: "Presale Address",
+    },
+    {
+      value: tokenInfo.name,
+      title: "Token Name",
+    },
+    {
+      value: tokenInfo.symbol,
+      title: "Token Symbol",
+    },
+    {
+      value: tokenInfo.decimals,
+      title: "Token Decimals",
+    },
+    {
+      value: saleData.tokenAddress,
+      title: "Token Address",
+    },
+    {
+      value: numberWithCommas(tokenInfo.totalSupply) + " " + tokenInfo.symbol,
+      title: "Total Supply",
+    },
+    {
+      value: numberWithCommas(saleData.icoSaleTokens) + " " + tokenInfo.symbol,
+      title: "Tokens For Presale",
+    },
+    {
+      value: saleData.softCap + " " + chain.symbol,
+      title: "Soft Cap",
+    },
+    {
+      value: saleData.hardCap + " " + chain.symbol,
+      title: "Hard Cap",
+    },
+    {
+      value: new Date(Number(saleData.startTime)).toString(),
+      title: "Presale Start Time",
+    },
+    {
+      value: new Date(Number(saleData.endTime)).toString(),
+      title: "Presale End Time",
     },
   ]
   const balance = useETHBalance(account);
@@ -241,7 +299,225 @@ const Presale = ({ saleData, icoAddress, chain }) => {
   };
   return (
     <>
+      <br />
+      <br />
+      <br />
+      <br />
       <Container>
+        <Box as="section" id="info" variant="boxes.glide" sx={{
+          '.Upcoming': {
+            background: '#C8EECE',
+            fontWeight: 'bold',
+            color: '#023908',
+            svg: {
+              fill: '#023908',
+              stroke: '#023908'
+            }
+          },
+          '.Ongoing': {
+            background: '#F1F2B9',
+            color: '#3E3802',
+            fontWeight: 'bold',
+            svg: {
+              fill: '#3E3802',
+              stroke: '#3E3802'
+            }
+          },
+          '.Ended': {
+            background: '#F7C8C8',
+            color: '#580000',
+            fontWeight: 'bold',
+            svg: {
+              fill: '#580000',
+              stroke: '#580000'
+            }
+          },
+          '.Cancelled': {
+            background: '#E3E3E3',
+            color: '#393636',
+            fontWeight: 'bold',
+            svg: {
+              fill: '#393636',
+              stroke: '#393636'
+            }
+          },
+          '.Pending': {
+            background: '#F9D4FF',
+            color: '#3F0231',
+            fontWeight: 'bold',
+            svg: {
+              fill: '#3F0231',
+              stroke: '#3F0231'
+            }
+          },
+        }}>
+          <Flex sx={{
+            justifyContent: 'space-between'
+          }}>
+            <Box sx={{
+              position: 'relative',
+              '.chain': {
+                position: 'absolute',
+                bottom: '0',
+                right: '0'
+              }
+            }}>
+              <Image src={chain.chainLogo} alt='logo' width={70} height={70} />
+              <Image src={chain.chainLogo} alt='logo' className='chain' width={25} height={25} />
+            </Box>
+            <Box sx={{
+              height: 'fit-content',
+              width: 'fit-content',
+              p: '5px 10px',
+              borderRadius: '15px',
+              svg: {
+                mr: '5px',
+                width: '13px',
+                height: '13px',
+              }
+            }} className={getStatus(saleData.status)}>
+              <Text>
+                <svg stroke="red"
+                  fill="red"
+                  strokeWidth="0"
+                  viewBox="0 0 16 16"
+                  height="1em"
+                  width="1em"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="8" cy="8" r="8"></circle>
+                </svg>
+                <Text>{'Pool ' + getStatus(saleData.status)}</Text>
+              </Text>
+            </Box>
+          </Flex>
+          <br />
+          <Flex sx={{
+            justifyContent: 'space-between',
+            flexDirection: ['column-reverse', null, null, null, 'row'],
+            h2: {
+              mt: ['15px', null, null, 0]
+            }
+          }}>
+            <Heading>{tokenInfo.name + ' Fair Launch'}</Heading>
+            <Flex sx={{
+              button: {
+                p: '5px 10px',
+                height: 'fit-content',
+                ml: '5px'
+              },
+              '.safu': {
+                background: 'rgb(223, 95, 248)'
+              },
+              '.audit': {
+                background: 'rgb(0, 188, 212)'
+              },
+              '.kyc': {
+                background: '#48c774'
+              },
+            }}>
+              <Button className="safu">SAFU</Button>
+              <Button className="audit">AUDIT</Button>
+              <Button className="kyc">KYC</Button>
+            </Flex>
+          </Flex>
+          <br />
+          <Flex sx={styles.socials}>
+            <a
+              href="https://www.instagram.com/howrians"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Instagram />
+            </a>
+            <a
+              href="https://www.youtube.com/@howreanetwork"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Youtube />
+            </a>
+            <a
+              href="https://www.linkedin.com/company/howreanetwork/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Linkedin />
+            </a>
+            <a
+              href="https://github.com/howrea"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Github />
+            </a>
+            <a
+              href="https://medium.com/@howreanetwork"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Medium />
+            </a>
+            <a
+              href="https://discord.gg/ecBCWHweym"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Discord />
+            </a>
+            <a
+              href="https://t.me/howrians"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Telegram />
+            </a>
+          </Flex>
+          <br />
+          <Box>
+            <Text>{`Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl eros, 
+pulvinar facilisis justo mollis, auctor consequat urna. Morbi a bibendum metus. 
+Donec scelerisque sollicitudin enim eu venenatis. Duis tincidunt laoreet ex, 
+in pretium orci vestibulum eget. Class aptent taciti sociosqu ad litora torquent
+per conubia nostra, per inceptos himenaeos. Duis pharetra luctus lacus ut 
+vestibulum. Maecenas ipsum lacus, lacinia quis posuere ut, pulvinar vitae dolor.
+Integer eu nibh at nisi ullamcorper sagittis id vel leo. Integer feugiat 
+faucibus libero, at maximus nisl suscipit posuere. Morbi nec enim nunc. 
+Phasellus bibendum turpis ut ipsum egestas, sed sollicitudin elit convallis. 
+Cras pharetra mi tristique sapien vestibulum lobortis. Nam eget bibendum metus, 
+non dictum mauris. Nulla at tellus sagittis, viverra est a, bibendum metus.`}</Text>
+          </Box>
+          <br />
+          <br />
+          <Box sx={{
+            textAlign: 'center',
+            mt: '50px',
+            hr: {
+              opacity: '0.2',
+              my: '15px'
+            }
+          }}>
+            {saleInfo.map(({ title, value }, i) => {
+              return (
+                <>
+                  <Flex key={i} sx={{
+                    justifyContent: ['center', null, null, 'space-between'],
+                    flexDirection: ['column', null, null, 'row'],
+                  }}>
+                    <Text as={'p'} sx={{
+                      fontWeight: 'bold',
+                      mb: ['8px', null, null, '0']
+                    }}>{title + ': '}</Text>
+                    <Text as={'p'} sx={{
+                      wordBreak: 'break-all'
+                    }}>{value}</Text>
+                  </Flex>
+                  <hr />
+                </>
+              )
+            })}
+          </Box>
+
+        </Box>
         <Box as="section" id="banner" variant="boxes.glide" sx={{
           position: 'relative',
           textAlign: 'center',
@@ -389,34 +665,6 @@ const Presale = ({ saleData, icoAddress, chain }) => {
 
         </Box>}
       </Container>
-
-      {/* {account && <> <br />
-        <br />
-        <Container>
-          <Grid gap={5} columns={[1, 1, 2, 2, 3, 3]}>
-            {features.map((item, i) => {
-              return (
-                <a href="#" target="_blank" rel="noreferrer" key={i}>
-                  <Box sx={styles.box} key={i}>
-                    <Text as="h3">{item.title}</Text>
-                    <Text as="p">{item.text}</Text>
-                  </Box>
-                </a>
-              );
-            })}
-          </Grid>
-        </Container>
-        <br />
-        <br /></>} */}
-
-
-
-      <br />
-      <br />
-      <Container sx={{ textAlign: 'center' }}>
-        <Heading variant="normal" sx={{ textAlign: 'center', mx: 'auto' }}><strong>Note:</strong> Feel free to send BNB to the following address if you are unable to connect to your wallet. <a style={{ textDecoration: 'underline' }} target="_blank" rel="noreferrer" href={`https://bscscan.com/address/${process.env.NEXT_PUBLIC_PREICO_CONTRACT}`}>{process.env.NEXT_PUBLIC_PREICO_CONTRACT}</a>  </Heading>
-
-      </Container>
     </>
   );
 };
@@ -424,6 +672,12 @@ const Presale = ({ saleData, icoAddress, chain }) => {
 export default Presale;
 
 const styles = {
+  socials: {
+    display: "flex",
+    mb: ["25px", null, null, "0"],
+    justifyContent: ["left", null, null, "left"],
+    a: { mx: "5px" },
+  },
   box: {
     background: "rgba(194, 178, 241, 0.2)",
     overflow: "hidden",
