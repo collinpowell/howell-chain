@@ -51,7 +51,7 @@ function getStatus(status) {
   }
 }
 
-const Presale = ({ saleData, icoAddress, chain }) => {
+const Presale = ({ saleData, icoAddress, chain, apiData }) => {
   const { account } = useWeb3React();
   const router = useRouter()
   const contract = useContract(icoAddress, ABI.abi, true)
@@ -185,6 +185,54 @@ const Presale = ({ saleData, icoAddress, chain }) => {
       buttonsStyling: false,
     });
   };
+
+  console.log(saleData.refund)
+
+  async function handleClickRefund(){
+    setSpin(true)
+    if (!account) {
+      handleFailure("Connect Wallet")
+      setSpin(false)
+      return;
+    }
+
+    try {
+      await contract.withdrawRefund()
+      handleSuccess('Buy Successful')
+      setSpin(false)
+    } catch (error) {
+      setSpin(false)
+      if (error.data) {
+        handleFailure("Error message " + error.data.message);
+
+      } else {
+        handleFailure("Error message " + error.message);
+      }
+    }
+  }
+
+  async function handleFinalize(){
+    setSpin(true)
+    if (!account) {
+      handleFailure("Connect Wallet")
+      setSpin(false)
+      return;
+    }
+
+    try {
+      await contract.finalize()
+      handleSuccess('Buy Successful')
+      setSpin(false)
+    } catch (error) {
+      setSpin(false)
+      if (error.data) {
+        handleFailure("Error message " + error.data.message);
+
+      } else {
+        handleFailure("Error message " + error.message);
+      }
+    }
+  }
 
   async function handleClick() {
     setSpin(true)
@@ -362,7 +410,7 @@ const Presale = ({ saleData, icoAddress, chain }) => {
                 right: '0'
               }
             }}>
-              <Image src={chain.chainLogo} alt='logo' width={70} height={70} />
+              <Image src={apiData?.logoUrl} alt='logo' width={70} height={70} />
               <Image src={chain.chainLogo} alt='logo' className='chain' width={25} height={25} />
             </Box>
             <Box sx={{
@@ -422,7 +470,19 @@ const Presale = ({ saleData, icoAddress, chain }) => {
           </Flex>
           <br />
           <Flex sx={styles.socials}>
-            <a
+            {apiData?.socials?.map(({ link, platform }, i) => {
+              return (
+                <a
+                  key={i}
+                  href={link}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Instagram />
+                </a>
+              )
+            })}
+            {/* <a
               href="https://www.instagram.com/howrians"
               target="_blank"
               rel="noreferrer"
@@ -470,21 +530,11 @@ const Presale = ({ saleData, icoAddress, chain }) => {
               rel="noreferrer"
             >
               <Telegram />
-            </a>
+            </a> */}
           </Flex>
           <br />
           <Box>
-            <Text>{`Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl eros, 
-pulvinar facilisis justo mollis, auctor consequat urna. Morbi a bibendum metus. 
-Donec scelerisque sollicitudin enim eu venenatis. Duis tincidunt laoreet ex, 
-in pretium orci vestibulum eget. Class aptent taciti sociosqu ad litora torquent
-per conubia nostra, per inceptos himenaeos. Duis pharetra luctus lacus ut 
-vestibulum. Maecenas ipsum lacus, lacinia quis posuere ut, pulvinar vitae dolor.
-Integer eu nibh at nisi ullamcorper sagittis id vel leo. Integer feugiat 
-faucibus libero, at maximus nisl suscipit posuere. Morbi nec enim nunc. 
-Phasellus bibendum turpis ut ipsum egestas, sed sollicitudin elit convallis. 
-Cras pharetra mi tristique sapien vestibulum lobortis. Nam eget bibendum metus, 
-non dictum mauris. Nulla at tellus sagittis, viverra est a, bibendum metus.`}</Text>
+            <Text>{apiData?.description}</Text>
           </Box>
           <br />
           <br />
@@ -572,6 +622,7 @@ non dictum mauris. Nulla at tellus sagittis, viverra est a, bibendum metus.`}</T
           <Buy
             handleClick={handleClick}
             userInput={userInput}
+            handleClickRefund={handleClickRefund}
             setUserInput={setUserInput}
             spin={spin}
             setSpin={setSpin}
@@ -665,12 +716,16 @@ non dictum mauris. Nulla at tellus sagittis, viverra est a, bibendum metus.`}</T
 
         </Box>}
 
-        {account && saleData.owner == account &&<Box id='affiliate' as="section" variant="boxes.glide" sx={{
+        {account && saleData.owner == account && <Box id='affiliate' as="section" variant="boxes.glide" sx={{
           textAlign: 'center',
           mt: '50px',
           hr: {
             opacity: '0.2',
             my: '15px'
+          },
+          button:{
+            width:'100%',
+            mb:'10px'
           }
         }}>
           <Text variant="title">Owner Zone</Text>
@@ -678,26 +733,11 @@ non dictum mauris. Nulla at tellus sagittis, viverra est a, bibendum metus.`}</T
           <br />
           <br />
 
-          {affiliate.map(({ title, value }, i) => {
-            return (
-              <>
-                <Flex key={i} sx={{
-                  justifyContent: ['center', null, null, 'space-between'],
-                  flexDirection: ['column', null, null, 'row'],
-                }}>
-                  <Text as={'p'} sx={{
-                    fontWeight: 'bold',
-                    mb: ['8px', null, null, '0']
-                  }}>{title + ': '}</Text>
-                  <Text as={'p'} sx={{
-                    wordBreak: 'break-all'
-                  }}>{value}</Text>
-                </Flex>
-                <hr />
-              </>
-            )
-          })}
-
+         <Button onClick={handleFinalize}>Finalize</Button>
+         <Button>Update Affiliate Program</Button>
+         <Button>Cancel Pool</Button>
+         <Button>Set End Time</Button>
+         <Button>Set Start Time</Button>
         </Box>}
       </Container>
     </>

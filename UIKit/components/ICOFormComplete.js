@@ -11,7 +11,7 @@ import tokenABI from "../../artifacts/contracts/SheerCoin.sol/Sheer.json";
 import { ContractFactory, ethers } from 'ethers';
 import { useState } from "react";
 import { useRouter } from 'next/router'
-
+import { api } from '../../config/api'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 const MySwal = withReactContent(Swal)
@@ -76,11 +76,25 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
                 contract.address,
                 ethers.utils.parseUnits(data.preSaleTokens, data.tokenInfo.decimals))
             await tokenResult.wait(1)
-            console.log(`Fair launch deployed to ${contract.address}`)
-            handleSuccess('Fair launch Creation Successful')
             setCurrentStep(2)
-            setIsSubmitting(false)
-            setIsSubmitted(true)
+            const res = await api.post('/ico', {
+                chain: selectedChain.slug,
+                creator: account,
+                tokenName: data.tokenName,
+                preSale: contract.address,
+                logoUrl: data.logo,
+                description: data.projectDescription,
+                socials: [{
+                    link: data.website,
+                    platform: 'website'
+                }]
+            })
+            if (res.data.statuscode == 200) {
+                console.log(`Fair launch deployed to ${contract.address}`)
+                handleSuccess('Fair launch Creation Successful')
+                setIsSubmitting(false)
+                setIsSubmitted(true)
+            }
         } catch (error) {
             setIsSubmitting(false)
             if (error.data) {
@@ -116,7 +130,7 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
                         case 'tokenInfo':
                             return null
                         case 'preSaleTokens':
-                            return  (
+                            return (
                                 <>
                                     <Flex key={index} sx={{
                                         justifyContent: ['center', null, null, 'space-between'],
@@ -128,14 +142,14 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
                                         }}>{key + ': '}</Text>
                                         <Text as={'p'} sx={{
                                             wordBreak: 'break-all'
-                                        }}>{numberWithCommas(data[key]) +' '+ data.tokenSymbol}</Text>
+                                        }}>{numberWithCommas(data[key]) + ' ' + data.tokenSymbol}</Text>
                                     </Flex>
                                     <hr />
                                 </>
 
                             )
                         case 'anticipatedRate':
-                            return  (
+                            return (
                                 <>
                                     <Flex key={index} sx={{
                                         justifyContent: ['center', null, null, 'space-between'],
@@ -147,7 +161,7 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
                                         }}>{key + ': '}</Text>
                                         <Text as={'p'} sx={{
                                             wordBreak: 'break-all'
-                                        }}>{numberWithCommas(data[key]) +' '+data.tokenSymbol+' Per ' + selectedChain.symbol}</Text>
+                                        }}>{numberWithCommas(data[key]) + ' ' + data.tokenSymbol + ' Per ' + selectedChain.symbol}</Text>
                                     </Flex>
                                     <hr />
                                 </>
@@ -166,7 +180,7 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
                                         }}>{key + ': '}</Text>
                                         <Text as={'p'} sx={{
                                             wordBreak: 'break-all'
-                                        }}>{data[key] +'% of Raised Funds'}</Text>
+                                        }}>{data[key] + '% of Raised Funds'}</Text>
                                     </Flex>
                                     <hr />
                                 </>

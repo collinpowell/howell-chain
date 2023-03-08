@@ -13,7 +13,7 @@ const WhyChoose = ({
   userInput,
   setUserInput,
   spin,
-  setSpin,
+  handleClickRefund,
   rate,
 }) => {
   var cost = Number(userInput * rate);
@@ -35,6 +35,7 @@ const WhyChoose = ({
             }}
           >
             <Button onClick={() => handleClick()}>Buy Now</Button>
+            <Button onClick={() => handleClickRefund()}>Withdraw Refund</Button>
           </div>
         </Box>
     </Box>

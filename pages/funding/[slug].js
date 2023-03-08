@@ -5,9 +5,10 @@ import SEO from '../../components/SEO'
 import { chains } from '../../data/chains';
 import Header from '../../UIKit/layout/Header';
 import {useRouter} from 'next/router'
+import { api } from '../../config/api';
 import { useState,useEffect } from 'react';
 
-export default function Home() {
+export default function Home({apiData}) {
   const router = useRouter();
   const { slug } = router.query;
   const saleData = useSaleData(slug);
@@ -32,11 +33,24 @@ export default function Home() {
       <br />
       <br />
       <br />
-      <ICF saleData={saleData} icoAddress={slug} chain={selectedChain}/>
+      <ICF saleData={saleData} icoAddress={slug} chain={selectedChain} apiData={apiData}/>
       <br />
       <br />
       <br />
       <br />
     </>
   )
+}
+
+export async function getServerSideProps({ params }) {
+  
+  const res = await api.get(`/ico/${params.slug}`)
+
+    const apiData = res.data.body
+
+    return {
+        props: {
+          apiData
+        },
+    }
 }
