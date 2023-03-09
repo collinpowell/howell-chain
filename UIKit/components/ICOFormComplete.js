@@ -79,6 +79,7 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
             setCurrentStep(2)
             const res = await api.post('/ico', {
                 chain: selectedChain.slug,
+                currency: selectedChain.symbol,
                 creator: account,
                 tokenName: data.tokenName,
                 tokenSymbol: data.tokenSymbol,

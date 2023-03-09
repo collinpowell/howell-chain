@@ -58,6 +58,8 @@ const Privacy = () => {
                         };
                         var percent = ((Number(ico.fundsRaised ? ico.fundsRaised : 0) / Number(ico.softCap ? ico.softCap : 0)) * 100).toFixed(5);
 
+
+
                         return (
                             <Box key={i} variant='boxes.glide' sx={{
                                 position: 'relative',
@@ -92,6 +94,11 @@ const Privacy = () => {
                                     }}>
                                         <Text variant='title' as={'p'}>{ico.tokenName}</Text>
                                         <Text as={'p'}>{ico.tokenSymbol}</Text>
+                                        <Text as={'p'} sx={{
+                                            fontSize:'14px',
+                                            opacity:'0.7',
+                                            mt:'4px'
+                                        }}>{'Fair Launch'}</Text>
 
                                     </Box>
                                 </Flex>
@@ -128,6 +135,12 @@ const Privacy = () => {
                                     })}
                                 </Flex>
                                 <br />
+                                <Box>
+                                    <Text as='p'>Soft Cap</Text>
+                                    <Text as='p' variant='title' sx={{fontWeight:'bold'}}>{ico.softCap+ " "+ico.currency}</Text>
+                                </Box>
+                                <br />
+                               
                                 <Progress
                                     value={percent}
                                     style={{
@@ -139,20 +152,20 @@ const Privacy = () => {
                                 <br />
                                 <Flex sx={{ justifyContent: "space-between", fontWeight: "bold" }}>
                                     <Text as="p">
-                                        {Number(ico.fundsRaised ? ico.fundsRaised : 0) + " BNB"}
+                                        {Number(ico.fundsRaised ? ico.fundsRaised : 0) + " "+ico.currency}
                                     </Text>
-                                    <Text as="p">{Number(ico.softCap ? ico.softCap : 0)}</Text>
+                                    <Text as="p">{Number(ico.softCap ? ico.softCap : 0)+ " "+ico.currency}</Text>
                                 </Flex>
                                 <br />
+                                <hr />
                                 <Box sx={{
                                     p: {
-                                        fontWeight: 'bold',
                                         fontSize: '18px',
                                         pb: '5px'
                                     }
                                 }}>
                                     <Text as="p">
-                                        {time.now < time.starting ? "Upcoming" : time.now > time.ending ? "Ended" : "Ongoing"}
+                                        {time.now < time.starting ? "Sale Starts In" : time.now > time.ending ? "Ended" : "Ending In"}
                                     </Text>
                                     <CountDown
                                         date={time.now < time.starting ? time.starting : time.ending}

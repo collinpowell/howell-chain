@@ -2,6 +2,7 @@ import { Container, Image, Box, Heading, Button, Input, Text, Flex } from "theme
 import { Progress } from "reactstrap";
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import { parseBalance } from "../../../../Util/util";
 const CountDown = dynamic(import("react-countdown"), { ssr: false });
 import Buy from "../sub/BuyInput";
 import {
@@ -15,7 +16,6 @@ import {
 } from "../../../assets/Socials";
 import useETHBalance from "../../../../Web3Hooks/useETHBalance";
 import { useWeb3React } from "@web3-react/core";
-import { parseBalance } from "../../../../Util/util";
 import useSaleData from "../../../../Web3Hooks/Presale/useBuyData";
 import useContract from "../../../../Web3Hooks/useContract";
 import useTokenData from "../../../../Web3Hooks/ERC20/useTokenData";
@@ -26,6 +26,7 @@ import { Copy } from 'react-feather'
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useRouter } from "next/router";
+import { api } from "../../../../config/api";
 const MySwal = withReactContent(Swal);
 function numberWithCommas(n) {
   var parts = n.toString().split(".");
@@ -329,12 +330,23 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
     }
 
     try {
+      let res;
       if (router.query?.refId) {
-        await contract["contribute(address)"](router.query.refId, { value: ethers.utils.parseUnits(userInput.toString(), "ether") })
+        res = await contract["contribute(address)"](router.query.refId, { value: ethers.utils.parseUnits(userInput.toString(), "ether") })
       } else {
-        await contract["contribute()"]({ value: ethers.utils.parseUnits(userInput.toString(), "ether") })
+        res = await contract["contribute()"]({ value: ethers.utils.parseUnits(userInput.toString(), "ether") })
       }
+      await res.wait()
+      const result = await contract.getRaised()
+      const value = parseBalance(result ?? 0, 18, 5)
+      console.log(result,value)
+      const appi = await api.put('ico',{
+        preSale: apiData.preSale,
+        fundsRaised: value
+      })
+      console.log(appi)
       handleSuccess('Buy Successful')
+
       setSpin(false)
     } catch (error) {
       setSpin(false)
