@@ -205,7 +205,7 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
                                         }}>{key + ': '}</Text>
                                         <Text as={'p'} sx={{
                                             wordBreak: 'break-all'
-                                        }}>{Math.round(data[key]) + ' ' + selectedChain.symbol}</Text>
+                                        }}>{(Math.round((data[key]+ Number.EPSILON)*100)/100) + ' ' + selectedChain.symbol}</Text>
                                     </Flex>
                                     <hr />
                                 </>

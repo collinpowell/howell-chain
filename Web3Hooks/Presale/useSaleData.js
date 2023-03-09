@@ -295,7 +295,7 @@ export default function useSaleData(contractAddress, suspense = false) {
     totalReferrers: parseBalance(resultReferrerCount.data ?? 0, 0, 0),
     currentRewards: parseBalance(resultCurrentRewards.data ?? 0, 18, 5),
     hardCap: parseBalance(resultHardCap.data ?? 0, 0, 0),
-    softCap: parseBalance(resultSoftCap.data ?? 0, 0, 0),
+    softCap: parseBalance(resultSoftCap.data ?? 0, 18, 0),
     startTime: parseBalance(resultStartICO.data ?? 0, 0, 0),
     endTime: parseBalance(resultEndICO.data ?? 0, 0, 0),
     fundsRaised: parseBalance(resultFundsRaised.data ?? 0, 18, 5),
