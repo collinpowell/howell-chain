@@ -14,30 +14,45 @@ const WhyChoose = ({
   setUserInput,
   spin,
   handleClickRefund,
+  handleEmergency,
+  handleClaim,
   rate,
+  status,
+  refund,
+  contribution,
+
 }) => {
   var cost = Number(userInput * rate);
   return (
     <Box as="section" id="services" sx={styles.section}>
-        <Box sx={styles.post}>
-          <Flex variant="boxes.newsLetter" sx={styles.countdown}>
-            <NumberInput state={userInput} setState={setUserInput} />
-            <Text as="h1">{"MAX"}</Text>
-          </Flex>
-          {spin &&  <Spinner sx={{ mx: "auto", marginTop: "20px" }} />}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              paddingLeft: "20px",
-              paddingRight: "20px",
-              marginTop: spin ? "15px":"35px",
-            }}
-          >
-            <Button onClick={() => handleClick()}>Buy Now</Button>
-            <Button onClick={() => handleClickRefund()}>Withdraw Refund</Button>
-          </div>
+      <Box sx={styles.post}>
+        <Flex variant="boxes.newsLetter" sx={styles.countdown}>
+          <NumberInput state={userInput} setState={setUserInput} />
+          <Text as="h1">{"MAX"}</Text>
+        </Flex>
+        {spin && <Spinner sx={{ mx: "auto", marginTop: "20px" }} />}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: 'column',
+            justifyContent: "center",
+            paddingLeft: "20px",
+            button: {
+              mb: '5px'
+            },
+            paddingRight: "20px",
+            marginTop: spin ? "15px" : "35px",
+          }}
+        >
+          {status == 2 && <Button onClick={() => handleClick()}>Buy Now</Button>}
+          {status == 3 && !refund && <Button onClick={() => handleClickRefund()}>Withdraw Refund</Button>}
+          {status == 2 && contribution > 0 && <Button onClick={() => handleEmergency()}>Emergency Withdraw</Button>}
+          {status == 3 && !refund && <Button onClick={() => handleClaim()}>Claim Tokens</Button>}
+          {status == 2 && contribution > 0 && <Text as={'p'} sx={{
+            mt:'20px'
+          }}> <strong>Note:</strong> Emergency Withdrawal penalty is 10% of purchase funds</Text>}
         </Box>
+      </Box>
     </Box>
   );
 };

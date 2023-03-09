@@ -298,6 +298,6 @@ export default function useSaleData(contractAddress, suspense = false) {
     softCap: parseBalance(resultSoftCap.data ?? 0, 0, 0),
     startTime: parseBalance(resultStartICO.data ?? 0, 0, 0),
     endTime: parseBalance(resultEndICO.data ?? 0, 0, 0),
-    fundsRaised: parseBalance(resultFundsRaised.data ?? 0, 18, 1),
+    fundsRaised: parseBalance(resultFundsRaised.data ?? 0, 18, 5),
   };
 }

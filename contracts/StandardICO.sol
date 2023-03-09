@@ -70,13 +70,13 @@ contract Presale is ReentrancyGuard, Context, Ownable {
     _;
   }
   modifier Cancelled() {
-    require(startRefund || (getStatus() == 3 && amountRaised < softCap.mul(10**18)), "Refund not started");
+    require(startRefund || (getStatus() == 3 && amountRaised < softCap), "Refund not started");
     _;
   }
   
   modifier Ended() {
     require(getStatus() == 3, 'Invalid Operation');
-    require(amountRaised >= softCap.mul(10**18), 'Softcap not reached');
+    require(amountRaised >= softCap, 'Softcap not reached');
     _;
   }
 
@@ -123,7 +123,10 @@ contract Presale is ReentrancyGuard, Context, Ownable {
     return amountRaised;
   }
 
-  function getRefund() public view returns (bool) {    
+  function getRefund() public view returns (bool) { 
+    if(getStatus() == 3 && amountRaised < softCap){
+      return true;
+    }   
     return startRefund;
   }
 
@@ -273,6 +276,15 @@ contract Presale is ReentrancyGuard, Context, Ownable {
     contributions[_msgSender()] = 0;
   }
 
+  // Claim Tokens
+  function withdrawReward() external nonReentrant Ended{
+    uint256 reward = rewards[_msgSender()];
+    require(reward > 0, "No reward found");
+    require(address(this).balance >= reward, "Contract has no money");
+    rewards[_msgSender()] = 0;
+    payable(_msgSender()).transfer(reward);
+  }
+
   // Cancel Pool - implication: refund
   function cancelPool() external nonReentrant Active onlyOwner{
     totalRefunds = amountRaised;
@@ -305,12 +317,6 @@ contract Presale is ReentrancyGuard, Context, Ownable {
       feeAddress.transfer(fee);
       payable(msg.sender).transfer(amountRaised.sub(fee));
       emit Success(address(this), owner(), amountRaised);
-    // }else{
-    //   startRefund == true;
-    //   emit Failed(address(this), owner(), amountRaised,"Softcap");
-    // }
-
-      //emit Success(address(this), owner(), amount);
   }
 
   // burn excess

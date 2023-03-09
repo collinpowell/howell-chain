@@ -24,7 +24,7 @@ export default {
     dropDownBoxShadow: "rgba(0, 0, 0, 0.2)",
     platforms: "rgba(0, 0, 0, 0.1)",
     joinCard: "rgba(0, 0, 0, 0.4)",
-    glide: "#C2B2F180",
+    glide: "#C1BCF2",
     modes: {
       dark: {
         text: "#fff",

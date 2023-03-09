@@ -7,6 +7,8 @@ import Buy from "../sub/BuyInput";
 import {
   Instagram,
   Telegram,
+  Web,
+  Twitter,
   Youtube,
   Linkedin,
   Github, Medium, Discord
@@ -32,6 +34,31 @@ function numberWithCommas(n) {
     (parts[1] ? "." + parts[1] : "")
   );
 }
+
+function getLogo(p) {
+  switch (p) {
+    case 'website':
+      return <Web />
+    case 'telegram':
+      return <Telegram />
+    case 'youtube':
+      return <Youtube />
+    case 'linkedin':
+      return <Linkedin />
+    case 'github':
+      return <Github />
+    case 'medium':
+      return <Medium />
+    case 'discord':
+      return <Discord />
+    case 'instagram':
+      return <Instagram />
+    case 'twitter':
+      return <Twitter />
+    default:
+      return <Web />
+  }
+}
 function getStatus(status) {
   if (status) {
     switch (Number(status)) {
@@ -44,10 +71,10 @@ function getStatus(status) {
       case 4:
         return 'Cancelled';
       default:
-        return 'Pending';
+        return 'Loading...';
     }
   } else {
-    return 'Pending';
+    return 'Loading...';
   }
 }
 
@@ -57,7 +84,6 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
   const contract = useContract(icoAddress, ABI.abi, true)
   const data = useSaleData(account, icoAddress);
   const tokenInfo = useTokenData(saleData.tokenAddress)
-  console.log(saleData)
   const [userInput, setUserInput] = useState(1);
   const [spin, setSpin] = useState(false);
   const info = [
@@ -82,6 +108,7 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
       title: "Your Purchase",
     },
   ]
+  
 
   const affiliate = [
     {
@@ -186,9 +213,8 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
     });
   };
 
-  console.log(saleData.refund)
 
-  async function handleClickRefund(){
+  async function handleClickRefund() {
     setSpin(true)
     if (!account) {
       handleFailure("Connect Wallet")
@@ -211,7 +237,7 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
     }
   }
 
-  async function handleFinalize(){
+  async function handleFinalize() {
     setSpin(true)
     if (!account) {
       handleFailure("Connect Wallet")
@@ -222,6 +248,56 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
     try {
       await contract.finalize()
       handleSuccess('Buy Successful')
+      setSpin(false)
+    } catch (error) {
+      setSpin(false)
+      if (error.data) {
+        handleFailure("Error message " + error.data.message);
+
+      } else {
+        handleFailure("Error message " + error.message);
+      }
+    }
+  }
+
+  async function handleClaim() {
+    setSpin(true)
+    if (!account) {
+      handleFailure("Connect Wallet")
+      setSpin(false)
+      return;
+    }
+    try {
+      await contract.claimTokens()
+      handleSuccess()
+      setSpin(false)
+    } catch (error) {
+      setSpin(false)
+      if (error.data) {
+        handleFailure("Error message " + error.data.message);
+      } else {
+        handleFailure("Error message " + error.message);
+      }
+    }
+  }
+
+  async function handleEmergency() {
+    setSpin(true)
+    if (!account) {
+      handleFailure("Connect Wallet")
+      setSpin(false)
+      return;
+    }
+
+    if (!data.contribution && data.contribution <= 0) {
+      handleFailure("You have no contribution")
+      setSpin(false)
+      return;
+    }
+
+    try {
+      await contract.emergencyWithdraw()
+      handleSuccess()
       setSpin(false)
     } catch (error) {
       setSpin(false)
@@ -253,7 +329,11 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
     }
 
     try {
-      await contract["contribute()"]({ value: ethers.utils.parseUnits(userInput.toString(), "ether") })
+      if (router.query?.refId) {
+        await contract["contribute(address)"](router.query.refId, { value: ethers.utils.parseUnits(userInput.toString(), "ether") })
+      } else {
+        await contract["contribute()"]({ value: ethers.utils.parseUnits(userInput.toString(), "ether") })
+      }
       handleSuccess('Buy Successful')
       setSpin(false)
     } catch (error) {
@@ -273,18 +353,65 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
     now: new Date(),
     ending: new Date(Number(saleData.endTime)),
   };
+  function copy(text) {
+    return new Promise((resolve, reject) => {
+      if (typeof navigator !== "undefined" && typeof navigator.clipboard !== "undefined" && navigator.permissions !== "undefined") {
+        const type = "text/plain";
+        const blob = new Blob([text], { type });
+        const data = [new ClipboardItem({ [type]: blob })];
+        navigator.permissions.query({ name: "clipboard-write" }).then((permission) => {
+          if (permission.state === "granted" || permission.state === "prompt") {
+            navigator.clipboard.write(data).then(resolve, reject).catch(reject);
+          }
+          else {
+            reject(new Error("Permission not granted!"));
+          }
+        });
+      }
+      else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
+        var textarea = document.createElement("textarea");
+        textarea.textContent = text;
+        textarea.style.position = "fixed";
+        textarea.style.width = '2em';
+        textarea.style.height = '2em';
+        textarea.style.padding = 0;
+        textarea.style.border = 'none';
+        textarea.style.outline = 'none';
+        textarea.style.boxShadow = 'none';
+        textarea.style.background = 'transparent';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        try {
+          document.execCommand("copy");
+          document.body.removeChild(textarea);
+          resolve();
+        }
+        catch (e) {
+          document.body.removeChild(textarea);
+          reject(e);
+        }
+      }
+      else {
+        reject(new Error("None of copying methods are supported by this browser!"));
+      }
+    });
 
-  function copy() {
-    // Get the text field
-    var copyText = document.getElementById("affiliateCopy");
+  }
 
-    // Select the text field
-    copyText.select();
-    copyText.setSelectionRange(0, 99999); // For mobile devices
+  async function copyLink(e) {
 
-    // Copy the text inside the text field
-    navigator.clipboard.writeText(copyText.value);
-    handleCopied()
+    console.log(e.target)
+    console.log(e.target.value)
+    try {
+      await copy(e.target.value);
+      handleCopied()
+
+    }
+    catch (e) {
+      console.error(e);
+    }
+
   }
 
   const Completionist = () => {
@@ -446,7 +573,7 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
               mt: ['15px', null, null, 0]
             }
           }}>
-            <Heading>{tokenInfo.name + ' Fair Launch'}</Heading>
+            <Heading>{tokenInfo?.name ? tokenInfo?.name : apiData.tokenName + ' Fair Launch'}</Heading>
             <Flex sx={{
               button: {
                 p: '5px 10px',
@@ -463,9 +590,20 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
                 background: '#48c774'
               },
             }}>
-              <Button className="safu">SAFU</Button>
-              <Button className="audit">AUDIT</Button>
-              <Button className="kyc">KYC</Button>
+              {apiData?.badges?.map((info, i) => {
+                return (
+                  <a
+                    key={i}
+                    href={info.link}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Button className={info.type} sx={{
+                      textTransform: 'uppercase'
+                    }}>{info.type}</Button>
+                  </a>
+                )
+              })}
             </Flex>
           </Flex>
           <br />
@@ -478,59 +616,10 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <Instagram />
+                  {getLogo(platform)}
                 </a>
               )
             })}
-            {/* <a
-              href="https://www.instagram.com/howrians"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Instagram />
-            </a>
-            <a
-              href="https://www.youtube.com/@howreanetwork"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Youtube />
-            </a>
-            <a
-              href="https://www.linkedin.com/company/howreanetwork/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Linkedin />
-            </a>
-            <a
-              href="https://github.com/howrea"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Github />
-            </a>
-            <a
-              href="https://medium.com/@howreanetwork"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Medium />
-            </a>
-            <a
-              href="https://discord.gg/ecBCWHweym"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Discord />
-            </a>
-            <a
-              href="https://t.me/howrians"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Telegram />
-            </a> */}
           </Flex>
           <br />
           <Box>
@@ -623,10 +712,15 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
             handleClick={handleClick}
             userInput={userInput}
             handleClickRefund={handleClickRefund}
+            handleEmergency={handleEmergency}
             setUserInput={setUserInput}
+            handleClaim={handleClaim}
             spin={spin}
             setSpin={setSpin}
             rate={saleData.rate}
+            status={saleData.status}
+            refund={saleData.refund}
+            contribution={data.contribution}
           />
         </Box>
 
@@ -680,15 +774,11 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
               p: '10px 10px !important'
             }
           }}>
-            <Text>Your Affiliate Link</Text>
+            <Text>Your Affiliate Link (Click to copy)</Text>
             <br />
             <br />
-            <Flex>
+            <Flex onClick={copyLink}>
               <Input type='url' id='affiliateCopy' value={process.env.NEXT_PUBLIC_DOMAIN + '/funding/' + router.query.slug + '?chain=' + router.query.chain + '&refId=' + account} disabled />
-              &nbsp;
-              <Box onClick={copy}>
-                <Copy size={45} />
-              </Box>
             </Flex>
           </Box>}
           <br />
@@ -723,9 +813,9 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
             opacity: '0.2',
             my: '15px'
           },
-          button:{
-            width:'100%',
-            mb:'10px'
+          button: {
+            width: '100%',
+            mb: '10px'
           }
         }}>
           <Text variant="title">Owner Zone</Text>
@@ -733,11 +823,11 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
           <br />
           <br />
 
-         <Button onClick={handleFinalize}>Finalize</Button>
-         <Button>Update Affiliate Program</Button>
-         <Button>Cancel Pool</Button>
-         <Button>Set End Time</Button>
-         <Button>Set Start Time</Button>
+          <Button onClick={handleFinalize}>Finalize</Button>
+          <Button>Update Affiliate Program</Button>
+          <Button>Cancel Pool</Button>
+          <Button>Set End Time</Button>
+          <Button>Set Start Time</Button>
         </Box>}
       </Container>
     </>

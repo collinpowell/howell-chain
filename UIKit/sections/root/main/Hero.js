@@ -1,13 +1,14 @@
 import { Container, Flex, Button, Heading, Text } from 'theme-ui'
 import Stats from '../sub/Stats'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 const data = {
     subHeading: 'Empowering the next generation of blockchain heros!',
-    body: 'Launch your token and ICO in a matter of seconds with no coding, risk-free, secure, and AI-powered',
+    body: 'Launch your token and ICO in a matter of seconds with no coding, risk-free,and secure for investors',
 }
 
 const Hero = ({ state }) => {
-  const router = useRouter();
+    const router = useRouter();
 
     return (
         <Container sx={styles.container}>
@@ -36,6 +37,10 @@ const Hero = ({ state }) => {
                     });
                 }}>Create Token</Button>
             </Flex>
+            <br />
+            <Link href={'/dashboard'}>
+                <Button>Dashboard</Button>
+            </Link>
             <Stats data={null} />
         </Container>
     )

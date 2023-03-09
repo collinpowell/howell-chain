@@ -1,4 +1,3 @@
-import Stats from '../../UIKit/sections/funding/main/Stats'
 import ICF from '../../UIKit/sections/funding/main/ICF'
 import useSaleData from "../../Web3Hooks/Presale/useSaleData";
 import SEO from '../../components/SEO'
