@@ -61,8 +61,6 @@ const Privacy = () => {
                         return (
                             <Box key={i} variant='boxes.glide' sx={{
                                 position: 'relative',
-                                textAlign: 'center',
-                                mt: '50px',
                                 border: ico.affiliatePercent > 0 ? '3.5px solid' : 'none',
                                 borderColor: 'text',
                                 '&:before': {
@@ -154,173 +152,7 @@ const Privacy = () => {
                                     }
                                 }}>
                                     <Text as="p">
-                                        {time.now < time.starting ? "Starting In" : time.now > time.ending ? "This pool has ended" : "Ending In"}
-                                    </Text>
-                                    <CountDown
-                                        date={time.now < time.starting ? time.starting : time.ending}
-                                        renderer={renderer}
-                                    />
-                                </Box>
-
-
-                            </Box>
-                        )
-                    })}
-                    {data.map((ico, i) => {
-                        const time = {
-                            starting: new Date(Number(ico.startTime ? ico.startTime : 0)),
-                            now: new Date(),
-                            ending: new Date(Number(ico.endTime ? ico.endTime : 0)),
-                        };
-                        var percent = ((Number(ico.fundsRaised ? ico.fundsRaised : 0) / Number(ico.softCap ? ico.softCap : 0)) * 100).toFixed(5);
-
-                        return (
-                            <Box key={i} variant='boxes.glide' onClick={() => {
-                                router.push({
-                                    pathname: '/funding/' + ico.preSale,
-                                    query: { chain: ico.chain },
-                                });
-                            }}>
-                                <Flex>
-                                    <Image src={ico.logoUrl} alt='logo' width={90} height={90} />
-                                    <Box sx={{
-                                        ml: '15px'
-                                    }}>
-                                        <Text variant='title' as={'p'}>{ico.tokenName}</Text>
-                                        <Text as={'p'}>{ico.tokenSymbol}</Text>
-
-                                    </Box>
-                                </Flex>
-                                <br />
-                                <Flex sx={{
-                                    button: {
-                                        p: '5px 10px',
-                                        height: 'fit-content',
-                                        ml: '5px'
-                                    },
-                                    '.safu': {
-                                        background: 'rgb(223, 95, 248)'
-                                    },
-                                    '.audit': {
-                                        background: 'rgb(0, 188, 212)'
-                                    },
-                                    '.kyc': {
-                                        background: '#48c774'
-                                    },
-                                }}>
-                                    <Button className="safu">SAFU</Button>
-                                    <Button className="audit">AUDIT</Button>
-                                    <Button className="kyc">KYC</Button>
-                                </Flex>
-                                <br />
-                                <Progress
-                                    value={percent}
-                                    style={{
-                                        height: ["1rem", null, null, "1.6rem"],
-                                        border: "1px solid",
-                                        borderRadius: "4rem",
-                                    }}
-                                />
-                                <br />
-                                <Flex sx={{ justifyContent: "space-between", fontWeight: "bold" }}>
-                                    <Text as="p">
-                                        {Number(ico.fundsRaised ? ico.fundsRaised : 0) + " BNB"}
-                                    </Text>
-                                    <Text as="p">{Number(ico.softCap ? ico.softCap : 0)}</Text>
-                                </Flex>
-                                <br />
-                                <Box sx={{
-                                    p: {
-                                        fontWeight: 'bold',
-                                        fontSize: '18px',
-                                        pb: '5px'
-                                    }
-                                }}>
-                                    <Text as="p">
-                                        {time.now < time.starting ? "Starting In" : time.now > time.ending ? "This pool has ended" : "Ending In"}
-                                    </Text>
-                                    <CountDown
-                                        date={time.now < time.starting ? time.starting : time.ending}
-                                        renderer={renderer}
-                                    />
-                                </Box>
-
-
-                            </Box>
-                        )
-                    })}
-                    {data.map((ico, i) => {
-                        const time = {
-                            starting: new Date(Number(ico.startTime ? ico.startTime : 0)),
-                            now: new Date(),
-                            ending: new Date(Number(ico.endTime ? ico.endTime : 0)),
-                        };
-                        var percent = ((Number(ico.fundsRaised ? ico.fundsRaised : 0) / Number(ico.softCap ? ico.softCap : 0)) * 100).toFixed(5);
-
-                        return (
-                            <Box key={i} variant='boxes.glide' onClick={() => {
-                                router.push({
-                                    pathname: '/funding/' + ico.preSale,
-                                    query: { chain: ico.chain },
-                                });
-                            }}>
-                                <Flex>
-                                    <Image src={ico.logoUrl} alt='logo' width={90} height={90} />
-                                    <Box sx={{
-                                        ml: '15px'
-                                    }}>
-                                        <Text variant='title' as={'p'}>{ico.tokenName}</Text>
-                                        <Text as={'p'}>{ico.tokenSymbol}</Text>
-
-                                    </Box>
-                                </Flex>
-                                <br />
-                                <Flex sx={{
-                                    button: {
-                                        p: '5px 10px',
-                                        height: 'fit-content',
-                                        ml: '5px'
-                                    },
-                                    '.safu': {
-                                        background: 'rgb(223, 95, 248)'
-                                    },
-                                    '.audit': {
-                                        background: 'rgb(0, 188, 212)'
-                                    },
-                                    '.kyc': {
-                                        background: '#48c774'
-                                    },
-                                }}>
-                                    <Button className="safu">SAFU</Button>
-                                    <Button className="audit">AUDIT</Button>
-                                    <Button className="kyc">KYC</Button>
-                                </Flex>
-                                <br />
-                                <Progress
-                                    value={percent}
-                                    style={{
-                                        height: ["1rem", null, null, "1.6rem"],
-                                        border: "1px solid",
-                                        borderRadius: "4rem",
-                                    }}
-                                />
-                                <br />
-                                <Flex sx={{ justifyContent: "space-between", fontWeight: "bold" }}>
-                                    <Text as="p">
-                                        {Number(ico.fundsRaised ? ico.fundsRaised : 0) + " BNB"}
-                                    </Text>
-                                    <Text as="p">{Number(ico.softCap ? ico.softCap : 0)}</Text>
-                                </Flex>
-                                <br />
-                                <Box sx={{
-                                    p: {
-                                        fontWeight: 'bold',
-                                        fontSize: '18px',
-                                        pb: '5px'
-                                    }
-                                }}>
-                                    <Text as="p">
-                                        {time.now < time.starting ? "Starting In" : time.now > time.ending ? "This pool has ended" : "Ending In"}
+                                        {time.now < time.starting ? "Upcoming" : time.now > time.ending ? "Ended" : "Ongoing"}
                                     </Text>
                                     <CountDown
                                         date={time.now < time.starting ? time.starting : time.ending}
@@ -400,18 +232,13 @@ const renderer = ({ days, hours, minutes, seconds, completed }) => {
 
 const styles = {
     grid: {
-        mt: [0, null, 0, null, 0],
-        gridGap: ['35px 0px', null, 0, null, null, '30px 5px'],
+        gridGap: ['25px 10px', null, null, null, '30px 15px'],
         gridTemplateColumns: [
             'repeat(1,1fr)',
             null,
             'repeat(2,1fr)',
             null,
             'repeat(3,1fr)',
-        ],
-        'svg': {
-            width: '100px',
-            height: '100px'
-        }
+        ]
     },
 }
