@@ -12,15 +12,15 @@ const Glide = ({ info, chain }) => {
                     <Box sx={styles.main}>
                         <Heading variant='border' sx={styles.heading}>{'Yay! Your token was created successfully'}</Heading>
                         <Text variant='normal' as='p' sx={styles.smallHeader}>Deployer:  &nbsp;
-                            <a href={chain.explorer + '/address/' + info.deployer} target="_blank" rel="noopener noreferrer">
+                            <a href={chain?.explorer + '/address/' + info.deployer} target="_blank" rel="noopener noreferrer">
                                 {info.deployer} </a></Text>
-                        <Text variant='normal' as='p' sx={styles.smallHeader}>Deployment Chain: {chain.chainName}</Text>
-                        <Text variant='normal' as='p' sx={styles.smallHeader}>Chain ID: {chain.chainId}</Text>
+                        <Text variant='normal' as='p' sx={styles.smallHeader}>Deployment Chain: {chain?.chainName}</Text>
+                        <Text variant='normal' as='p' sx={styles.smallHeader}>Chain ID: {chain?.chainId}</Text>
                         <Text variant='normal' as='p' sx={styles.smallHeader}>Name: {info.name}</Text>
                         <Text variant='normal' as='p' sx={styles.smallHeader}>Symbol: {info.symbol}</Text>
                         <Text variant='normal' as='p' sx={styles.smallHeader}>Total Supply: {numberWithCommas(info.total) + ' ' + info.symbol}</Text>
                         <Text variant='normal' as='p' sx={styles.smallHeader}>Token Address:  &nbsp;
-                            <a href={chain.explorer + '/token/' + info.contractAddress} target="_blank" rel="noopener noreferrer">
+                            <a href={chain?.explorer + '/token/' + info.contractAddress} target="_blank" rel="noopener noreferrer">
                                 {info.contractAddress} </a> </Text>
                     </Box>
                     <br />
@@ -34,7 +34,7 @@ const Glide = ({ info, chain }) => {
                             width: '100%'
                         }
                     }}>
-                        <a href={chain.explorer + '/tx/' + info.txHash} target="_blank" rel="noopener noreferrer">
+                        <a href={chain?.explorer + '/tx/' + info.txHash} target="_blank" rel="noopener noreferrer">
                             <Button>View transaction</Button>
                         </a>
                         &nbsp;

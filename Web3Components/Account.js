@@ -166,8 +166,8 @@ const Account = ({ triedToEagerConnect }) => {
       }
     }
   
-    //console.log(selectedChain.chainId,chainId)
-    if(selectedChain.chainId != chainId){
+    //console.log(selectedChain?.chainId,chainId)
+    if(selectedChain?.chainId != chainId){
       //changeTO(selectedChain)
     }
     //changeTO();

@@ -80,7 +80,7 @@ export default function FormData() {
                 values.total,
                 values.decimal,
                 {
-                    value: ethers.utils.parseUnits(selectedChain.tokenDeployFee, "ether"),
+                    value: ethers.utils.parseUnits(selectedChain?.tokenDeployFee, "ether"),
                 }
             )
             const deploymentReceipt = await contract.deployTransaction.wait(1)
@@ -126,7 +126,7 @@ export default function FormData() {
                     <Text>Tokens created would be published and verified on the public explorer</Text>
                     <br />
                     <br />
-                    <Text> <strong>Note:</strong> Token total supply would be minted to your connected address (Standard Deployment cost: {selectedChain.tokenDeployFee +' '+ selectedChain.symbol})</Text>
+                    <Text> <strong>Note:</strong> Token total supply would be minted to your connected address (Standard Deployment cost: {selectedChain?.tokenDeployFee +' '+ selectedChain?.symbol})</Text>
                 </Box>}
                 {isSubmitted && <TokenInfo info={tokenInfo} chain={selectedChain} />}
                 <Box as="form" sx={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>

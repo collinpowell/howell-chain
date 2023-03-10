@@ -25,7 +25,7 @@ const Hero = ({ state }) => {
                 <Button onClick={() => {
                     router.push({
                         pathname: '/create/ico',
-                        query: { ...router.query, chain: chain.slug },
+                        query: { ...router.query, chain: chain?.slug },
                     });
                 }}>Create ICO</Button>
                 &nbsp;
@@ -33,7 +33,7 @@ const Hero = ({ state }) => {
                 <Button onClick={() => {
                     router.push({
                         pathname: '/create/token',
-                        query: { ...router.query, chain: chain.slug },
+                        query: { ...router.query, chain: chain?.slug },
                     });
                 }}>Create Token</Button>
             </Flex>

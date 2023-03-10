@@ -17,7 +17,7 @@ const ICO = () => {
     const [formStep, setFormStep] = useState(0);
     const nextFormStep = () => setFormStep((currentStep) => currentStep + 1);
     const prevFormStep = () => setFormStep((currentStep) => currentStep - 1);
-    const {chain} = useChainData()
+    const { chain } = useChainData()
 
 
     return (
@@ -46,7 +46,7 @@ const ICO = () => {
                     {formStep == 2 && (
                         <ProjectDetails formStep={formStep} nextFormStep={nextFormStep} selectedChain={chain} prevFormStep={prevFormStep} />
                     )}
-                    {formStep > 2 && <FormCompleted selectedChain={chain} formStep={formStep} prevFormStep={prevFormStep}/>}
+                    {formStep > 2 && <FormCompleted selectedChain={chain} formStep={formStep} prevFormStep={prevFormStep} />}
                 </FormCard>
             </Container>
 
@@ -109,17 +109,17 @@ function FormCard({ children, currentStep, prevFormStep }) {
 }
 
 function VerifyToken({ formStep, nextFormStep, selectedChain, prevFormStep }) {
-    const [affiliate, setAffiliate] = useState(false)
+    const [affiliate, setAffiliate] = useState(true)
     const [listing, setListing] = useState(false)
     console.log(listing)
     const router = useRouter()
-    const { setFormValues } = useFormData();
+    const { setFormValues, data } = useFormData();
     const [address, setAddress] = useState(router?.query?.token)
     const { handleSubmit, register, formState: { errors }, setError } = useForm();
-    const data = useTokenData(address)
+    const tokenData = useTokenData(address)
     async function onSubmit(formData) {
         formData.listing = listing
-        formData.tokenInfo = data
+        formData.tokenInfo = tokenData
         setFormValues(formData)
         nextFormStep();
     }
@@ -128,15 +128,15 @@ function VerifyToken({ formStep, nextFormStep, selectedChain, prevFormStep }) {
         <Box className={formStep === 0 ? styles.showForm : styles.hideForm}>
             <Heading>Verify Token</Heading>
             <br />
-            <Text as={'p'} mb={2}> <strong>Pool creation fee: {selectedChain.poolCreationFee + ' ' + selectedChain.symbol}</strong> </Text>
+            <Text as={'p'} mb={2}> <strong>Pool creation fee: {selectedChain?.poolCreationFee + ' ' + selectedChain?.symbol}</strong> </Text>
 
             <Box as="form" onSubmit={handleSubmit(onSubmit)} noValidate>
                 <Box>
                     <br />
                     <Flex sx={{
                         justifyContent: 'space-between',
-                        button:{
-                            width:['50%',null,null,'fit-content']
+                        button: {
+                            width: ['50%', null, null, 'fit-content']
                         }
                     }}>
                         <Label htmlFor="address">Token Address</Label>
@@ -144,7 +144,7 @@ function VerifyToken({ formStep, nextFormStep, selectedChain, prevFormStep }) {
                         <Button variant="text" onClick={() => {
                             router.push({
                                 pathname: '/create/token',
-                                query: { ...router.query, chain: selectedChain.slug },
+                                query: { ...router.query, chain: selectedChain?.slug },
                             });
                         }}>Create&nbsp;Token</Button>
                     </Flex>
@@ -152,7 +152,7 @@ function VerifyToken({ formStep, nextFormStep, selectedChain, prevFormStep }) {
                         required: "Required",
                         //validate: value => value !== "admin" || "Nice try!",
                         validate: (value) => {
-                            if (!data || !data.name) {
+                            if (!tokenData || !tokenData.name) {
                                 return 'Token Info Not Found (Kindly cross check address and chain)'
                             }
                         }
@@ -162,11 +162,11 @@ function VerifyToken({ formStep, nextFormStep, selectedChain, prevFormStep }) {
                     }} placeholder="e.g 0x1c86738cAbcd4E37910468119ddF78817dC2125d" />
                     <Text variant='danger'>{errors.address && errors.address.message}</Text>
                 </Box>
-                {data && data.name &&
+                {tokenData && tokenData.name &&
                     <Box>
-                        <Text as={'p'} mb={1}>Name: {data.name}</Text>
-                        <Text as={'p'} mb={1}>Symbol: {data.symbol}</Text>
-                        <Text as={'p'} mb={1}>Decimals: {data.decimals}</Text>
+                        <Text as={'p'} mb={1}>Name: {tokenData.name}</Text>
+                        <Text as={'p'} mb={1}>Symbol: {tokenData.symbol}</Text>
+                        <Text as={'p'} mb={1}>Decimals: {tokenData.decimals}</Text>
                     </Box>
                 }
                 <br />
@@ -175,7 +175,7 @@ function VerifyToken({ formStep, nextFormStep, selectedChain, prevFormStep }) {
                     <Label my={3}>
                         <Radio name="currency" id="currency" value='true'
                             defaultChecked={true} />
-                        {selectedChain.symbol}&nbsp;<strong>(Users will pay with {selectedChain.symbol})</strong>
+                        {selectedChain?.symbol}&nbsp;<strong>(Users will pay with {selectedChain?.symbol})</strong>
                     </Label>
                 </Box>
                 <br />
@@ -183,13 +183,13 @@ function VerifyToken({ formStep, nextFormStep, selectedChain, prevFormStep }) {
                     <Label htmlFor="referral">Affiliate (Referral Contest)</Label>
                     <Label my={2}>
                         <Radio name="referral" id="referral"
-                            defaultChecked={true} onChange={(e) => {
+                            onChange={(e) => {
                                 setAffiliate(!e.target.value)
                             }} />
                         Disable Affiliate
                     </Label>
                     <Label my={2}>
-                        <Radio name="referral" id="referral" onChange={(e) => {
+                        <Radio name="referral" id="referral" defaultChecked={true} onChange={(e) => {
                             setAffiliate(e.target.value ? true : false)
                         }} />
                         Enable Affiliate
@@ -199,7 +199,7 @@ function VerifyToken({ formStep, nextFormStep, selectedChain, prevFormStep }) {
                     <Label htmlFor="affiliate">Affiliate Percentage (Amount of raised fund to be used for affiliate)</Label>
                     <Input type="number" name="affiliate" {...register("affiliate", {
                         required: "Required"
-                    })} id="affiliate" my={3} placeholder="Enter Percentage. Max: 10" />
+                    })} id="affiliate" my={3} value={data.affiliate} placeholder="Enter Percentage. Max: 10" />
                     <Text variant='danger'>{errors.affiliate && errors.affiliate.message}</Text>
                 </Box>}
                 <br />
@@ -220,7 +220,7 @@ function VerifyToken({ formStep, nextFormStep, selectedChain, prevFormStep }) {
                     </Label>
                 </Box>
                 <br />
-                <Text as={'p'} mb={5}> <strong>Pool Fees: {selectedChain.poolFee + '% of ' + selectedChain.symbol} raised</strong> </Text>
+                <Text as={'p'} mb={5}> <strong>Pool Fees: {selectedChain?.poolFee + '% of ' + selectedChain?.symbol} raised</strong> </Text>
                 <Flex>
                     {formStep > 0 && (
                         <Button
@@ -229,7 +229,7 @@ function VerifyToken({ formStep, nextFormStep, selectedChain, prevFormStep }) {
                             Back
                         </Button>
                     )}
-                    <Button type="submit">Verify</Button>
+                    <Button type="submit">Proceed{' >>>'}</Button>
                 </Flex>
 
             </Box>
@@ -238,14 +238,14 @@ function VerifyToken({ formStep, nextFormStep, selectedChain, prevFormStep }) {
 }
 
 function ICODetails({ formStep, nextFormStep, selectedChain, prevFormStep }) {
-    const { setFormValues } = useFormData();
+    const { setFormValues, data } = useFormData();
     const { handleSubmit, register, formState: { errors }, setError } = useForm();
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
-    async function onSubmit(data) {
-        data.startDate = startDate
-        data.endDate = endDate
-        setFormValues(data)
+    async function onSubmit(values) {
+        values.startDate = startDate
+        values.endDate = endDate
+        setFormValues(values)
         nextFormStep();
     }
 
@@ -253,30 +253,30 @@ function ICODetails({ formStep, nextFormStep, selectedChain, prevFormStep }) {
         <Box className={formStep === 0 ? styles.showForm : styles.hideForm}>
             <Heading>Fair Launch Info</Heading>
             <br />
-            <Text as={'p'} mb={2}> <strong>Pool creation fee: {selectedChain.poolCreationFee + ' ' + selectedChain.symbol}</strong> </Text>
+            <Text as={'p'} mb={2}> <strong>Pool creation fee: {selectedChain?.poolCreationFee + ' ' + selectedChain?.symbol}</strong> </Text>
             <br />
             <Box as="form" onSubmit={handleSubmit(onSubmit)} noValidate>
                 <Box>
                     <Label htmlFor="preSaleTokens">Total tokens to be sold</Label>
                     <Input type="number" name="preSaleTokens" {...register("preSaleTokens", {
                         required: "Required"
-                    })} id="preSaleTokens" my={3} placeholder="e.g 10000000" />
+                    })} id="preSaleTokens" my={3} value={data.preSaleTokens} placeholder="e.g 10000000" />
                     <Text variant='danger'>{errors.preSaleTokens && errors.preSaleTokens.message}</Text>
                 </Box>
                 <br />
                 <Box>
-                    <Label htmlFor="softCap">Softcap ({selectedChain.symbol})</Label>
+                    <Label htmlFor="softCap">Soft Cap ({selectedChain?.symbol})</Label>
                     <Input type="number" name="softCap" {...register("softCap", {
                         required: "Required"
-                    })} id="softCap" my={3} placeholder="50" />
+                    })} id="softCap" my={3} value={data.softCap} placeholder="50" />
                     <Text variant='danger'>{errors.softCap && errors.softCap.message}</Text>
                 </Box>
                 <br />
                 <Box>
-                    <Label htmlFor="anticipatedRate">Anticipated anticipatedRate (how many token per {selectedChain.symbol})</Label>
+                    <Label htmlFor="anticipatedRate">Anticipated anticipatedRate (how many token per {selectedChain?.symbol})</Label>
                     <Input type="number" name="anticipatedRate" {...register("anticipatedRate", {
                         required: "Required"
-                    })} id="anticipatedRate" my={3} placeholder="50" />
+                    })} id="anticipatedRate" my={3} value={data.anticipatedRate} placeholder="50" />
                     <Text variant='danger'>{errors.anticipatedRate && errors.anticipatedRate.message}</Text>
                 </Box>
                 <br />
@@ -302,7 +302,7 @@ function ICODetails({ formStep, nextFormStep, selectedChain, prevFormStep }) {
                     </Box>
                 </Flex>
                 <br />
-                <Text as={'p'} mb={5}> <strong>Pool Fees: {selectedChain.poolFee + '% of ' + selectedChain.symbol} raised</strong> </Text>
+                <Text as={'p'} mb={5}> <strong>Pool Fees: {selectedChain?.poolFee + '% of ' + selectedChain?.symbol} raised</strong> </Text>
                 <Flex>
                     {formStep > 0 && (
                         <Button
@@ -322,19 +322,11 @@ function ICODetails({ formStep, nextFormStep, selectedChain, prevFormStep }) {
 }
 
 function ProjectDetails({ formStep, nextFormStep, selectedChain, prevFormStep }) {
-
-    const router = useRouter()
-    const { data,setFormValues } = useFormData();
-    const { handleSubmit, register, formState: { errors }, setError } = useForm();
+    const { data, setFormValues } = useFormData();
+    const { handleSubmit, register, formState: { errors } } = useForm();
 
     async function onSubmit(formData) {
         setFormValues(formData)
-
-        // Deploy Contract
-        console.log(data)
-
-        // Call API
-
         nextFormStep();
     }
 
@@ -342,7 +334,7 @@ function ProjectDetails({ formStep, nextFormStep, selectedChain, prevFormStep })
         <Box className={formStep === 0 ? styles.showForm : styles.hideForm}>
             <Heading>Project Info</Heading>
             <br />
-            <Text as={'p'} mb={2}> <strong>Pool creation fee: {selectedChain.poolCreationFee + ' ' + selectedChain.symbol}</strong> </Text>
+            <Text as={'p'} mb={2}> <strong>Pool creation fee: {selectedChain?.poolCreationFee + ' ' + selectedChain?.symbol}</strong> </Text>
 
             <Box as="form" onSubmit={handleSubmit(onSubmit)} noValidate>
 
@@ -350,15 +342,15 @@ function ProjectDetails({ formStep, nextFormStep, selectedChain, prevFormStep })
                     <Box>
                         <Label htmlFor="logo">Link to Logo</Label>
                         <br />
-                        <Input name="logo" id="logo" type='url'  {...register("logo", {
+                        <Input name="logo" id="logo" type='url' value={data.logo}  {...register("logo", {
                             required: "Required",
-                        })} mb={3} placeholder="e.g https://howrea.com/logo192.png" />
+                        })} mb={3} placeholder="e.g https://howrea.com/shrf.png" />
                         <Text variant='danger'>{errors.logo && errors.logo.message}</Text>
                     </Box>
                     <Box>
                         <Label htmlFor="website">Project Website Link</Label>
                         <br />
-                        <Input name="website" id="website" type='url'  {...register("website", {
+                        <Input name="website" id="website" type='url' value={data.website}  {...register("website", {
                             required: "Required",
                         })} mb={3} placeholder="e.g https://howrea.com" />
                         <Text variant='danger'>{errors.website && errors.website.message}</Text>
@@ -366,29 +358,78 @@ function ProjectDetails({ formStep, nextFormStep, selectedChain, prevFormStep })
                     <Box>
                         <Label htmlFor="telegram">Telegram</Label>
                         <br />
-                        <Input name="telegram" id="telegram" type='url'  {...register("telegram", {
+                        <Input name="telegram" id="telegram" type='url' value={data.telegram}   {...register("telegram", {
                         })} mb={3} placeholder="e.g t.me/howrians" />
                         <Text variant='danger'>{errors.telegram && errors.telegram.message}</Text>
                     </Box>
                     <Box>
                         <Label htmlFor="twitter">Twitter</Label>
                         <br />
-                        <Input name="twitter" id="twitter" type='url'  {...register("twitter", {
+                        <Input name="twitter" id="twitter" type='url' value={data.twitter}  {...register("twitter", {
                         })} mb={3} placeholder="e.g https://twitter.com/HowreaNetwork" />
                         <Text variant='danger'>{errors.twitter && errors.twitter.message}</Text>
                     </Box>
+                    <Box>
+                        <Label htmlFor="instagram">Instagram</Label>
+                        <br />
+                        <Input name="instagram" id="instagram" type='url' value={data.instagram}   {...register("instagram", {
+                        })} mb={3} placeholder="e.g https://www.instagram.com/howrians" />
+                        <Text variant='danger'>{errors.instagram && errors.instagram.message}</Text>
+                    </Box>
+                    <Box>
+                        <Label htmlFor="discord">Discord</Label>
+                        <br />
+                        <Input name="discord" id="discord" type='url' value={data.discord}  {...register("discord", {
+                        })} mb={3} placeholder="e.g https://discord.gg/ecBCWHweym" />
+                        <Text variant='danger'>{errors.discord && errors.discord.message}</Text>
+                    </Box>
+                    <Box>
+                        <Label htmlFor="medium">Medium</Label>
+                        <br />
+                        <Input name="medium" id="medium" type='url' value={data.medium}   {...register("medium", {
+                        })} mb={3} placeholder="e.g https://medium.com/@howreanetwork" />
+                        <Text variant='danger'>{errors.medium && errors.medium.message}</Text>
+                    </Box>
+                    <Box>
+                        <Label htmlFor="github">Github</Label>
+                        <br />
+                        <Input name="github" id="github" type='url' value={data.github}  {...register("github", {
+                        })} mb={3} placeholder="e.g https://github.com/howrea" />
+                        <Text variant='danger'>{errors.github && errors.github.message}</Text>
+                    </Box>
+                    <Box>
+                        <Label htmlFor="reddit">Reddit</Label>
+                        <br />
+                        <Input name="reddit" id="reddit" type='url' value={data.reddit}   {...register("reddit", {
+                        })} mb={3} placeholder="e.g https://reddit.com/@howreanetwork" />
+                        <Text variant='danger'>{errors.reddit && errors.reddit.message}</Text>
+                    </Box>
+                    <Box>
+                        <Label htmlFor="linkedin">Linkedin</Label>
+                        <br />
+                        <Input name="linkedin" id="linkedin" type='url' value={data.linkedin}  {...register("linkedin", {
+                        })} mb={3} placeholder="e.g https://www.linkedin.com/company/howreanetwork" />
+                        <Text variant='danger'>{errors.linkedin && errors.linkedin.message}</Text>
+                    </Box>
                 </Grid>
                 <Box>
-                        <Label htmlFor="projectDescription">Project description</Label>
-                        <br />
-                        <Textarea type="text" name="projectDescription" id="projectDescription" {...register("projectDescription", {
-                            required: "Required"
-                        })} mb={3} placeholder="Howrea Network: A blockchain project powered by AI to automate the process of creating your very own..." />
-                        <Text variant='danger'>{errors.projectDescription && errors.projectDescription.message}</Text>
-                        <br />
-                        <br />
-                    </Box>
-                <Text as={'p'} mb={5}> <strong>Pool Fees: {selectedChain.poolFee + '% of ' + selectedChain.symbol} raised</strong> </Text>
+                    <Label htmlFor="youtube">Youtube Video</Label>
+                    <br />
+                    <Input name="youtube" id="youtube" type='url' value={data.youtube}  {...register("youtube", {
+                    })} mb={3} placeholder="e.g https://www.youtube.com/watch?v=4FsFdO0_5OU" />
+                    <Text variant='danger'>{errors.youtube && errors.youtube.message}</Text>
+                </Box>
+                <Box>
+                    <Label htmlFor="projectDescription">Project description</Label>
+                    <br />
+                    <Textarea type="text" name="projectDescription" id="projectDescription" value={data.projectDescription} {...register("projectDescription", {
+                        required: "Required"
+                    })} mb={3} placeholder="Howrea Network: A blockchain project powered by AI to automate the process of creating your very own..." />
+                    <Text variant='danger'>{errors.projectDescription && errors.projectDescription.message}</Text>
+                    <br />
+                    <br />
+                </Box>
+                <Text as={'p'} mb={5}> <strong>Pool Fees: {selectedChain?.poolFee + '% of ' + selectedChain?.symbol} raised</strong> </Text>
                 <Flex>
                     {formStep > 0 && (
                         <Button

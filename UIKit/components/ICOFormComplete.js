@@ -41,8 +41,8 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
             handleFailure("Connect Wallet")
             return;
         }
-        if (selectedChain.chainId != chainId) {
-            handleFailure("Connect to " + selectedChain.chainName)
+        if (selectedChain?.chainId != chainId) {
+            handleFailure("Connect to " + selectedChain?.chainName)
             return;
         }
         setIsSubmitting(true)
@@ -56,7 +56,7 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
             const contract = await factory.deploy(
                 data.address,
                 data.tokenInfo.decimals,
-                Number(selectedChain.poolFee),
+                Number(selectedChain?.poolFee),
                 Number(data.affiliate ? data.affiliate : 0),
                 ethers.utils.parseUnits(data.softCap, "ether"),
                 Number(data.anticipatedRate),
@@ -64,7 +64,7 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
                 data.endDate.getTime(),
                 Number(data.preSaleTokens),
                 {
-                    value: ethers.utils.parseUnits(selectedChain.poolCreationFee, "ether")
+                    value: ethers.utils.parseUnits(selectedChain?.poolCreationFee, "ether")
                 }
             )
             const deploymentReceipt = await contract.deployTransaction.wait(1)
@@ -77,9 +77,66 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
                 ethers.utils.parseUnits(data.preSaleTokens, data.tokenInfo.decimals))
             await tokenResult.wait(1)
             setCurrentStep(2)
+            const socials = []
+
+            if(data.website){
+                socials.add({
+                    link: data.website,
+                    platform: 'website'
+                })
+            }
+            if(data.telegram){
+                socials.add({
+                    link: data.telegram,
+                    platform: 'telegram'
+                })
+            }
+            if(data.twitter){
+                socials.add({
+                    link: data.twitter,
+                    platform: 'twitter'
+                })
+            }
+            if(data.instagram){
+                socials.add({
+                    link: data.instagram,
+                    platform: 'instagram'
+                })
+            }
+            if(data.discord){
+                socials.add({
+                    link: data.discord,
+                    platform: 'discord'
+                })
+            }
+            if(data.medium){
+                socials.add({
+                    link: data.medium,
+                    platform: 'medium'
+                })
+            }
+            if(data.github){
+                socials.add({
+                    link: data.github,
+                    platform: 'github'
+                })
+            }
+            if(data.reddit){
+                socials.add({
+                    link: data.reddit,
+                    platform: 'reddit'
+                })
+            }
+            if(data.linkedin){
+                socials.add({
+                    link: data.linkedin,
+                    platform: 'linkedin'
+                })
+            }
+
             const res = await api.post('/ico', {
-                chain: selectedChain.slug,
-                currency: selectedChain.symbol,
+                chain: selectedChain?.slug,
+                currency: selectedChain?.symbol,
                 creator: account,
                 tokenName: data.tokenName,
                 tokenSymbol: data.tokenSymbol,
@@ -87,13 +144,11 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
                 endTime: data.endDate.getTime(),
                 affiliatePercent: Number(data.affiliate ? data.affiliate : 0),
                 softCap: data.softCap,
+                youtubeVideo: data.youtube,
                 preSale: contract.address,
                 logoUrl: data.logo,
                 description: data.projectDescription,
-                socials: [{
-                    link: data.website,
-                    platform: 'website'
-                }]
+                socials: socials
             })
             if (res.data.statuscode == 200) {
                 console.log(`Fair launch deployed to ${contract.address}`)
@@ -167,7 +222,7 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
                                         }}>{key + ': '}</Text>
                                         <Text as={'p'} sx={{
                                             wordBreak: 'break-all'
-                                        }}>{numberWithCommas(data[key]) + ' ' + data.tokenSymbol + ' Per ' + selectedChain.symbol}</Text>
+                                        }}>{numberWithCommas(data[key]) + ' ' + data.tokenSymbol + ' Per ' + selectedChain?.symbol}</Text>
                                     </Flex>
                                     <hr />
                                 </>
@@ -206,7 +261,7 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
                                         }}>{key + ': '}</Text>
                                         <Text as={'p'} sx={{
                                             wordBreak: 'break-all'
-                                        }}>{(Math.round((data[key]+ Number.EPSILON)*100)/100) + ' ' + selectedChain.symbol}</Text>
+                                        }}>{(Math.round((data[key] + Number.EPSILON) * 100) / 100) + ' ' + selectedChain?.symbol}</Text>
                                     </Flex>
                                     <hr />
                                 </>
@@ -225,7 +280,7 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
                                     <Text as={'p'} sx={{
                                         wordBreak: 'break-all'
                                     }}>
-                                        <a href={selectedChain.explorer + '/token/' + data[key]} target="_blank" rel="noopener noreferrer">
+                                        <a href={selectedChain?.explorer + '/token/' + data[key]} target="_blank" rel="noopener noreferrer">
                                             {data[key]}</a> </Text>
                                 </Flex>
                                 <hr />
@@ -363,7 +418,7 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
                     width: '100%'
                 }
             }}>
-                <a href={selectedChain.explorer + '/tx/' + data.txHash} target="_blank" rel="noopener noreferrer">
+                <a href={selectedChain?.explorer + '/tx/' + data.txHash} target="_blank" rel="noopener noreferrer">
                     <Button>View transaction</Button>
                 </a>
                 &nbsp;
@@ -371,7 +426,7 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
                 <Button onClick={() => {
                     router.push({
                         pathname: '/funding/' + data.icoAddress,
-                        query: { chain: localChain ? localChain : selectedChain.slug },
+                        query: { chain: localChain ? localChain : selectedChain?.slug },
                     });
                 }}>View Sale</Button>
             </Flex>}

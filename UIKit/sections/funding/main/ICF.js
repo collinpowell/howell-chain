@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { parseBalance } from "../../../../Util/util";
 const CountDown = dynamic(import("react-countdown"), { ssr: false });
 import Buy from "../sub/BuyInput";
+import YouTube from "react-youtube";
 import {
   Instagram,
   Telegram,
@@ -35,6 +36,15 @@ function numberWithCommas(n) {
     (parts[1] ? "." + parts[1] : "")
   );
 }
+const opts = {
+  height: "390",
+  width: "640",
+  playerVars: {
+    autoplay: 1,
+  },
+};
+
+
 
 function getLogo(p) {
   switch (p) {
@@ -87,17 +97,20 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
   const tokenInfo = useTokenData(saleData.tokenAddress)
   const [userInput, setUserInput] = useState(1);
   const [spin, setSpin] = useState(false);
+  function _onReady(e) {
+    e.target.pauseVideo();
+  }
   const info = [
     {
       value: getStatus(saleData.status),
       title: "Status",
     },
     {
-      value: '1 ' + chain.symbol + ' = ' + numberWithCommas(saleData.currentRate) + " " + tokenInfo.symbol,
+      value: '1 ' + chain?.symbol + ' = ' + numberWithCommas(saleData.currentRate) + " " + tokenInfo.symbol,
       title: "Present Rate",
     },
     {
-      value: '1 ' + chain.symbol + ' = ' + numberWithCommas(saleData.anticipatedRate) + " " + tokenInfo.symbol,
+      value: '1 ' + chain?.symbol + ' = ' + numberWithCommas(saleData.anticipatedRate) + " " + tokenInfo.symbol,
       title: "Anticipated Rate",
     },
     {
@@ -105,15 +118,15 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
       title: "Total Contributors",
     },
     {
-      value: data.contribution + " " + chain.symbol,
+      value: data.contribution + " " + chain?.symbol,
       title: "Your Purchase",
     },
   ]
-  
+
 
   const affiliate = [
     {
-      value: data.reward + ' ' + chain.symbol,
+      value: data.reward + ' ' + chain?.symbol,
       title: "Your Reward",
     },
     {
@@ -125,7 +138,7 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
       title: "Reward Percentage",
     },
     {
-      value: saleData.currentRewards + " " + chain.symbol,
+      value: saleData.currentRewards + " " + chain?.symbol,
       title: "Total Current Rewards",
     },
   ]
@@ -160,11 +173,11 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
       title: "Tokens For Presale",
     },
     {
-      value: saleData.softCap + " " + chain.symbol,
+      value: saleData.softCap + " " + chain?.symbol,
       title: "Soft Cap",
     },
     {
-      value: saleData.hardCap + " " + chain.symbol,
+      value: saleData.hardCap + " " + chain?.symbol,
       title: "Hard Cap",
     },
     {
@@ -339,8 +352,8 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
       await res.wait()
       const result = await contract.getRaised()
       const value = parseBalance(result ?? 0, 18, 5)
-      console.log(result,value)
-      const appi = await api.put('ico',{
+      console.log(result, value)
+      const appi = await api.put('ico', {
         preSale: apiData.preSale,
         fundsRaised: value
       })
@@ -426,6 +439,12 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
 
   }
 
+  function youtube_parser(url) {
+    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    var match = url.match(regExp);
+    return (match && match[7].length == 11) ? match[7] : false;
+  }
+
   const Completionist = () => {
     return (
       <Flex sx={styles.countdown}>
@@ -484,6 +503,7 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
       );
     }
   };
+
   return (
     <>
       <br />
@@ -550,7 +570,7 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
               }
             }}>
               <Image src={apiData?.logoUrl} alt='logo' width={70} height={70} />
-              <Image src={chain.chainLogo} alt='logo' className='chain' width={25} height={25} />
+              <Image src={chain?.chainLogo} alt='logo' className='chain' width={25} height={25} />
             </Box>
             <Box sx={{
               height: 'fit-content',
@@ -638,6 +658,17 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
             <Text>{apiData?.description}</Text>
           </Box>
           <br />
+          {apiData?.youtubeVideo && <Box sx={{
+            alignItems: 'center',
+            textAlign: 'center',
+            iframe: {
+              maxWidth: '100%'
+            }
+          }}>
+            <YouTube videoId={youtube_parser(apiData?.youtubeVideo)}
+              opts={opts} onReady={_onReady} />
+          </Box>}
+
           <br />
           <Box sx={{
             textAlign: 'center',
