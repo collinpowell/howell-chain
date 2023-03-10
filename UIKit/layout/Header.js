@@ -156,6 +156,8 @@ const Header = () => {
         } sx={{
           background: "text",
           color: "background",
+          height: '80vh',
+          overflow: 'scroll',
           p: {
             fontWeight: 'bold',
             textAlign: 'center'
@@ -537,7 +539,10 @@ const styles = {
         opacity: "1",
         zIndex: "2500",
         display: ["block", null, null, "none"],
-
+        height:'80vh',
+        overflow:'scroll',
+        mb:'0',
+        pb:'0',
         transform: "translate(0%, 0%)",
       },
     },
