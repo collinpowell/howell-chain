@@ -15,8 +15,14 @@ const Community = () => {
         <>
             <SEO title='Howrea Community' description='Be Part Of Our Vibrant Communities, stay upto date' />
             <Header />
+            <br />
+            <br />
+            <br />
+            <br />
             <Container sx={styles.con}>
                 <Heading><span>Be Part Of Our Vibrant Communities</span> </Heading>
+                <br />
+                <Heading variant='title'>Reach us through these various medias </Heading>
                 <br />
                 <br />
                 <br />

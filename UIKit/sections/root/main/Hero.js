@@ -6,9 +6,11 @@ const data = {
     subHeading: 'Empowering the next generation of blockchain heros!',
     body: 'Launch your token and ICO in a matter of seconds with no coding, risk-free,and secure for investors',
 }
+import { useChainData } from '../../../../contexts/chain'
 
 const Hero = ({ state }) => {
     const router = useRouter();
+    const { chain } = useChainData();
 
     return (
         <Container sx={styles.container}>
@@ -21,19 +23,17 @@ const Hero = ({ state }) => {
                 justifyContent: 'center'
             }}>
                 <Button onClick={() => {
-                    const localChain = typeof window !== 'undefined' ? localStorage.getItem('chain') : undefined
                     router.push({
                         pathname: '/create/ico',
-                        query: { ...router.query, chain: localChain ? localChain : 'BSC' },
+                        query: { ...router.query, chain: chain.slug },
                     });
                 }}>Create ICO</Button>
                 &nbsp;
                 &nbsp;
                 <Button onClick={() => {
-                    const localChain = typeof window !== 'undefined' ? localStorage.getItem('chain') : undefined
                     router.push({
                         pathname: '/create/token',
-                        query: { ...router.query, chain: localChain ? localChain : 'BSC' },
+                        query: { ...router.query, chain: chain.slug },
                     });
                 }}>Create Token</Button>
             </Flex>

@@ -369,10 +369,9 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
                 &nbsp;
                 &nbsp;
                 <Button onClick={() => {
-                    const localChain = typeof window !== 'undefined' ? localStorage.getItem('chain') : undefined
                     router.push({
                         pathname: '/funding/' + data.icoAddress,
-                        query: { chain: localChain ? localChain : 'BSC' },
+                        query: { chain: localChain ? localChain : selectedChain.slug },
                     });
                 }}>View Sale</Button>
             </Flex>}

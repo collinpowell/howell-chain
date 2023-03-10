@@ -20,7 +20,6 @@ import {
   Bright,
 } from "../../UIKit/assets/Icons";
 import HEADER_DATA from "../../data/header";
-import { chains } from "../../data/chains";
 import { Sun } from "../../UIKit/assets/Backgrounds";
 import { keyframes } from "@emotion/react";
 import Link from "next/link";
@@ -31,7 +30,7 @@ import { useReducer, useEffect, useState, useCallback } from "react";
 import Sticky from 'react-stickynode';
 import { useStickyState, useStickyDispatch } from '../../contexts/app/app.provider';
 import { Waypoint } from 'react-waypoint';
-
+import { useChainData } from "../../contexts/chain";
 const rotation = keyframes({
   from: { transform: "rotate(0deg)" },
   to: { transform: "rotate(180deg)" },
@@ -39,10 +38,10 @@ const rotation = keyframes({
 
 const Header = () => {
   const [colorMode, setColorMode] = useColorMode();
-  const router = useRouter();
+  const { chains, chain, getChangeable } = useChainData();
   const triedToEagerConnect = useEagerConnect();
-  const [, forceUpdate] = useReducer(x => x + 1, 0);
   const isSticky = useStickyState('isSticky');
+  const router = useRouter()
   const [chainsDrop, setChainsDrop] = useState(false);
   const dispatch = useStickyDispatch();
   const setSticky = useCallback(() => dispatch({ type: 'SET_STICKY' }), [
@@ -69,72 +68,16 @@ const Header = () => {
 
   };
 
-  const { library } = useWeb3React();
-
-
-  const { menuData } = HEADER_DATA;
-
-  useEffect(() => {
-    const handleRouteChange = (url, { shallow }) => {
-      forceUpdate()
+  const handleChainChange = (value) => {
+    if(getChangeable()){
+      router.replace({
+        query: { ...router.query, chain: value.slug },
+      });
     }
-
-    router.events.on('routeChangeStart', handleRouteChange)
-    return () => {
-      router.events.off('routeChangeStart', handleRouteChange)
-    }
-  }, [])
-
-  const handleChain = (data) => {
-    localStorage.setItem('chain', data.slug);
-    router.replace({
-      query: { ...router.query, chain: data.slug },
-    });
-    changeTO(data);
     closeDropDown();
   }
 
-  async function changeTO(data) {
-    if (!library) {
-      return
-    }
-    const chainId = await library?.provider.request({ method: 'eth_chainId' });
-    if (chainId === data.chainId) {
-      console.log("Bravo!, you are on the correct network");
-    } else {
-      try {
-        await library?.provider.request({
-          method: 'wallet_switchEthereumChain',
-          params: [{ chainId: '0x' + data.chainId.toString(16) }],
-        });
-        console.log("You have successfully switched to Binance Test network")
-      } catch (switchError) {
-        // This error code indicates that the chain has not been added to MetaMask.
-        if (switchError.code === 4902) {
-          console.log("This network is not available in your metamask, please add it")
-          try {
-            await library?.provider.request({
-              method: 'wallet_addEthereumChain',
-              params: [
-                {
-                  chainId: '0x' + data.chainId.toString(16),
-                  chainName: data.chainName,
-                  rpcUrls: [data.rpc], blockExplorerUrls: [data.explorer],
-                  nativeCurrency: {
-                    symbol: data.symbol,
-                    decimals: data.decimals
-                  }
-                }
-              ]
-            });
-          } catch (addError) {
-            console.log(addError);
-          }
-        }
-        console.log("Failed to switch to the network")
-      }
-    }
-  }
+  const { menuData } = HEADER_DATA;
 
   const ChainDrop = ({ data, i }) => {
     //console.log(data)
@@ -142,7 +85,7 @@ const Header = () => {
       <Box className="relative">
         <Button key={i} variant='text' onClick={() => {
           openDropDown();
-        }}><Image src={data.chainLogo} width={50} height={50} alt='chain' /></Button>
+        }}><Image src={data.chainLogo} width={40} height={40} alt='chain' /></Button>
         {chainsDrop && (
           <div
             className="click-catcher-obj"
@@ -175,7 +118,7 @@ const Header = () => {
                     key={i}
                     sx={styles.connectBox}
                     onClick={() => {
-                      handleChain(data)
+                      handleChainChange(data)
                     }}
                   >
                     <Image
@@ -195,7 +138,6 @@ const Header = () => {
 
           <Grid
             sx={styles.grid1}
-
           >
             {
               chains.map((data, i) => {
@@ -204,7 +146,7 @@ const Header = () => {
                     key={i}
                     sx={styles.connectBox}
                     onClick={() => {
-                      handleChain(data)
+                      handleChainChange(data)
                     }}
                   >
                     <Image
@@ -373,16 +315,7 @@ const Header = () => {
               })}
             </Flex>
             <Flex>
-              {(typeof window !== 'undefined' ? localStorage?.getItem('chain') : undefined) && chains.map((data, i) => {
-                const localChain = typeof window !== 'undefined' ? localStorage?.getItem('chain') : undefined
-                //console.log(localChain, data.slug, localChain && localChain == data.slug)
-                return localChain && localChain == data.slug ? (
-                  <ChainDrop data={data} i={i} />
-                ) : null
-              })}
-              {!(typeof window !== 'undefined' ? localStorage?.getItem('chain') : undefined) &&
-                <ChainDrop data={chains[0]} i={1} />
-              }
+              {chain && <ChainDrop data={chain} />}
               &nbsp;
               &nbsp;
               <Account triedToEagerConnect={triedToEagerConnect} />
@@ -539,10 +472,10 @@ const styles = {
         opacity: "1",
         zIndex: "2500",
         display: ["block", null, null, "none"],
-        height:'80vh',
-        overflow:'scroll',
-        mb:'0',
-        pb:'0',
+        height: '80vh',
+        overflow: 'scroll',
+        mb: '0',
+        pb: '0',
         transform: "translate(0%, 0%)",
       },
     },

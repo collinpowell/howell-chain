@@ -1,4 +1,4 @@
-import { Container, Flex, Heading, Image, Button, Grid, Text, Box } from 'theme-ui'
+import { Container, Spinner, Flex, Heading, Image, Button, Grid, Text, Box } from 'theme-ui'
 import Seo from '../components/SEO';
 import { useWeb3React } from '@web3-react/core';
 import { useEffect, useState } from 'react';
@@ -7,29 +7,37 @@ import { useRouter } from 'next/router';
 import Header from '../UIKit/layout/Header'
 import dynamic from "next/dynamic";
 import { Progress } from "reactstrap";
+import { useChainData } from '../contexts/chain';
 const CountDown = dynamic(import("react-countdown"), { ssr: false });
 
 const Privacy = () => {
     const { account } = useWeb3React()
     const router = useRouter()
+    const { chain } = useChainData()
     const [data, setData] = useState()
-    console.log(data)
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(false)
     useEffect(() => {
         async function getUserItems() {
-            const res = await api.get('/ico')
-            if (res.data.statuscode == 200) {
-                const data = res.data.body.data
-                console.log(data)
-                setData(data)
+            setLoading(true)
+            try {
+                if (!chain) { return }
+                const res = await api.get('/ico?chain=' + chain?.slug)
+                setLoading(false)
+                if (res.data.statuscode == 200) {
+                    setError(false)
+                    const data = res.data.body.data
+                    setData(data)
+                }
+            } catch (error) {
+                setLoading(false)
+                setError(error.message)
             }
         }
-        try {
-            getUserItems()
+        getUserItems()
 
-        } catch (error) {
-            console.log(error.message)
-        }
-    }, [account])
+
+    }, [chain])
 
     return data ? (
         <>
@@ -49,6 +57,10 @@ const Privacy = () => {
                 }}>
                     <span>Launch Pools</span>
                 </Heading>
+                {data.length <= 0 && <Text variant='title' as={'p'} sx={{
+                    textAlign: 'center',
+                    mx:'auto'
+                }}>No pools on this chain, try checking another chain</Text>}
                 <Grid sx={styles.grid}>
                     {data.map((ico, i) => {
                         const time = {
@@ -95,9 +107,9 @@ const Privacy = () => {
                                         <Text variant='title' as={'p'}>{ico.tokenName}</Text>
                                         <Text as={'p'}>{ico.tokenSymbol}</Text>
                                         <Text as={'p'} sx={{
-                                            fontSize:'14px',
-                                            opacity:'0.7',
-                                            mt:'4px'
+                                            fontSize: '14px',
+                                            opacity: '0.7',
+                                            mt: '4px'
                                         }}>{'Fair Launch'}</Text>
 
                                     </Box>
@@ -137,10 +149,10 @@ const Privacy = () => {
                                 <br />
                                 <Box>
                                     <Text as='p'>Soft Cap</Text>
-                                    <Text as='p' variant='title' sx={{fontWeight:'bold'}}>{ico.softCap+ " "+ico.currency}</Text>
+                                    <Text as='p' variant='title' sx={{ fontWeight: 'bold' }}>{ico.softCap + " " + ico.currency}</Text>
                                 </Box>
                                 <br />
-                               
+
                                 <Progress
                                     value={percent}
                                     style={{
@@ -152,9 +164,9 @@ const Privacy = () => {
                                 <br />
                                 <Flex sx={{ justifyContent: "space-between", fontWeight: "bold" }}>
                                     <Text as="p">
-                                        {Number(ico.fundsRaised ? ico.fundsRaised : 0) + " "+ico.currency}
+                                        {Number(ico.fundsRaised ? ico.fundsRaised : 0) + " " + ico.currency}
                                     </Text>
-                                    <Text as="p">{Number(ico.softCap ? ico.softCap : 0)+ " "+ico.currency}</Text>
+                                    <Text as="p">{Number(ico.softCap ? ico.softCap : 0) + " " + ico.currency}</Text>
                                 </Flex>
                                 <br />
                                 <hr />
@@ -185,6 +197,27 @@ const Privacy = () => {
         </>
     ) : (
         <>
+            <Header />
+            <Container sx={{
+                height: '100vh',
+                weight: '100vh',
+                position: 'relative',
+                textAlign: 'center'
+            }}>
+                <Box sx={{
+                    position: 'absolute',
+                    left: '0',
+                    right: '0',
+                    bottom: '0',
+                    top: '0',
+                    m: 'auto',
+                    width: 'fit-content',
+                    height: 'fit-content',
+                }} >
+                    {loading && <Spinner />}
+                    {error && <Text variant='danger' as={'h4'}>{error}</Text>}
+                </Box>
+            </Container>
 
         </>
     )

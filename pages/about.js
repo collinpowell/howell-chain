@@ -15,6 +15,13 @@ const About = () => {
     <>
       <SEO title='Howrea | About' description='Learn about our blockchain network'/>
       <Header />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <Container sx={styles.container}>
         <Heading>
           <span>About</span>

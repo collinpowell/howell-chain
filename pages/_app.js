@@ -15,6 +15,7 @@ import AOS from "aos";
 import ToTop from '../UIKit/components/ToTop'
 import { StickyProvider } from '../contexts/app/app.provider';
 import FormProvider from "../contexts/form";
+import ChainProvider from "../contexts/chain";
 
 function getLibrary(provider) {
   return new Web3Provider(provider);
@@ -33,10 +34,12 @@ function MyApp({ Component, pageProps }) {
       <ThemeProvider theme={theme}>
         <StickyProvider>
           <Layout>
-            <FormProvider>
-              <ToTop />
-              <Component {...pageProps} />
-            </FormProvider>
+            <ChainProvider>
+              <FormProvider>
+                <ToTop />
+                <Component {...pageProps} />
+              </FormProvider>
+            </ChainProvider>
           </Layout>
         </StickyProvider>
       </ThemeProvider>

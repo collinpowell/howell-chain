@@ -6,33 +6,19 @@ import { useFormData } from "../../contexts/form";
 import { Box, Label, Flex, Heading, Text, Radio, Textarea, Input, Container, Spinner, Grid, Button } from 'theme-ui'
 import styles from "../../styles/styles.module.scss";
 import { useForm } from "react-hook-form";
-import { chains } from "../../data/chains";
 import useTokenData from "../../Web3Hooks/ERC20/useTokenData";
 import { useRouter } from "next/router";
 import FormCompleted from '../../UIKit/components/ICOFormComplete'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useChainData } from "../../contexts/chain";
 
 const ICO = () => {
     const [formStep, setFormStep] = useState(0);
-    const router = useRouter()
     const nextFormStep = () => setFormStep((currentStep) => currentStep + 1);
-
     const prevFormStep = () => setFormStep((currentStep) => currentStep - 1);
-    const [selectedChain, setSelectedChain] = useState(chains[0]);
+    const {chain} = useChainData()
 
-    useEffect(() => {
-        if (!localStorage) {
-            setSelectedChain(chains[0])
-        }
-        for (let i = 0; i < chains.length; i++) {
-
-            if (localStorage && localStorage.getItem('chain') == chains[i].slug) {
-                setSelectedChain(chains[i])
-                console.log(chains[i])
-            }
-        }
-    }, [router.query])
 
     return (
         <>
@@ -52,15 +38,15 @@ const ICO = () => {
 
                 <FormCard currentStep={formStep} prevFormStep={prevFormStep}>
                     {formStep == 0 && (
-                        <VerifyToken formStep={formStep} nextFormStep={nextFormStep} selectedChain={selectedChain} prevFormStep={prevFormStep} />
+                        <VerifyToken formStep={formStep} nextFormStep={nextFormStep} selectedChain={chain} prevFormStep={prevFormStep} />
                     )}
                     {formStep == 1 && (
-                        <ICODetails formStep={formStep} nextFormStep={nextFormStep} selectedChain={selectedChain} prevFormStep={prevFormStep} />
+                        <ICODetails formStep={formStep} nextFormStep={nextFormStep} selectedChain={chain} prevFormStep={prevFormStep} />
                     )}
                     {formStep == 2 && (
-                        <ProjectDetails formStep={formStep} nextFormStep={nextFormStep} selectedChain={selectedChain} prevFormStep={prevFormStep} />
+                        <ProjectDetails formStep={formStep} nextFormStep={nextFormStep} selectedChain={chain} prevFormStep={prevFormStep} />
                     )}
-                    {formStep > 2 && <FormCompleted selectedChain={selectedChain} formStep={formStep} prevFormStep={prevFormStep}/>}
+                    {formStep > 2 && <FormCompleted selectedChain={chain} formStep={formStep} prevFormStep={prevFormStep}/>}
                 </FormCard>
             </Container>
 
@@ -156,10 +142,9 @@ function VerifyToken({ formStep, nextFormStep, selectedChain, prevFormStep }) {
                         <Label htmlFor="address">Token Address</Label>
 
                         <Button variant="text" onClick={() => {
-                            const localChain = typeof window !== 'undefined' ? localStorage.getItem('chain') : undefined
                             router.push({
                                 pathname: '/create/token',
-                                query: { ...router.query, chain: localChain ? localChain : 'BSC' },
+                                query: { ...router.query, chain: selectedChain.slug },
                             });
                         }}>Create&nbsp;Token</Button>
                     </Flex>
@@ -253,7 +238,6 @@ function VerifyToken({ formStep, nextFormStep, selectedChain, prevFormStep }) {
 }
 
 function ICODetails({ formStep, nextFormStep, selectedChain, prevFormStep }) {
-    const router = useRouter()
     const { setFormValues } = useFormData();
     const { handleSubmit, register, formState: { errors }, setError } = useForm();
     const [startDate, setStartDate] = useState(new Date());
