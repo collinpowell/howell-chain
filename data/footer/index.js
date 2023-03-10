@@ -28,6 +28,10 @@ const FOOTER_DATA = [
           label: 'Whitepaper',
         },
         {
+          link: 'https://docs.howrea.com',
+          label: 'Docs',
+        },
+        {
           link: '/community',
           label: 'Community',
         },
@@ -45,8 +49,18 @@ const FOOTER_DATA = [
       title: 'Platforms',
       menuItem: [
         {
-          link: 'https://www.t-d-h.tech/',
+          link: 'https://tdh.howrea.com',
           label: 'TDH',
+          external: true
+        },
+        {
+          link: 'https://lp.howrea.com',
+          label: 'Howrea LP',
+          external: true
+        },
+        {
+          link: 'https://nft.howrea.com',
+          label: 'Howrea NFTs',
           external: true
         },
         {

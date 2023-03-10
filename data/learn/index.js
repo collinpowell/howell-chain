@@ -33,7 +33,7 @@ const LEARN_DATA = {
             h: h2,
             heading: 'Learn more about the Howrea network',
             body: 'Learn and read about the Howrea network',
-            link: '/comingsoon',
+            link: 'https://docs.howrea.com/',
 
         },
         {

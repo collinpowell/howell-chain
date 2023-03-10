@@ -7,13 +7,13 @@ const HEADER_DATA = {
           icon: null,
           text: "TDH",
           description:"Talent Development Hub",
-          link: "https://t-d-h.tech/",
+          link: "https://tdh.howrea.com",
         },
         {
           icon: null,
           text: "Wallet App",
           description:"Howrea Crypto Wallet",
-          link: "https://wallet.howrea.com/",
+          link: "https://wallet.howrea.com",
         },
         {
           icon: null,
@@ -21,11 +21,29 @@ const HEADER_DATA = {
           description:"SHRF/BNB Pool, APR 5%+",
           link: "/staking",
         },
+        {
+          icon: null,
+          text: "Howrea LP",
+          description:"Howrea Launchpad",
+          link: "https://lp.howrea.com",
+        },
+        {
+          icon: null,
+          text: "Howrea NFTs",
+          description:"Howrea NFTs / Collectables / Event ticketing",
+          link: "https://nft.howrea.com",
+        },
       ],
     },
     {
       label: "Learn",
       links: [
+        {
+          icon: null,
+          text: "Documentation",
+          description:"Howrea Docs",
+          link: "https://docs.howrea.com",
+        },
         {
           icon: null,
           text: "Whitepaper",
@@ -46,18 +64,6 @@ const HEADER_DATA = {
         },
         {
           icon: null,
-          text: "Public ICO",
-          description:"Invest in the blockchain project early",
-          link: "/funding",
-        },
-        {
-          icon: null,
-          text: "SHRF Staking",
-          description:"SHRF/BNB Pool, APR 5%+",
-          link: "/staking",
-        },
-        {
-          icon: null,
           text: "Privacy Policy",
           description:"Privacy Policy",
           link: "/privacy",
@@ -67,12 +73,6 @@ const HEADER_DATA = {
     {
       label: "Network",
       links: [
-        {
-          icon: null,
-          text: "Public ICO",
-          description:"Invest in the blockchain project early",
-          link: "/funding",
-        },
         {
           icon: null,
           text: "Block Explorer",
@@ -118,7 +118,7 @@ const HEADER_DATA = {
           icon: null,
           text: "Telegram",
           description:"Telegram News Channel",
-          link: "https://t.me/howreaChanel",
+          link: "https://t.me/howrea_ann",
         },
       ],
     },
@@ -130,13 +130,7 @@ const HEADER_DATA = {
           text: "Foundation",
           description:"Our Foundation",
           link: "",
-        },
-        {
-          icon: null,
-          text: "Funding",
-          description:"Fund this great vision",
-          link: "/funding",
-        },
+        }
       ],
     },
   ],

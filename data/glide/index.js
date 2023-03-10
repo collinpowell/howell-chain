@@ -14,7 +14,17 @@ const GLIDE_DATA ={
         {
             logo:<TDH/>,
             tooltip:  'Hi Visit Me!',
-            link:'http://t-d-h.tech'
+            link:'https://tdh.howrea.com'
+        },
+        {
+            logo:<FooterLogo/>,
+            tooltip: dummyTooltip,
+            link:'https://lp.howrea.com'
+        },
+        {
+            logo:dummyLogo,
+            tooltip: dummyTooltip,
+            link:'https://nft.howrea.com'
         },
         {
             logo:<FooterLogo/>,
@@ -24,42 +34,7 @@ const GLIDE_DATA ={
         {
             logo:dummyLogo,
             tooltip: dummyTooltip,
-            link:dummyLink
-        },
-        {
-            logo:dummyLogo,
-            tooltip: dummyTooltip,
-            link:dummyLink
-        },
-        {
-            logo:dummyLogo,
-            tooltip: dummyTooltip,
-            link:dummyLink
-        },
-        {
-            logo:dummyLogo,
-            tooltip: dummyTooltip,
-            link:dummyLink
-        },
-        {
-            logo:dummyLogo,
-            tooltip: dummyTooltip,
-            link:dummyLink
-        },
-        {
-            logo:dummyLogo,
-            tooltip: dummyTooltip,
-            link:dummyLink
-        },
-        {
-            logo:dummyLogo,
-            tooltip: dummyTooltip,
-            link:dummyLink
-        },
-        {
-            logo:dummyLogo,
-            tooltip: dummyTooltip,
-            link:dummyLink
+            link:'/staking'
         }
     ]
 }
