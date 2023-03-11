@@ -15,6 +15,8 @@ export default function ChainProvider({ children }) {
     useEffect(() => {
         const localChain = localStorage.getItem('chain')
         const routerChain = router.query.chain;
+        console.log(localChain)
+        console.log(routerChain)
         // is site for first time
         if (routerChain && routerChain != undefined && routerChain != 'undefined') {
             setChainData(getParticularChain(routerChain))
@@ -22,11 +24,11 @@ export default function ChainProvider({ children }) {
             changeChain(getParticularChain(routerChain))
         } else if (localChain && localChain != undefined && localChain != 'undefined') {
             setChainData(getParticularChain(localChain))
-            changeChain(getParticularChain(routerChain))
+            changeChain(getParticularChain(localChain))
         } else {
             setChainData(getDefaultChain())
             localStorage.setItem('chain', chain?.slug)
-            changeChain(getParticularChain(routerChain))
+            changeChain(chain)
         }
     }, [router.query.chain, chainId, account])
 

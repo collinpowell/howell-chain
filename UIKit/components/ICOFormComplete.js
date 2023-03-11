@@ -79,56 +79,56 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
             setCurrentStep(2)
             const socials = []
 
-            if(data.website){
-                socials.add({
+            if (data.website) {
+                socials.push({
                     link: data.website,
                     platform: 'website'
                 })
             }
-            if(data.telegram){
-                socials.add({
+            if (data.telegram) {
+                socials.push({
                     link: data.telegram,
                     platform: 'telegram'
                 })
             }
-            if(data.twitter){
-                socials.add({
+            if (data.twitter) {
+                socials.push({
                     link: data.twitter,
                     platform: 'twitter'
                 })
             }
-            if(data.instagram){
-                socials.add({
+            if (data.instagram) {
+                socials.push({
                     link: data.instagram,
                     platform: 'instagram'
                 })
             }
-            if(data.discord){
-                socials.add({
+            if (data.discord) {
+                socials.push({
                     link: data.discord,
                     platform: 'discord'
                 })
             }
-            if(data.medium){
-                socials.add({
+            if (data.medium) {
+                socials.push({
                     link: data.medium,
                     platform: 'medium'
                 })
             }
-            if(data.github){
-                socials.add({
+            if (data.github) {
+                socials.push({
                     link: data.github,
                     platform: 'github'
                 })
             }
-            if(data.reddit){
-                socials.add({
+            if (data.reddit) {
+                socials.push({
                     link: data.reddit,
                     platform: 'reddit'
                 })
             }
-            if(data.linkedin){
-                socials.add({
+            if (data.linkedin) {
+                socials.push({
                     link: data.linkedin,
                     platform: 'linkedin'
                 })
@@ -160,9 +160,12 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
             setIsSubmitting(false)
             if (error.data) {
                 handleFailure(error.data.message);
-
             } else {
-                handleFailure(error.message);
+                if (error.reason) {
+                    handleFailure(error.reason);
+                } else {
+                    handleFailure(error.message);
+                }
             }
             setCurrentStep(-1)
         }
@@ -261,7 +264,7 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
                                         }}>{key + ': '}</Text>
                                         <Text as={'p'} sx={{
                                             wordBreak: 'break-all'
-                                        }}>{(Math.round((data[key] + Number.EPSILON) * 100) / 100) + ' ' + selectedChain?.symbol}</Text>
+                                        }}>{data[key] + ' ' + selectedChain?.symbol}</Text>
                                     </Flex>
                                     <hr />
                                 </>
@@ -302,6 +305,26 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
                                 </Flex>
                                 <hr />
                             </>
+                        case 'projectDescription':
+                            return(
+                            <>
+                            <Flex key={index} sx={{
+                                justifyContent: ['center', null, null, 'space-between'],
+                                flexDirection: ['column', null, null, 'row'],
+                            }}>
+                                <Text as={'p'} sx={{
+                                    fontWeight: 'bold',
+                                    mb: ['8px', null, null, '0']
+                                }}>{key + ': '}</Text>
+                                <Text as={'p'} sx={{
+                                    wordBreak: 'break-all',
+                                    maxWidth:['100%',null,null,'70%'],
+                                    mx:'auto',
+                                    textAlign:['center',null,null,'right']
+                                }}>{data[key]?.toString()}</Text>
+                            </Flex>
+                            <hr />
+                        </>)
                         default:
                             return (
                                 <>
@@ -426,7 +449,7 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
                 <Button onClick={() => {
                     router.push({
                         pathname: '/funding/' + data.icoAddress,
-                        query: { chain: localChain ? localChain : selectedChain?.slug },
+                        query: { chain: selectedChain?.slug },
                     });
                 }}>View Sale</Button>
             </Flex>}

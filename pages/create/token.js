@@ -8,6 +8,8 @@ import { chains } from '../../data/chains';
 import Party from '../../UIKit/components/Party'
 import ABI from '../../artifacts/contracts/StandardToken.sol/Standard.json'
 import { ContractFactory, ethers } from 'ethers';
+import { api } from '../../config/api'
+
 
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
@@ -89,19 +91,36 @@ export default function FormData() {
             values.txHash = deploymentReceipt.transactionHash
             values.contractAddress = contract.address
             values.deployer = deploymentReceipt.from
-
-            console.log(contract.deployTransaction);
-            handleSuccess('Token Creation Successful')
-            setIsSubmitting(false)
             setTokenInfo(values)
-            setIsSubmitted(true)
+            const res = await api.post('/token', {
+                chain: selectedChain?.slug,
+                txHash: values.txHash,
+                deployer: values.deployer,
+                tokenInfo: {
+                    address: values.contractAddress,
+                    name: values.name,
+                    symbol: values.symbol,
+                    totalSupply: values.total,
+                    decimals: values.decimal,
+                }
+
+            })
+            if (res.data.statuscode == 200) {
+                handleSuccess('Token Creation Successful')
+                setIsSubmitting(false)
+                setIsSubmitted(true)
+            }
+
         } catch (error) {
             setIsSubmitting(false)
             if (error.data) {
                 handleFailure(error.data.message);
-
             } else {
-                handleFailure(error.message);
+                if (error.reason) {
+                    handleFailure(error.reason);
+                } else {
+                    handleFailure(error.message);
+                }
             }
         }
         setIsSubmitting(false)
@@ -126,7 +145,7 @@ export default function FormData() {
                     <Text>Tokens created would be published and verified on the public explorer</Text>
                     <br />
                     <br />
-                    <Text> <strong>Note:</strong> Token total supply would be minted to your connected address (Standard Deployment cost: {selectedChain?.tokenDeployFee +' '+ selectedChain?.symbol})</Text>
+                    <Text> <strong>Note:</strong> Token total supply would be minted to your connected address (Standard Deployment cost: {selectedChain?.tokenDeployFee + ' ' + selectedChain?.symbol})</Text>
                 </Box>}
                 {isSubmitted && <TokenInfo info={tokenInfo} chain={selectedChain} />}
                 <Box as="form" sx={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>

@@ -59,7 +59,8 @@ const Privacy = () => {
                 </Heading>
                 {data.length <= 0 && <Text variant='title' as={'p'} sx={{
                     textAlign: 'center',
-                    mx:'auto'
+                    mx: 'auto',
+                    minHeight: '100vh',
                 }}>No pools on this chain, try checking another chain</Text>}
                 <Grid sx={styles.grid}>
                     {data.map((ico, i) => {
@@ -69,9 +70,6 @@ const Privacy = () => {
                             ending: new Date(Number(ico.endTime ? ico.endTime : 0)),
                         };
                         var percent = ((Number(ico.fundsRaised ? ico.fundsRaised : 0) / Number(ico.softCap ? ico.softCap : 0)) * 100).toFixed(5);
-
-
-
                         return (
                             <Box key={i} variant='boxes.glide' sx={{
                                 position: 'relative',
@@ -286,5 +284,5 @@ const styles = {
             null,
             'repeat(3,1fr)',
         ]
-    },
+    }
 }

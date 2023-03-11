@@ -1,5 +1,7 @@
 import ICF from '../../UIKit/sections/funding/main/ICF'
 import useSaleData from "../../Web3Hooks/Presale/useSaleData";
+import useTokenData from "../../Web3Hooks/ERC20/useTokenData";
+
 import SEO from '../../components/SEO'
 import Header from '../../UIKit/layout/Header';
 import { useRouter } from 'next/router'
@@ -10,6 +12,7 @@ export default function Home({ apiData }) {
   const router = useRouter();
   const { slug } = router.query;
   const saleData = useSaleData(slug);
+  const tokenInfo = useTokenData(saleData.tokenAddress)
   const { chain } = useChainData()
 
   return (
@@ -19,7 +22,7 @@ export default function Home({ apiData }) {
       <br />
       <br />
       <br />
-      <ICF saleData={saleData} icoAddress={slug} chain={chain} apiData={apiData} />
+      <ICF saleData={saleData} tokenInfo={tokenInfo} icoAddress={slug} chain={chain} apiData={apiData} />
       <br />
       <br />
       <br />

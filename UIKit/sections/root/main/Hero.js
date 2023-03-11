@@ -8,7 +8,7 @@ const data = {
 }
 import { useChainData } from '../../../../contexts/chain'
 
-const Hero = ({ state }) => {
+const Hero = ({ stats }) => {
     const router = useRouter();
     const { chain } = useChainData();
 
@@ -41,7 +41,7 @@ const Hero = ({ state }) => {
             <Link href={'/dashboard'}>
                 <Button>Dashboard</Button>
             </Link>
-            <Stats data={null} />
+            <Stats stats={stats} />
         </Container>
     )
 }

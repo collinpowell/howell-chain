@@ -19,7 +19,6 @@ contract Presale is ReentrancyGuard, Context, Ownable {
   mapping (address => uint256) private contributions;
   uint256 private contributors;
   uint256 private amountRaised; 
-  uint256 private totalRefunds; 
 
   struct RA{
     address rewardAddress;
@@ -56,7 +55,7 @@ contract Presale is ReentrancyGuard, Context, Ownable {
   }
 
   modifier Active() {
-    require(getStatus() == 2 , "ICO must be active");
+    require(getStatus() == uint(2) , "ICO must be active");
     _;
   }
 
@@ -66,16 +65,16 @@ contract Presale is ReentrancyGuard, Context, Ownable {
   }
 
   modifier NotStarted() {
-    require(getStatus() == 1, "ICO already began");
+    require(getStatus() == uint(1), "ICO already began");
     _;
   }
   modifier Cancelled() {
-    require(startRefund || (getStatus() == 3 && amountRaised < softCap), "Refund not started");
+    require(startRefund || (getStatus() == uint(3) && amountRaised < softCap), "Refund not started");
     _;
   }
   
   modifier Ended() {
-    require(getStatus() == 3, 'Invalid Operation');
+    require(getStatus() == uint(3), 'Invalid Operation');
     require(amountRaised >= softCap, 'Softcap not reached');
     _;
   }
@@ -124,14 +123,14 @@ contract Presale is ReentrancyGuard, Context, Ownable {
   }
 
   function getRefund() public view returns (bool) { 
-    if(getStatus() == 3 && amountRaised < softCap){
+    if(getStatus() == uint(3) && amountRaised < softCap){
       return true;
     }   
     return startRefund;
   }
 
-  function getTotalRefund() public view returns (uint256) {    
-    return totalRefunds;
+  function softReached() public view returns (bool) {    
+    return amountRaised > softCap;
   }
 
    // status /Sale Live = 2 / Upcoming = 1 / Ended = 3 / Cancelled = 4
@@ -226,7 +225,7 @@ contract Presale is ReentrancyGuard, Context, Ownable {
 
   // Contribute
   receive () external payable {
-    if(getStatus() ==  2){
+    if(getStatus() ==  uint(2)){
       _contribute(_msgSender(),owner(),msg.value);
     }else{
       revert('ICO Not Active');
@@ -271,7 +270,7 @@ contract Presale is ReentrancyGuard, Context, Ownable {
   // Claim Tokens
   function claimTokens() external nonReentrant Ended{
     require(contributions[_msgSender()] > 0, "No contribution found");
-    uint256 tokens = getCurrentRate() ** contributions[_msgSender()];
+    uint256 tokens = getCurrentRate() * contributions[_msgSender()];
     _deliverTokens(_msgSender(), tokens);
     contributions[_msgSender()] = 0;
   }
@@ -287,36 +286,42 @@ contract Presale is ReentrancyGuard, Context, Ownable {
 
   // Cancel Pool - implication: refund
   function cancelPool() external nonReentrant Active onlyOwner{
-    totalRefunds = amountRaised;
     startRefund = true;
     endTime = 0;
     token.transfer(msg.sender,token.balanceOf(address(this)));
-    emit Failed(address(this), owner(), totalRefunds,"Cancelled");
-
+    emit Failed(address(this), owner(), amountRaised,"Cancelled");
   }
 
   // withdrawRefund
   function withdrawRefund() external Cancelled {
-    uint amount = contributions[_msgSender()];
+    uint256 amount = contributions[_msgSender()];
     require(amount > 0, "No Refund Available");
     if (address(this).balance >= amount) {
       contributions[_msgSender()] = 0;
       payable(msg.sender).transfer(amount);
-      totalRefunds = totalRefunds.sub(amount);
     }
   }
   // Widthdraw Tokens
   // Cancel Pool - implication: refund
   function withdrawTokens() external Cancelled onlyOwner{
     token.transfer(msg.sender,token.balanceOf(address(this)));
-    emit Failed(address(this), owner(), totalRefunds,"Ended");
+    emit Failed(address(this), owner(),amountRaised,"Ended");
   }
   // finalize
   function finalize() external Ended onlyOwner{
+    if(affiliate <= 0){
       uint256 fee = poolFee.mul(amountRaised).div(100);
       feeAddress.transfer(fee);
       payable(msg.sender).transfer(amountRaised.sub(fee));
       emit Success(address(this), owner(), amountRaised);
+    }else{
+       uint256 fee = poolFee.mul(amountRaised).div(100);
+       uint256 aff = affiliate.mul(amountRaised).div(100);
+      feeAddress.transfer(fee);
+      payable(msg.sender).transfer(amountRaised.sub(fee).sub(aff));
+      emit Success(address(this), owner(), amountRaised);
+    }
+      
   }
 
   // burn excess

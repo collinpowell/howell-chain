@@ -1,5 +1,4 @@
 import useSWR from "swr";
-import useKeepSWRDataLiveAsBlocksArrive from "../useKeepSWRDataLiveAsBlocksArrive";
 import useContract from "../useContract";
 import ABI from "../../artifacts/contracts/StandardToken.sol/Standard.json";
 import { parseBalance } from "../../Util/util";
@@ -63,10 +62,6 @@ export default function useTokenData(contractAddress, suspense = false) {
       suspense,
     }
   );
-
-  useKeepSWRDataLiveAsBlocksArrive(resultName.mutate);
-  useKeepSWRDataLiveAsBlocksArrive(resultSymbol.mutate);
-  useKeepSWRDataLiveAsBlocksArrive(resultDecimals.mutate);
 
   return {
     name: resultName.data,

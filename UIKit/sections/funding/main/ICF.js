@@ -1,8 +1,10 @@
-import { Container, Image, Box, Heading, Button, Input, Text, Flex } from "theme-ui";
+import { Container, Label, Image, Box, Heading, Button, Spinner, Input, Text, Flex } from "theme-ui";
 import { Progress } from "reactstrap";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { parseBalance } from "../../../../Util/util";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 const CountDown = dynamic(import("react-countdown"), { ssr: false });
 import Buy from "../sub/BuyInput";
 import YouTube from "react-youtube";
@@ -13,13 +15,14 @@ import {
   Twitter,
   Youtube,
   Linkedin,
-  Github, Medium, Discord
+  Github,
+  Medium,
+  Discord
 } from "../../../assets/Socials";
 import useETHBalance from "../../../../Web3Hooks/useETHBalance";
 import { useWeb3React } from "@web3-react/core";
 import useSaleData from "../../../../Web3Hooks/Presale/useBuyData";
 import useContract from "../../../../Web3Hooks/useContract";
-import useTokenData from "../../../../Web3Hooks/ERC20/useTokenData";
 import ABI from "../../../../artifacts/contracts/StandardICO.sol/Presale.json";
 import { ethers } from "ethers";
 import { Copy } from 'react-feather'
@@ -89,13 +92,13 @@ function getStatus(status) {
   }
 }
 
-const Presale = ({ saleData, icoAddress, chain, apiData }) => {
+const Presale = ({ saleData, tokenInfo, icoAddress, chain, apiData }) => {
   const { account } = useWeb3React();
   const router = useRouter()
   const contract = useContract(icoAddress, ABI.abi, true)
   const data = useSaleData(account, icoAddress);
-  const tokenInfo = useTokenData(saleData.tokenAddress)
   const [userInput, setUserInput] = useState(1);
+  const [formTime, setFormTime] = useState(new Date());
   const [spin, setSpin] = useState(false);
   function _onReady(e) {
     e.target.pauseVideo();
@@ -118,11 +121,14 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
       title: "Total Contributors",
     },
     {
+      value: saleData.fundsRaised + " " + chain?.symbol,
+      title: 'Total Contributions'
+    },
+    {
       value: data.contribution + " " + chain?.symbol,
       title: "Your Purchase",
     },
   ]
-
 
   const affiliate = [
     {
@@ -195,10 +201,10 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
 
   var percent = ((saleData.fundsRaised / saleData.softCap) * 100).toFixed(5);
 
-  const handleSuccess = () => {
+  const handleSuccess = (header,text) => {
     return MySwal.fire({
-      title: "Purchase Successful! 🎉",
-      text: "Thank You For your patronage, Claim tokens after ICO",
+      title:header, //"Purchase Successful! 🎉",
+      text: text,
       icon: "success",
       customClass: {
         confirmButton: "SweatBtn",
@@ -206,6 +212,88 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
       buttonsStyling: false,
     });
   };
+
+  const handleSetTimeCall = async (time, start) => {
+    setSpin(true)
+    if (!account) {
+      handleFailure("Connect Wallet")
+      setSpin(false)
+      return;
+    }
+
+    try {
+      if (start) {
+        await contract.setStartTime(time.getTime())
+      } else {
+        await contract.setEndTime(time.getTime())
+      }
+      handleSuccess('Successful','Sales Would ends at '+ time.toString())
+      setSpin(false)
+    } catch (error) {
+      setSpin(false)
+      if (error.data) {
+        console.log(error)
+
+        handleFailure(error.data.message);
+
+      } else {
+
+        if (error.reason) {
+          handleFailure(error.reason);
+        } else {
+          handleFailure(error.message);
+        }
+
+      }
+    }
+  }
+
+  const setFormTimeCall = (date) => {
+    console.log(date)
+    setFormTime(date)
+    console.log(formTime)
+  }
+
+  const handleSetTimes = (start) => {
+    console.log(formTime)
+    MySwal.fire({
+      title: start ? 'Input Start Time' : 'Input End Time',
+      html: (
+        <Box className="boxes" sx={{
+          maxWidth: '100%'
+        }}>
+          <Label htmlFor="end">{start ? ' Start Time' : 'End Time'}</Label>
+          <br />
+          <DatePicker selected={formTime ? formTime : start ? new Date(Number(saleData.startTime)) : new Date(Number(saleData.endTime))} showTimeSelect onChange={(date) =>setFormTimeCall(date)} />
+          <Button sx={{
+            background: '#C1BCF2',
+            fontFamily: 'Montserrat',
+            color: 'black',
+            mb: '15px',
+          }} onClick={() => {
+            console.log(formTime)
+            handleSetTimeCall(formTime, start)
+          }}>Set</Button>
+          &nbsp;
+          <Button sx={{
+            background: '#C1BCF2',
+            fontFamily: 'Montserrat',
+            color: 'black',
+            mb: '15px',
+          }} onClick={() => {
+            console.log(formTime)
+            handleSetTimeCall(new Date(), start)
+          }}>End Now</Button>
+        </Box>
+      ),
+      showCloseButton: true,
+      buttonsStyling: true,
+      showCancelButton: false,
+      showConfirmButton: false,
+    })
+
+  }
+
   const handleCopied = () => {
     return MySwal.fire({
       title: "Affiliate Link Copied! 🎉",
@@ -243,10 +331,18 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
     } catch (error) {
       setSpin(false)
       if (error.data) {
-        handleFailure("Error message " + error.data.message);
+        console.log(error)
+
+        handleFailure(error.data.message);
 
       } else {
-        handleFailure("Error message " + error.message);
+
+        if (error.reason) {
+          handleFailure(error.reason);
+        } else {
+          handleFailure(error.message);
+        }
+
       }
     }
   }
@@ -266,10 +362,14 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
     } catch (error) {
       setSpin(false)
       if (error.data) {
-        handleFailure("Error message " + error.data.message);
+        handleFailure(error.data.message);
 
       } else {
-        handleFailure("Error message " + error.message);
+        if (error.reason) {
+          handleFailure(error.reason);
+        } else {
+          handleFailure(error.message);
+        }
       }
     }
   }
@@ -288,9 +388,13 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
     } catch (error) {
       setSpin(false)
       if (error.data) {
-        handleFailure("Error message " + error.data.message);
+        handleFailure(error.data.message);
       } else {
-        handleFailure("Error message " + error.message);
+        if (error.reason) {
+          handleFailure(error.reason);
+        } else {
+          handleFailure(error.message);
+        }
       }
     }
   }
@@ -316,10 +420,14 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
     } catch (error) {
       setSpin(false)
       if (error.data) {
-        handleFailure("Error message " + error.data.message);
+        handleFailure(error.data.message);
 
       } else {
-        handleFailure("Error message " + error.message);
+        if (error.reason) {
+          handleFailure(error.reason);
+        } else {
+          handleFailure(error.message);
+        }
       }
     }
   }
@@ -351,11 +459,23 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
       }
       await res.wait()
       const result = await contract.getRaised()
+      const resultContribution = await contract.getContribution(account)
       const value = parseBalance(result ?? 0, 18, 5)
+      const impute = parseBalance(resultContribution ?? 0, 18, 5)
       console.log(result, value)
       const appi = await api.put('ico', {
-        preSale: apiData.preSale,
-        fundsRaised: value
+        update: {
+          preSale: apiData.preSale,
+          fundsRaised: value,
+          startTime: saleData.startTime,
+          endTime: saleData.endTime,
+        },
+        participation: {
+          chain: chain?.slug,
+          participant: account,
+          amount: impute,
+          preSale: icoAddress,
+        }
       })
       console.log(appi)
       handleSuccess('Buy Successful')
@@ -364,10 +484,14 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
     } catch (error) {
       setSpin(false)
       if (error.data) {
-        handleFailure("Error message " + error.data.message);
+        handleFailure(error.data.message);
 
       } else {
-        handleFailure("Error message " + error.message);
+        if (error.reason) {
+          handleFailure(error.reason);
+        } else {
+          handleFailure(error.message);
+        }
       }
     }
     //contract.claimTokens()
@@ -511,6 +635,16 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
       <br />
       <br />
       <Container>
+        {!tokenInfo?.name && <Box sx={{
+          textAlign: 'center',
+          mb: '5px'
+        }}>
+          <Spinner sx={{
+            m: 'auto',
+            textAlign: 'center',
+            alignItems: 'center'
+          }} />
+        </Box>}
         <Box as="section" id="info" variant="boxes.glide" sx={{
           '.Upcoming': {
             background: '#C8EECE',
@@ -747,9 +881,9 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
           <br />
           <Flex sx={{ justifyContent: "space-between", fontWeight: "bold" }}>
             <Text as="p">
-              {saleData.fundsRaised + " BNB"}
+              {saleData.fundsRaised + " " + chain?.symbol}
             </Text>
-            <Text as="p">{saleData.softCap}</Text>
+            <Text as="p">{saleData.softCap + " " + chain?.symbol}</Text>
           </Flex>
           <Buy
             handleClick={handleClick}
@@ -869,8 +1003,8 @@ const Presale = ({ saleData, icoAddress, chain, apiData }) => {
           <Button onClick={handleFinalize}>Finalize</Button>
           <Button>Update Affiliate Program</Button>
           <Button>Cancel Pool</Button>
-          <Button>Set End Time</Button>
-          <Button>Set Start Time</Button>
+          <Button onClick={() => { handleSetTimes(true) }}>Set Start Time</Button>
+          <Button onClick={() => { handleSetTimes(false) }}>Set End Time</Button>
         </Box>}
       </Container>
     </>

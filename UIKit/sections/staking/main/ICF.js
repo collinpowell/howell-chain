@@ -92,20 +92,28 @@ const Presale = ({ saleData }) => {
             .catch(function (error) {
               setSpin(false)
               if (error.data) {
-                handleFailure("Error message " + error.data.message);
+                handleFailure(error.data.message);
 
               } else {
-                handleFailure("Error message " + error.reason);
+                if (error.reason) {
+                  handleFailure(error.reason);
+                } else {
+                  handleFailure(error.message);
+                }
               }
 
             })
         }).catch(function (error) {
           setSpin(false)
           if (error.data) {
-            handleFailure("Error message " + error.data.message);
+            handleFailure(error.data.message);
 
           } else {
-            handleFailure("Error message " + error.reason);
+            if (error.reason) {
+              handleFailure(error.reason);
+            } else {
+              handleFailure(error.message);
+            }
           }
 
         });
@@ -122,20 +130,24 @@ const Presale = ({ saleData }) => {
                   .catch(function (error) {
                     setSpin(false)
                     if (error.data) {
-                      handleFailure("Error message " + error.data.message);
+                      handleFailure(error.data.message);
 
                     } else {
-                      handleFailure("Error message " + error.reason);
+                      if (error.reason) {
+                        handleFailure(error.reason);
+                      } else {
+                        handleFailure(error.message);
+                      }
                     }
 
                   })
               }).catch(function (error) {
                 setSpin(false)
                 if (error.data) {
-                  handleFailure("Error message " + error.data.message);
+                  handleFailure(error.data.message);
 
                 } else {
-                  handleFailure("Error message " + error.reason);
+                  handleFailure(error.reason);
                 }
 
               });
@@ -143,10 +155,14 @@ const Presale = ({ saleData }) => {
             .catch(function (error) {
               setSpin(false)
               if (error.data) {
-                handleFailure("Error message " + error.data.message);
+                handleFailure(error.data.message);
 
               } else {
-                handleFailure("Error message " + error.reason);
+                if (error.reason) {
+                  handleFailure(error.reason);
+                } else {
+                  handleFailure(error.message);
+                }
               }
 
             })
@@ -154,10 +170,14 @@ const Presale = ({ saleData }) => {
         }).catch(function (error) {
           setSpin(false)
           if (error.data) {
-            handleFailure("Error message " + error.data.message);
+            handleFailure(error.data.message);
 
           } else {
-            handleFailure("Error message " + error.reason);
+            if (error.reason) {
+              handleFailure(error.reason);
+            } else {
+              handleFailure(error.message);
+            }
           }
 
         });
@@ -185,20 +205,28 @@ const Presale = ({ saleData }) => {
           .catch(function (error) {
             setSpin(false)
             if (error.data) {
-              handleFailure("Error message " + error.data.message);
+              handleFailure(error.data.message);
 
             } else {
-              handleFailure("Error message " + error.reason);
+              if (error.reason) {
+                handleFailure(error.reason);
+              } else {
+                handleFailure(error.message);
+              }
             }
 
           })
       }).catch(function (error) {
         setSpin(false)
         if (error.data) {
-          handleFailure("Error message " + error.data.message);
+          handleFailure(error.data.message);
 
         } else {
-          handleFailure("Error message " + error.reason);
+          if (error.reason) {
+            handleFailure(error.reason);
+          } else {
+            handleFailure(error.message);
+          }
         }
 
       });
@@ -226,20 +254,28 @@ const Presale = ({ saleData }) => {
           .catch(function (error) {
             setSpin(false)
             if (error.data) {
-              handleFailure("Error message " + error.data.message);
+              handleFailure(error.data.message);
 
             } else {
-              handleFailure("Error message " + error.reason);
+              if (error.reason) {
+                handleFailure(error.reason);
+              } else {
+                handleFailure(error.message);
+              }
             }
 
           })
       }).catch(function (error) {
         setSpin(false)
         if (error.data) {
-          handleFailure("Error message " + error.data.message);
+          handleFailure(error.data.message);
 
         } else {
-          handleFailure("Error message " + error.reason);
+          if (error.reason) {
+            handleFailure(error.reason);
+          } else {
+            handleFailure(error.message);
+          }
         }
 
       });

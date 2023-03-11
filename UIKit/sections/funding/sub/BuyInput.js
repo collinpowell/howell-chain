@@ -45,9 +45,9 @@ const WhyChoose = ({
           }}
         >
           {status == 2 && <Button onClick={() => handleClick()}>Buy Now</Button>}
-          {status == 3 && !refund && <Button onClick={() => handleClickRefund()}>Withdraw Refund</Button>}
+          {status == 3 && refund && <Button onClick={() => handleClickRefund()}>Withdraw Refund</Button>}
           {status == 2 && contribution > 0 && <Button onClick={() => handleEmergency()}>Emergency Withdraw</Button>}
-          {status == 3 && !refund && <Button onClick={() => handleClaim()}>Claim Tokens</Button>}
+          {status == 3 && !refund && contribution > 0 && <Button onClick={() => handleClaim()}>Claim Tokens</Button>}
           {status == 2 && contribution > 0 && <Text as={'p'} sx={{
             mt:'20px'
           }}> <strong>Note:</strong> Emergency Withdrawal penalty is 10% of purchase funds</Text>}

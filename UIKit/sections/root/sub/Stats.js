@@ -1,14 +1,10 @@
-import STATS_DATA from '../../../../data/hero'
 import StatCard from '../../../components/StatCard'
 import { Container, Flex } from 'theme-ui'
-const Stats = ({data}) => {
-    if(data?.holders){
-        STATS_DATA[0].number = data.holders
-    }
+const Stats = ({stats}) => {
     return (
         <Container>
             <Flex sx={styles.flex}>
-                {STATS_DATA.map((data, i) => {
+                {stats.map((data, i) => {
                     return( <StatCard data={data} key={i} />)
                 })}
             </Flex>

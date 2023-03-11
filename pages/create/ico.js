@@ -240,8 +240,8 @@ function VerifyToken({ formStep, nextFormStep, selectedChain, prevFormStep }) {
 function ICODetails({ formStep, nextFormStep, selectedChain, prevFormStep }) {
     const { setFormValues, data } = useFormData();
     const { handleSubmit, register, formState: { errors }, setError } = useForm();
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(data?.startDate ? data?.startDate: new Date());
+    const [endDate, setEndDate] = useState(data?.endDate ? data?.endDate: new Date());
     async function onSubmit(values) {
         values.startDate = startDate
         values.endDate = endDate
@@ -273,7 +273,7 @@ function ICODetails({ formStep, nextFormStep, selectedChain, prevFormStep }) {
                 </Box>
                 <br />
                 <Box>
-                    <Label htmlFor="anticipatedRate">Anticipated anticipatedRate (how many token per {selectedChain?.symbol})</Label>
+                    <Label htmlFor="anticipatedRate">Anticipated Rate (how many token per {selectedChain?.symbol})</Label>
                     <Input type="number" name="anticipatedRate" {...register("anticipatedRate", {
                         required: "Required"
                     })} id="anticipatedRate" my={3} value={data.anticipatedRate} placeholder="50" />

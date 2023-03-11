@@ -268,7 +268,6 @@ export default function useSaleData(contractAddress, suspense = false) {
   useKeepSWRDataLiveAsBlocksArrive(resultRefund.mutate);
   useKeepSWRDataLiveAsBlocksArrive(resultTotalRefund.mutate);
   useKeepSWRDataLiveAsBlocksArrive(resultStatus.mutate);
-  useKeepSWRDataLiveAsBlocksArrive(resultToken.mutate);
   useKeepSWRDataLiveAsBlocksArrive(resultPresaleTokens.mutate);
   useKeepSWRDataLiveAsBlocksArrive(resultContributors.mutate);
   useKeepSWRDataLiveAsBlocksArrive(resultAffiliatePercentage.mutate);

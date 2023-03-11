@@ -162,6 +162,7 @@ export default {
       },
       '.react-datepicker':{
         fontFamily: "body",
+        zIndex:'3000000'
       },
       ul: {
         listStyle: "none",
@@ -196,8 +197,8 @@ export default {
       },
       '.SweatBtn': {
         fontWeight: 'buttons',
-        color: 'text',
-        bg: 'background',
+        color: 'background !important',
+        bg: '#C1BCF2 !important',
         p: '15px 40px',
         borderRadius: '15px',
         fontFamily: 'body',
