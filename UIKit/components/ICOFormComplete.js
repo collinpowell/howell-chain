@@ -72,11 +72,7 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
             data.txHash = deploymentReceipt.transactionHash
             data.icoAddress = contract.address
             data.deployer = deploymentReceipt.from
-            const tokenResult = await tokenContract.transfer(
-                contract.address,
-                ethers.utils.parseUnits(data.preSaleTokens, data.tokenInfo.decimals))
-            await tokenResult.wait(1)
-            setCurrentStep(2)
+
             const socials = []
 
             if (data.website) {
@@ -150,6 +146,13 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
                 description: data.projectDescription,
                 socials: socials
             })
+
+            const tokenResult = await tokenContract.transfer(
+                contract.address,
+                ethers.utils.parseUnits(data.preSaleTokens, data.tokenInfo.decimals))
+            await tokenResult.wait(1)
+            setCurrentStep(2)
+
             if (res.data.statuscode == 200) {
                 console.log(`Fair launch deployed to ${contract.address}`)
                 handleSuccess('Fair launch Creation Successful')
@@ -306,25 +309,25 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
                                 <hr />
                             </>
                         case 'projectDescription':
-                            return(
-                            <>
-                            <Flex key={index} sx={{
-                                justifyContent: ['center', null, null, 'space-between'],
-                                flexDirection: ['column', null, null, 'row'],
-                            }}>
-                                <Text as={'p'} sx={{
-                                    fontWeight: 'bold',
-                                    mb: ['8px', null, null, '0']
-                                }}>{key + ': '}</Text>
-                                <Text as={'p'} sx={{
-                                    wordBreak: 'break-all',
-                                    maxWidth:['100%',null,null,'70%'],
-                                    mx:'auto',
-                                    textAlign:['center',null,null,'right']
-                                }}>{data[key]?.toString()}</Text>
-                            </Flex>
-                            <hr />
-                        </>)
+                            return (
+                                <>
+                                    <Flex key={index} sx={{
+                                        justifyContent: ['center', null, null, 'space-between'],
+                                        flexDirection: ['column', null, null, 'row'],
+                                    }}>
+                                        <Text as={'p'} sx={{
+                                            fontWeight: 'bold',
+                                            mb: ['8px', null, null, '0']
+                                        }}>{key + ': '}</Text>
+                                        <Text as={'p'} sx={{
+                                            wordBreak: 'break-all',
+                                            maxWidth: ['100%', null, null, '70%'],
+                                            mx: 'auto',
+                                            textAlign: ['center', null, null, 'right']
+                                        }}>{data[key]?.toString()}</Text>
+                                    </Flex>
+                                    <hr />
+                                </>)
                         default:
                             return (
                                 <>
