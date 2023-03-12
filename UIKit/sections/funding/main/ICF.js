@@ -374,6 +374,33 @@ const Presale = ({ saleData, tokenInfo, icoAddress, chain, apiData }) => {
     }
   }
 
+   async function handleCollectReward() {
+    setSpin(true)
+    if (!account) {
+      handleFailure("Connect Wallet")
+      setSpin(false)
+      return;
+    }
+
+    try {
+      await contract.withdrawReward()
+      handleSuccess('Yay, Reward Withdrawn Congratulations')
+      setSpin(false)
+    } catch (error) {
+      setSpin(false)
+      if (error.data) {
+        handleFailure(error.data.message);
+
+      } else {
+        if (error.reason) {
+          handleFailure(error.reason);
+        } else {
+          handleFailure(error.message);
+        }
+      }
+    }
+  }
+
   async function handleClaim() {
     setSpin(true)
     if (!account) {
@@ -980,7 +1007,7 @@ const Presale = ({ saleData, tokenInfo, icoAddress, chain, apiData }) => {
               </>
             )
           })}
-
+       {saleData.status == 3 && !saleData.refund && data.reward > 0 && <Button onClick={handleCollectReward}>Withdraw Reward</Button>}
         </Box>}
 
         {account && saleData.owner == account && <Box id='affiliate' as="section" variant="boxes.glide" sx={{
