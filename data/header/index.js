@@ -5,6 +5,12 @@ const HEADER_DATA = {
       links: [
         {
           icon: null,
+          text: "Howrea LP",
+          description:"Howrea Launchpad",
+          link: "https://lp.howrea.com",
+        },
+        {
+          icon: null,
           text: "TDH",
           description:"Talent Development Hub",
           link: "https://tdh.howrea.com",
@@ -23,9 +29,9 @@ const HEADER_DATA = {
         },
         {
           icon: null,
-          text: "Howrea LP",
-          description:"Howrea Launchpad",
-          link: "https://lp.howrea.com",
+          text: "Howrea Store",
+          description:"Buy and Sell any product of your choice",
+          link: "https://store.howrea.com",
         },
         {
           icon: null,
@@ -58,9 +64,9 @@ const HEADER_DATA = {
         },
         {
           icon: null,
-          text: "Airdrop",
-          description:"Get Free Tokens",
-          link: "/airdrop",
+          text: "Pitch Deck",
+          description:"Our Official Pitch Deck",
+          link: "/pitch",
         },
         {
           icon: null,
@@ -77,7 +83,7 @@ const HEADER_DATA = {
           icon: null,
           text: "Block Explorer",
           description:"Howreascan",
-          link: "/about",
+          link: "/comingsoon",
         },
         {
           icon: null,
@@ -129,7 +135,7 @@ const HEADER_DATA = {
           icon: null,
           text: "Foundation",
           description:"Our Foundation",
-          link: "",
+          link: "/comingsoon",
         }
       ],
     },

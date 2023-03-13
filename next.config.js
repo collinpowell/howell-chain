@@ -11,7 +11,12 @@ const nextConfig = {
                 source: '/whitepaper',
                 destination: '/whitepaper.pdf',
                 permanent: false,
-            }
+            },
+            {
+                source: '/pitch',
+                destination: '/pitchdeck.pdf',
+                permanent: false,
+            },
         ]
     },
     async rewrites() {

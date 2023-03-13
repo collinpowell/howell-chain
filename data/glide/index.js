@@ -34,7 +34,7 @@ const GLIDE_DATA ={
         {
             logo:dummyLogo,
             tooltip: dummyTooltip,
-            link:'/staking'
+            link:'https://store.howrea.com'
         }
     ]
 }

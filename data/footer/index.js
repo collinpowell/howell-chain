@@ -11,13 +11,13 @@ const FOOTER_DATA = [
           label: 'About Us',
         },
         {
-          link: '/funding',
-          label: 'Public ICO',
-        },
-        {
           link: '/airdrop',
           label: 'Airdrop',
         },
+        {
+          link: '/staking',
+          label: 'SHRF/BNB Pool',
+        }
       ],
     },
     {
@@ -26,6 +26,10 @@ const FOOTER_DATA = [
         {
           link: '/whitepaper',
           label: 'Whitepaper',
+        },
+        {
+          link: '/pitch',
+          label: 'Pitch Deck',
         },
         {
           link: 'https://docs.howrea.com',
@@ -49,13 +53,13 @@ const FOOTER_DATA = [
       title: 'Platforms',
       menuItem: [
         {
-          link: 'https://tdh.howrea.com',
-          label: 'TDH',
+          link: 'https://lp.howrea.com',
+          label: 'Howrea LP',
           external: true
         },
         {
-          link: 'https://lp.howrea.com',
-          label: 'Howrea LP',
+          link: 'https://tdh.howrea.com',
+          label: 'TDH',
           external: true
         },
         {
@@ -66,6 +70,11 @@ const FOOTER_DATA = [
         {
           link: 'https://wallet.howrea.com/',
           label: 'Wallet Application',
+          external: true
+        },
+        {
+          link: 'https://store.howrea.com/',
+          label: 'Howrea Store',
           external: true
         },
       ],
