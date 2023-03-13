@@ -38,8 +38,8 @@ const Hero = ({ stats }) => {
                 }}>Create Token</Button>
             </Flex>
             <br />
-            <Link href={'/dashboard'}>
-                <Button>Dashboard</Button>
+            <Link href={'/pools'}>
+                <Button>View Pools</Button>
             </Link>
             <Stats stats={stats} />
         </Container>

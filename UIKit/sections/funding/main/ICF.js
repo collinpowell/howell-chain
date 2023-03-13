@@ -269,7 +269,7 @@ const Presale = ({ saleData, tokenInfo, icoAddress, chain, apiData }) => {
             background: '#C1BCF2',
             fontFamily: 'Montserrat',
             color: 'black',
-            mb: '15px',
+            my: '15px',
           }} onClick={() => {
             console.log(formTime)
             handleSetTimeCall(formTime, start)
@@ -279,11 +279,11 @@ const Presale = ({ saleData, tokenInfo, icoAddress, chain, apiData }) => {
             background: '#C1BCF2',
             fontFamily: 'Montserrat',
             color: 'black',
-            mb: '15px',
+            my: '15px',
           }} onClick={() => {
             console.log(formTime)
             handleSetTimeCall(new Date(), start)
-          }}>End Now</Button>
+          }}>{start ? 'Start Now' : 'End Now'}</Button>
         </Box>
       ),
       showCloseButton: true,

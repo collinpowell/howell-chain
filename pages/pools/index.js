@@ -1,13 +1,13 @@
 import { Container, Spinner, Flex, Heading, Image, Button, Grid, Text, Box } from 'theme-ui'
-import Seo from '../components/SEO';
+import Seo from '../../components/SEO';
 import { useWeb3React } from '@web3-react/core';
 import { useEffect, useState } from 'react';
-import { api } from '../config/api';
+import { api } from '../../config/api';
 import { useRouter } from 'next/router';
-import Header from '../UIKit/layout/Header'
+import Header from '../../UIKit/layout/Header'
 import dynamic from "next/dynamic";
 import { Progress } from "reactstrap";
-import { useChainData } from '../contexts/chain';
+import { useChainData } from '../../contexts/chain';
 const CountDown = dynamic(import("react-countdown"), { ssr: false });
 
 const Privacy = () => {

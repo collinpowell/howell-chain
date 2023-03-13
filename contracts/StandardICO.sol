@@ -337,17 +337,17 @@ contract Presale is ReentrancyGuard, Context, Ownable {
     isAdmin[_admin] = false;
   }
     
-  /* ========== INTERNAL HELPER FUNCTIONS ========== */
-  function _deliverTokens(address beneficiary, uint256 tokenAmount) internal {
+  /* ========== PRIVATE HELPER FUNCTIONS ========== */
+  function _deliverTokens(address beneficiary, uint256 tokenAmount) private {
     token.transfer(beneficiary, tokenAmount);
   }
 
-  function _preValidatePurchase(address beneficiary, uint256 weiAmount) pure internal {
+  function _preValidatePurchase(address beneficiary, uint256 weiAmount) pure private {
     require(beneficiary != address(0), "Crowdsale: beneficiary is the zero address");
     require(weiAmount >  0, "Invalid contribution amount");
   }
 
-  function _contribute(address beneficiary, address rewardAddress,uint256 value) internal {
+  function _contribute(address beneficiary, address rewardAddress,uint256 value) private {
     _preValidatePurchase(beneficiary,value);
     if(contributions[beneficiary] <= 0){
       contributors++;

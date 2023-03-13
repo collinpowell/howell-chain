@@ -19,7 +19,7 @@ const HEADER_DATA = {
           icon: null,
           text: "View Pools",
           description:"Pools",
-          link: "/dashboard",
+          link: "/pools",
         },
       ],
     },
