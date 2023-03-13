@@ -62,7 +62,7 @@ export default function Home() {
     },
     {
       label: 'Total Amount Raised',
-      number: data?.totalAmountRaised ? nFormatter(data?.totalAmountRaised) + ' ' + chain?.symbol : nFormatter('0') + ' ' + chain?.symbol
+      number: data?.totalAmountRaised ? nFormatter(data?.totalAmountRaised.toFixed(2)) + ' ' + chain?.symbol : nFormatter('0') + ' ' + chain?.symbol
     }
   ]
   return (
