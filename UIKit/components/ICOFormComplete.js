@@ -416,7 +416,7 @@ const FormCompleted = ({ selectedChain, formStep, prevFormStep }) => {
                     width: ['100%', null, null, 'fit-content']
                 }
             }}>
-                {!isSubmitting && !isSubmitted ?
+                {isSubmitting && !isSubmitted ?
                     <Flex>
                         {formStep > 0 && (
                             <Button

@@ -28,21 +28,21 @@ const HEADER_DATA = {
       links: [
         {
           icon: null,
-          text: "HLP Docs",
+          text: "Whitepaper",
           description:"Whitepaper PDF",
-          link: "/whitepaper",
+          link: "https://www.howrea/whitepaper",
         },
         {
           icon: null,
           text: "About us",
           description:"Learn more about us ",
-          link: "/about",
+          link: "https://www.howrea/about",
         },
         {
           icon: null,
           text: "Airdrop",
           description:"Get Free Tokens",
-          link: "/airdrop",
+          link: "https://www.howrea/airdrop",
         },
         {
           icon: null,
@@ -54,13 +54,13 @@ const HEADER_DATA = {
           icon: null,
           text: "SHRF Staking",
           description:"SHRF/BNB Pool, APR 5%+",
-          link: "/staking",
+          link: "https://www.howrea/staking",
         },
         {
           icon: null,
           text: "Privacy Policy",
           description:"Privacy Policy",
-          link: "/privacy",
+          link: "https://www.howrea/privacy",
         },
       ],
     },

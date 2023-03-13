@@ -7,11 +7,11 @@ const FOOTER_DATA = [
           label: 'Home',
         },
         {
-          link: '/about',
+          link: 'https://www.howrea/about',
           label: 'About Us',
         },
         {
-          link: '/airdrop',
+          link: 'https://www.howrea/airdrop',
           label: 'Airdrop',
         },
       ],
@@ -20,19 +20,27 @@ const FOOTER_DATA = [
       title: 'Resources',
       menuItem: [
         {
-          link: '/whitepaper',
+          link: 'https://www.howrea/whitepaper',
           label: 'Whitepaper',
+        },
+        {
+          link: 'https://www.howrea/pitch',
+          label: 'Pitch Deck',
+        },
+        {
+          link: 'https://docs.howrea.com',
+          label: 'Docs',
         },
         {
           link: '/community',
           label: 'Community',
         },
         {
-          link: '/privacy',
+          link: 'https://www.howrea/privacy',
           label: 'Privacy Policy',
         },
         {
-          link: '/about',
+          link: 'https://www.howrea/about',
           label: 'About Us',
         },
       ],
@@ -41,13 +49,28 @@ const FOOTER_DATA = [
       title: 'Platforms',
       menuItem: [
         {
-          link: 'https://www.t-d-h.tech/',
+          link: 'https://lp.howrea.com',
+          label: 'Howrea LP',
+          external: true
+        },
+        {
+          link: 'https://tdh.howrea.com',
           label: 'TDH',
+          external: true
+        },
+        {
+          link: 'https://nft.howrea.com',
+          label: 'Howrea NFTs',
           external: true
         },
         {
           link: 'https://wallet.howrea.com/',
           label: 'Wallet Application',
+          external: true
+        },
+        {
+          link: 'https://store.howrea.com/',
+          label: 'Howrea Store',
           external: true
         },
       ],
@@ -56,7 +79,7 @@ const FOOTER_DATA = [
       title: 'Staking',
       menuItem: [
         {
-          link: '/staking',
+          link: 'https://www.howrea/staking',
           label: 'SHRF/BNB Pool',
           external: false
         }
