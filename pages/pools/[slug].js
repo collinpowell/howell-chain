@@ -17,7 +17,7 @@ export default function Home({ apiData }) {
 
   return (
     <>
-      <SEO title='Howrea | Funding' description='Public ICO coming up, $1,000,000' />
+      <SEO title={apiData.tokenName + ' Fair Launch'} description={apiData?.description} />
       <Header />
       <br />
       <br />

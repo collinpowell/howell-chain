@@ -4,7 +4,7 @@ const STATS_DATA = [
             number: '0'
         },
         {
-            label: 'Total Participants',
+            label: 'Total Investors',
             number: '0'
         },
         {

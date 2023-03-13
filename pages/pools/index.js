@@ -41,7 +41,7 @@ const Privacy = () => {
 
     return data ? (
         <>
-            <Seo title='Profile | Launchpad Profile' description={account} />
+            <Seo title='Launch pools' description={'View all launch pools for BNB, ETH, LOOP and other EVM Chains'} />
             <Header />
             <br />
             <br />
