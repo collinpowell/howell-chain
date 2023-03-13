@@ -93,7 +93,7 @@ const Privacy = () => {
                                 }
                             }} onClick={() => {
                                 router.push({
-                                    pathname: '/funding/' + ico.preSale,
+                                    pathname: '/pools/' + ico.preSale,
                                     query: { chain: ico.chain },
                                 });
                             }}>

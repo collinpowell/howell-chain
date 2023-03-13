@@ -29,7 +29,7 @@ const Footer = () => {
     <>
       <NewsLetter />
       <Box as="footer" sx={styles.footer}>
-        {pathname != "/funding" && <Partners />}
+        {pathname != "/pools" && <Partners />}
         <hr />
         <Container>
           <Flex sx={styles.logoCol}>

@@ -48,7 +48,7 @@ const HEADER_DATA = {
           icon: null,
           text: "Public ICO",
           description:"Invest in the blockchain project early",
-          link: "/funding",
+          link: "/pools",
         },
         {
           icon: null,

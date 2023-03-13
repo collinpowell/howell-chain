@@ -40,7 +40,7 @@ export default function ChainProvider({ children }) {
         if (!changeable)
             return changeable
         switch (router.pathname) {
-            case "/funding/[slug]":
+            case "/pools/[slug]":
                 return false
             default:
                 return true

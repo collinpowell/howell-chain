@@ -982,7 +982,7 @@ const Presale = ({ saleData, tokenInfo, icoAddress, chain, apiData }) => {
             <br />
             <br />
             <Flex onClick={copyLink}>
-              <Input type='url' id='affiliateCopy' value={process.env.NEXT_PUBLIC_DOMAIN + '/funding/' + router.query.slug + '?chain=' + router.query.chain + '&refId=' + account} disabled />
+              <Input type='url' id='affiliateCopy' value={process.env.NEXT_PUBLIC_DOMAIN + '/pools/' + router.query.slug + '?chain=' + router.query.chain + '&refId=' + account} disabled />
             </Flex>
           </Box>}
           <br />
