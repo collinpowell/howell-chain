@@ -57,7 +57,7 @@ export default function Home() {
       number: data?.totalProjects ? nFormatter(data?.totalProjects) : 0
     },
     {
-      label: 'Total Participants',
+      label: 'Total Investors',
       number: data?.totalParticipants ? nFormatter(data?.totalParticipants) : 0
     },
     {
