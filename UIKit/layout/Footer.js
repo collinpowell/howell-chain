@@ -13,6 +13,7 @@ import { FooterLogo } from "../assets/Logos";
 import {
   Instagram,
   Telegram,
+  Twitter,
   Youtube,
   Linkedin,
   Github, Medium, Discord
@@ -76,6 +77,13 @@ const Footer = () => {
                 rel="noreferrer"
               >
                 <Youtube />
+              </a>
+              <a
+                href="https://twitter.com/howrians"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Twitter />
               </a>
               <a
                 href="https://www.linkedin.com/company/howreanetwork/"

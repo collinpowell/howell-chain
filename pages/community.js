@@ -1,7 +1,7 @@
 import React from 'react'
 import {
     Instagram,
-    Telegram,
+    Telegram,Twitter,
     Youtube,
     Linkedin,
     Github, Medium, Discord
@@ -37,6 +37,13 @@ const Community = () => {
                     >
                         <Linkedin />
                     </a>
+                    <a
+                href="https://twitter.com/howrians"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Twitter />
+              </a>
                     <a
                         href="https://github.com/howrea"
                         target="_blank"
