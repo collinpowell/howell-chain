@@ -1,4 +1,5 @@
 import BSC from "../UIKit/assets/Chain/ic-bsc.png";
+import SUI from "../UIKit/assets/Chain/sui.jpg";
 import MATIC from "../UIKit/assets/Chain/ic-matic.png";
 import ETH from "../UIKit/assets/Chain/ic-eth.svg";
 import ALVEY from "../UIKit/assets/Chain/ic-alvey.svg";
@@ -12,6 +13,21 @@ import LOOP from "../UIKit/assets/Chain/loop.png";
 export const chains = [
     {
         chainId: 56,
+        slug: 'SUI',
+        chainName: 'Sui Mainnet Network',
+        tokenDeployFee:'150', // 45
+        poolCreationFee: '150',// 150
+        poolFee:'2', // percent of raised funds
+        chainLogo: SUI.src,
+        rpc: 'https://fullnode.mainnet.sui.io:443',
+        default: true,
+        symbol:'Sui',
+        main: true,
+        explorer: 'https://suiexplorer.com/',
+        decimals: 8
+    },
+    {
+        chainId: 56,
         slug: 'BSC',
         chainName: 'BNB Smart Chain',
         tokenDeployFee:'0.15', // 45
@@ -19,7 +35,6 @@ export const chains = [
         poolFee:'2', // percent of raised funds
         chainLogo: BSC.src,
         rpc: 'https://bsc-dataseed.binance.org',
-        default: true,
         symbol:'BNB',
         main: true,
         explorer: 'https://bscscan.com',

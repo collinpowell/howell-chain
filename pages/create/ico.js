@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unknown-property */
 /** @jsxImportSource theme-ui */
 import { useState, useRef, useEffect } from "react";
+import { JsonRpcClient } from "@mysten/sui.js";
 import Header from "../../UIKit/layout/Header";
 import { useFormData } from "../../contexts/form";
 import { Box, Label, Flex, Heading, Text, Radio, Textarea, Input, Container, Spinner, Grid, Button } from 'theme-ui'
